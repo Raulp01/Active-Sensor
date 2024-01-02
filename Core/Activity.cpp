@@ -14,4 +14,8 @@ namespace Core
 
         Speedometer::simulate();
     }
+
+    /* int main(void)
+    {
+    } */
 };

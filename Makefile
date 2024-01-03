@@ -52,8 +52,22 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = View/MainWindow.cpp 
-OBJECTS       = MainWindow.o
+SOURCES       = Core/Activity.cpp \
+		Core/CaloriesCounter.cpp \
+		Core/Container.cpp \
+		Core/Error.cpp \
+		Core/HeartSensor.cpp \
+		Core/Sensor.cpp \
+		Core/Speedometer.cpp \
+		main.cpp 
+OBJECTS       = Activity.o \
+		CaloriesCounter.o \
+		Container.o \
+		Error.o \
+		HeartSensor.o \
+		Sensor.o \
+		Speedometer.o \
+		main.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/common/linux.conf \
@@ -103,6 +117,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/default_pre.prf \
@@ -122,7 +137,23 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/lex.prf \
-		Progetto-PaO-2023-2024.pro  View/MainWindow.cpp
+		Progetto-PaO-2023-2024.pro Core/Activity.h \
+		Core/CaloriesCounter.h \
+		Core/Container.h \
+		Core/Error.h \
+		Core/HeartSensor.h \
+		Core/Sensor.h \
+		Core/Speedometer.h \
+		IConstVisitor.h \
+		IVisitor.h \
+		ContainerObserverInterface.h Core/Activity.cpp \
+		Core/CaloriesCounter.cpp \
+		Core/Container.cpp \
+		Core/Error.cpp \
+		Core/HeartSensor.cpp \
+		Core/Sensor.cpp \
+		Core/Speedometer.cpp \
+		main.cpp
 QMAKE_TARGET  = Progetto-PaO-2023-2024
 DESTDIR       = 
 TARGET        = Progetto-PaO-2023-2024
@@ -183,6 +214,7 @@ Makefile: Progetto-PaO-2023-2024.pro /usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/default_pre.prf \
@@ -256,6 +288,7 @@ Makefile: Progetto-PaO-2023-2024.pro /usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/qt_config.prf:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++/qmake.conf:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/exclusive_builds.prf:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/toolchain.prf:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/default_pre.prf:
@@ -294,7 +327,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents View/MainWindow.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents Core/Activity.h Core/CaloriesCounter.h Core/Container.h Core/Error.h Core/HeartSensor.h Core/Sensor.h Core/Speedometer.h IConstVisitor.h IVisitor.h ContainerObserverInterface.h $(DISTDIR)/
+	$(COPY_FILE) --parents Core/Activity.cpp Core/CaloriesCounter.cpp Core/Container.cpp Core/Error.cpp Core/HeartSensor.cpp Core/Sensor.cpp Core/Speedometer.cpp main.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -344,8 +378,65 @@ compiler_clean: compiler_moc_predefs_clean
 
 ####### Compile
 
-MainWindow.o: View/MainWindow.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o MainWindow.o View/MainWindow.cpp
+Activity.o: Core/Activity.cpp Core/Activity.h \
+		Core/HeartSensor.h \
+		Core/Sensor.h \
+		IVisitor.h \
+		IConstVisitor.h \
+		Core/CaloriesCounter.h \
+		Core/Speedometer.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Activity.o Core/Activity.cpp
+
+CaloriesCounter.o: Core/CaloriesCounter.cpp Core/CaloriesCounter.h \
+		Core/HeartSensor.h \
+		Core/Sensor.h \
+		IVisitor.h \
+		IConstVisitor.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o CaloriesCounter.o Core/CaloriesCounter.cpp
+
+Container.o: Core/Container.cpp Core/Container.h \
+		Core/Activity.h \
+		Core/HeartSensor.h \
+		Core/Sensor.h \
+		IVisitor.h \
+		IConstVisitor.h \
+		Core/CaloriesCounter.h \
+		Core/Speedometer.h \
+		ContainerObserverInterface.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Container.o Core/Container.cpp
+
+Error.o: Core/Error.cpp Core/Error.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Error.o Core/Error.cpp
+
+HeartSensor.o: Core/HeartSensor.cpp Core/HeartSensor.h \
+		Core/Sensor.h \
+		IVisitor.h \
+		IConstVisitor.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o HeartSensor.o Core/HeartSensor.cpp
+
+Sensor.o: Core/Sensor.cpp Core/Sensor.h \
+		IVisitor.h \
+		IConstVisitor.h \
+		Core/Error.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Sensor.o Core/Sensor.cpp
+
+Speedometer.o: Core/Speedometer.cpp Core/Speedometer.h \
+		Core/Sensor.h \
+		IVisitor.h \
+		IConstVisitor.h \
+		Core/Error.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Speedometer.o Core/Speedometer.cpp
+
+main.o: main.cpp Core/Container.h \
+		Core/Activity.h \
+		Core/HeartSensor.h \
+		Core/Sensor.h \
+		IVisitor.h \
+		IConstVisitor.h \
+		Core/CaloriesCounter.h \
+		Core/Speedometer.h \
+		ContainerObserverInterface.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 ####### Install
 

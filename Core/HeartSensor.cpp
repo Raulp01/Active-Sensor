@@ -1,4 +1,4 @@
-#include "../Core/HeartSensor.h"
+#include "HeartSensor.h"
 
 namespace Core
 {
@@ -8,15 +8,24 @@ namespace Core
     const unsigned int HeartSensor::rest_bpm_low = 60;
     const unsigned int HeartSensor::rest_bpm_high = 100;
 
-    HeartSensor::HeartSensor(std::string id, std::string description, unsigned int age, float height, float weight, TrainingType training_type,
-        float training_time) : Sensor(id, description, age, height, weight, training_type, training_time) 
+    HeartSensor::HeartSensor(std::string description, unsigned int age, float height, float weight, TrainingType training_type,
+        float training_time) : Sensor(description, age, height, weight, training_type, training_time) 
         {
+            setId();
             setStandardBpm();
         }
+    
+    HeartSensor::~HeartSensor() {}
 
     unsigned int HeartSensor::getBpm() const
     {
         return bpm;
+    }
+
+    void HeartSensor::setId()
+    {
+        std::string str = "HeartSensor-" + std::to_string(Sensor::getCounter());
+        Sensor::setId(str);
     }
 
     void HeartSensor::setBpm(unsigned int bpm_)
@@ -33,9 +42,9 @@ namespace Core
         max_bpm = heart_frequence_constant - age_percentage_constant * getAge();
 
         // Crea i bpm medi moltiplicando i bpm massimi per l'intensità dell'allenamento
-        unsigned int ran_bpm = min_bpm + max_bpm * getTrainingTime();
+        unsigned int ran_bpm = (min_bpm + max_bpm) / 2 * getTrainingTime();
 
-        bpm = getRandomNumber(ran_bpm - 10, ran_bpm + 10);
+        bpm = getRandomNumber(min_bpm, ran_bpm);
     }
 
     void HeartSensor::simulate() 
@@ -43,5 +52,15 @@ namespace Core
         setStandardBpm();
         unsigned int rand_bpm = getRandomNumber(getBpm() - 5, getBpm() + 5);
         setBpm(rand_bpm);
+    }
+
+    void HeartSensor::accept(IVisitor& visitor)
+    {
+        visitor.visitHeartSensor(*this);
+    }
+
+    void HeartSensor::accept(IConstVisitor& const_visitor)
+    {
+        const_visitor.visitHeartSensor(*this);
     }
 };

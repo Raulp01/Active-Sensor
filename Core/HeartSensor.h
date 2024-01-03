@@ -1,7 +1,7 @@
 #ifndef HEARTSENSOR
 #define HEARTSENSOR
 
-#include "../Core/Sensor.h"
+#include "Sensor.h"
 
 namespace Core
 {
@@ -17,14 +17,19 @@ namespace Core
         static const unsigned int rest_bpm_high;
 
         public:
-        HeartSensor(std::string id, std::string description, unsigned int age, float height, float weight, TrainingType training_type,
+        HeartSensor(std::string description, unsigned int age, float height, float weight, TrainingType training_type,
         float training_time);
+        virtual ~HeartSensor();
 
         unsigned int getBpm() const;
+        void setId() override;
         void setBpm(unsigned int bpm_);
         void setStandardBpm();
 
         void simulate() override;
+
+        void accept(IVisitor& visitor) override;
+        void accept(IConstVisitor& const_visitor) override;
     };
 };
 

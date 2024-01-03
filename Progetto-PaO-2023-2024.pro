@@ -15,5 +15,7 @@ QT += widgets
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 # Input
-HEADERS += 
-SOURCES += View/MainWindow.cpp
+HEADERS += Core/Activity.h Core/CaloriesCounter.h Core/Container.h Core/Error.h Core/HeartSensor.h \
+Core/Sensor.h Core/Speedometer.h IConstVisitor.h IVisitor.h ContainerObserverInterface.h
+SOURCES += Core/Activity.cpp Core/CaloriesCounter.cpp Core/Container.cpp Core/Error.cpp Core/HeartSensor.cpp \
+Core/Sensor.cpp Core/Speedometer.cpp main.cpp

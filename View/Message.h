@@ -1,6 +1,7 @@
 #ifndef MESSAGE
 #define MESSAGE
 
+#include "../Core/Error.h"
 #include <QWidget>
 #include <QLabel>
 #include <iostream>

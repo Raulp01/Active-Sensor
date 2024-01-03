@@ -1,15 +1,15 @@
-#include "../Core/Container.h"
+#include "Container.h"
 
 namespace Core
 {
     bool Container::empty() const
     {
-        return container.empty();
+        return vector.empty();
     }
 
     unsigned int Container::size() const
     {
-        return container.size();
+        return vector.size();
     }
 
     void Container::registerObserver(ContainerObserverInterface* obs)
@@ -17,20 +17,26 @@ namespace Core
         observers.push_back(obs);
     }
 
-    Container& Container::add(Sensor& sensor)
+    Container& Container::add(Sensor* sensor)
     {
-        container.push_back(sensor);
+        vector.push_back(sensor);
         for(auto observer = observers.begin(); observer != observers.end(); ++observer)
         {
             (*observer)->notifyAdd(*this);
         }
+
+        return *this;
     }
 
-    void Container::remove(Sensor& sensor)
+    void Container::remove(Sensor* sensor)
     {
-        std::vector<Sensor&>::iterator it;
-        *it = sensor;
-        container.erase(it);
+        for(auto it = vector.begin(); it != vector.end(); ++it)
+        {
+            if(*it == sensor)
+            {
+                vector.erase(it);
+            }
+        }
 
         for(auto observer = observers.begin(); observer != observers.end(); ++observer)
         {

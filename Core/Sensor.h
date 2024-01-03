@@ -13,6 +13,7 @@ namespace Core
     class Sensor
     {
         private:
+        static unsigned int id_count;
         std::string id;
         std::string description;
         unsigned int age;
@@ -22,10 +23,12 @@ namespace Core
         float training_time;
 
         public:
-        Sensor(std::string id, std::string description, unsigned int age, float height, float weight, TrainingType training_type,
+        Sensor(std::string description, unsigned int age, float height, float weight, TrainingType training_type,
         float training_time);
+        virtual ~Sensor() = 0;
 
         // getter
+        unsigned int getCounter() const;
         std::string getId() const;
         std::string getDescription() const;
         unsigned int getAge() const;
@@ -35,6 +38,8 @@ namespace Core
         float getTrainingTime() const;
 
         // setter
+        virtual void setId() = 0;
+        void setId(std::string id_);
         void setDescription(std::string description_);
         void setAge(unsigned int age_);
         void setHeight(float height_);

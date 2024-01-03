@@ -1,12 +1,23 @@
-#include "../Core/Activity.h"
+#include "Activity.h"
 
 namespace Core
 {
-    Activity::Activity(std::string id, std::string description, unsigned int age, float height, float weight, TrainingType training_type,
+    Activity::Activity(std::string description, unsigned int age, float height, float weight, TrainingType training_type,
         float training_time, float distance) :
-        Sensor(id, description, age, height, weight, training_type, training_time), 
-        CaloriesCounter(id, description, age, height, weight, training_type, training_time),
-        Speedometer(id, description, age, height, weight, training_type, training_time, distance) {}
+        Sensor(description, age, height, weight, training_type, training_time), 
+        CaloriesCounter(description, age, height, weight, training_type, training_time),
+        Speedometer(description, age, height, weight, training_type, training_time, distance) 
+        {
+            setId();
+        }
+    
+    Activity::~Activity() {}
+
+    void Activity::setId()
+    {
+        std::string str = "Activity-" + std::to_string(Sensor::getCounter());
+        Sensor::setId(str);
+    }
 
     void Activity::simulate() 
     {
@@ -15,7 +26,13 @@ namespace Core
         Speedometer::simulate();
     }
 
-    /* int main(void)
+    void Activity::accept(IVisitor& visitor)
     {
-    } */
+        visitor.visitActivity(*this);
+    }
+
+    void Activity::accept(IConstVisitor& const_visitor)
+    {
+        const_visitor.visitActivity(*this);
+    }
 };

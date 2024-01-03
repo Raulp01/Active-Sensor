@@ -1,7 +1,7 @@
 #ifndef SPEEDOMETER
 #define SPEEDOMETER
 
-#include "../Core/Sensor.h"
+#include "Sensor.h"
 
 namespace Core
 {
@@ -10,21 +10,24 @@ namespace Core
         private:
         float avarage_speed;
         float distance;
-        static const unsigned int meters_in_km;
-        static const unsigned int seconds_in_h; 
 
         public:
-        Speedometer(std::string id, std::string description, unsigned int age, float height, float weight, TrainingType training_type,
+        Speedometer(std::string description, unsigned int age, float height, float weight, TrainingType training_type,
         float training_time, float distance);
+        virtual ~Speedometer();
 
         float getAvarageSpeed() const;
         float getDistance() const;
 
+        void setId() override;
         void setAvarageSpeed(float avarage_speed_);
         void setDistance(float distance_);
         void setStandardSpeed();
 
         void simulate() override;
+
+        void accept(IVisitor& visitor) override;
+        void accept(IConstVisitor& const_visitor) override;
     };
 };
 

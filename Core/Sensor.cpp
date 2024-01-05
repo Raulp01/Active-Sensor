@@ -5,8 +5,8 @@ namespace Core
 {
     unsigned int Sensor::id_count = 0;
 
-    Sensor::Sensor(std::string description, unsigned int age, float height, float weight, TrainingType training_type,
-        float training_time) : description(description), age(age), height(height), weight(weight), 
+    Sensor::Sensor(std::string name, std::string description, unsigned int age, float height, float weight, TrainingType training_type,
+        float training_time) : name(name), description(description), age(age), height(height), weight(weight), 
         training_type(training_type), training_time(training_time) 
         {
             // Limitatori per altezza, età, peso con gestione errori
@@ -39,9 +39,19 @@ namespace Core
         return id_count;
     }
 
+    std::string Sensor::getType() const
+    {
+        return "";
+    }
+
     std::string Sensor::getId() const
     {
         return id;
+    }
+
+    std::string Sensor::getName() const
+    {
+        return name;
     }
 
     std::string Sensor::getDescription() const
@@ -71,44 +81,66 @@ namespace Core
         return tr;
     }
 
+    std::string Sensor::getTrainingTypeToString() const
+    {
+        switch (training_type)
+        {
+        case TrainingType::light:
+            return "Light";
+        case TrainingType::moderate:
+            return "Moderate";
+        case TrainingType::high:
+            return "High";
+        case TrainingType::very_high:
+            return "Very High";
+        case TrainingType::maximum:
+            return "Maximum";
+        }
+    }
+
     float Sensor::getTrainingTime() const
     {
         return training_time;
     }
 
-    void Sensor::setId(std::string id_)
+    void Sensor::setId(std::string new_id)
     {
-        this->id = id_;
+        this->id = new_id;
     }
 
-    void Sensor::setDescription(std::string description_)
+    void Sensor::setName(std::string new_name)
     {
-        this->description = description_; 
+        this->name = new_name;
     }
 
-    void Sensor::setAge(unsigned int age_)
+    void Sensor::setDescription(std::string new_description)
     {
-        this->age = age_;
+        this->description = new_description; 
     }
 
-    void Sensor::setHeight(float height_)
+    void Sensor::setAge(unsigned int new_age)
     {
-        this->height = height_;
+        this->age = new_age;
     }
 
-    void Sensor::setWeight(float weight_)
+    void Sensor::setHeight(float new_height)
     {
-        this->weight = weight_;
+        this->height = new_height;
     }
 
-    void Sensor::setTrainingType(TrainingType trainig_type_)
+    void Sensor::setWeight(float new_weight)
     {
-        this->training_type = trainig_type_;
+        this->weight = new_weight;
     }
 
-    void Sensor::setTrainingTime(float training_time_)
+    void Sensor::setTrainingType(TrainingType new_trainig_type)
     {
-        this->training_time = training_time_;
+        this->training_type = new_trainig_type;
+    }
+
+    void Sensor::setTrainingTime(float new_training_time)
+    {
+        this->training_time = new_training_time;
     }
 
     float Sensor::getRandomNumber(float range_min, float range_max)

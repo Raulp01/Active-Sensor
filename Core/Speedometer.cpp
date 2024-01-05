@@ -4,8 +4,8 @@
 namespace Core
 {
 
-    Speedometer::Speedometer(std::string description, unsigned int age, float height, float weight, TrainingType training_type,
-        float training_time, float distance) : Sensor(description, age, height, weight, training_type, training_time), 
+    Speedometer::Speedometer(std::string name, std::string description, unsigned int age, float height, float weight, TrainingType training_type,
+        float training_time, float distance) : Sensor(name, description, age, height, weight, training_type, training_time), 
         distance(distance) 
         {
             setId();
@@ -16,6 +16,16 @@ namespace Core
             }
         }
     Speedometer::~Speedometer() {};
+
+    std::string Speedometer::getId() const
+    {
+        return Sensor::getId();
+    }
+
+    std::string Speedometer::getType() const
+    {
+        return "Speedometer";
+    }
 
     float Speedometer::getAvarageSpeed() const
     {
@@ -33,14 +43,14 @@ namespace Core
         Sensor::setId(str);
     }
 
-    void Speedometer::setAvarageSpeed(float avarage_speed_)
+    void Speedometer::setAvarageSpeed(float new_avarage_speed)
     {
-        this->avarage_speed = avarage_speed_;
+        this->avarage_speed = new_avarage_speed;
     }
 
-    void Speedometer::setDistance(float distance_)
+    void Speedometer::setDistance(float new_distance)
     {
-        this->distance = distance_;
+        this->distance = new_distance;
     }
 
     void Speedometer::setStandardSpeed()

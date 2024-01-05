@@ -12,16 +12,18 @@ namespace Core
         float distance;
 
         public:
-        Speedometer(std::string description, unsigned int age, float height, float weight, TrainingType training_type,
+        Speedometer(std::string name, std::string description, unsigned int age, float height, float weight, TrainingType training_type,
         float training_time, float distance);
         virtual ~Speedometer();
 
+        std::string getId() const;
+        std::string getType() const override;
         float getAvarageSpeed() const;
         float getDistance() const;
 
         void setId() override;
-        void setAvarageSpeed(float avarage_speed_);
-        void setDistance(float distance_);
+        void setAvarageSpeed(float new_avarage_speed);
+        void setDistance(float new_distance);
         void setStandardSpeed();
 
         void simulate() override;

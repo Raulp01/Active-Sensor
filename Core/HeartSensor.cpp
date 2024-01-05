@@ -8,8 +8,8 @@ namespace Core
     const unsigned int HeartSensor::rest_bpm_low = 60;
     const unsigned int HeartSensor::rest_bpm_high = 100;
 
-    HeartSensor::HeartSensor(std::string description, unsigned int age, float height, float weight, TrainingType training_type,
-        float training_time) : Sensor(description, age, height, weight, training_type, training_time) 
+    HeartSensor::HeartSensor(std::string name, std::string description, unsigned int age, float height, float weight, TrainingType training_type,
+        float training_time) : Sensor(name, description, age, height, weight, training_type, training_time) 
         {
             setId();
             setStandardBpm();
@@ -22,15 +22,25 @@ namespace Core
         return bpm;
     }
 
+    std::string HeartSensor::getId() const
+    {
+        return Sensor::getId();
+    }
+
+    std::string HeartSensor::getType() const
+    {
+        return "HeartSensor";
+    }
+
     void HeartSensor::setId()
     {
         std::string str = "HeartSensor-" + std::to_string(Sensor::getCounter());
         Sensor::setId(str);
     }
 
-    void HeartSensor::setBpm(unsigned int bpm_)
+    void HeartSensor::setBpm(unsigned int new_bpm)
     {
-        this->bpm = bpm_;
+        this->bpm = new_bpm;
     }
 
     void HeartSensor::setStandardBpm()

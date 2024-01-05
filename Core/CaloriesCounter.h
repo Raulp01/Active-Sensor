@@ -12,13 +12,16 @@ namespace Core
         static const float bpm_percentage;
 
         public:
-        CaloriesCounter(std::string description, unsigned int age, float height, float weight, TrainingType training_type,
+        CaloriesCounter(std::string name, std::string description, unsigned int age, float height, float weight, TrainingType training_type,
         float training_time);
         virtual ~CaloriesCounter();
 
         float getCalories() const;
+        std::string getId() const;
+        std::string getType() const override;
+
         void setId() override;
-        void setCalories(float calories_);
+        void setCalories(float new_calories);
         void setStandardCalories();
 
         void simulate() override;

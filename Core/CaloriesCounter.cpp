@@ -4,9 +4,9 @@ namespace Core
 {
     const float CaloriesCounter::bpm_percentage = 0.5;
 
-    CaloriesCounter::CaloriesCounter(std::string description, unsigned int age, float height, float weight, TrainingType training_type,
-        float training_time) : Sensor(description, age, height, weight, training_type, training_time),
-        HeartSensor(description, age, height, weight, training_type, training_time) 
+    CaloriesCounter::CaloriesCounter(std::string name, std::string description, unsigned int age, float height, float weight, TrainingType training_type,
+        float training_time) : Sensor(name, description, age, height, weight, training_type, training_time),
+        HeartSensor(name, description, age, height, weight, training_type, training_time) 
         {
             setId();
             setStandardCalories();
@@ -19,15 +19,25 @@ namespace Core
         return calories;
     }
 
+    std::string CaloriesCounter::getId() const
+    {
+        return Sensor::getId();
+    }
+
+    std::string CaloriesCounter::getType() const
+    {
+        return "CaloriesCounter";
+    }
+
     void CaloriesCounter::setId()
     {
         std::string str = "CaloriesCounter-" + std::to_string(Sensor::getCounter());
         Sensor::setId(str);
     }
 
-    void CaloriesCounter::setCalories(float calories_)
+    void CaloriesCounter::setCalories(float new_calories)
     {
-        this->calories = calories_;
+        this->calories = new_calories;
     }
 
     void CaloriesCounter::setStandardCalories()

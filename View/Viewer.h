@@ -1,8 +1,9 @@
 #ifndef VIEWER
 #define VIEWER
 
-#include "Info.h"
 #include <QPushButton>
+#include <QLabel>
+#include "../Core/Activity.h"
 
 namespace View
 {
@@ -15,11 +16,10 @@ namespace View
         QPushButton* edit_sensor;
         QPushButton* delete_sensor;
         QPushButton* simulate_sensor;
-        //id, training_type, training_time
         QLabel* id;
         QLabel* name;
         QLabel* training_time;
-        QLabel* training__type;
+        QLabel* training_type;
         QLabel* weight;
         QLabel* height;
         QLabel* description;
@@ -27,12 +27,13 @@ namespace View
 
         public:
         Viewer(Core::Sensor& sensor, QWidget* parent = 0);
-        void show();
 
         public slots:
         void simulateSensor();
 
         //Incompleta
+        // connect editSensor
+        // connect deleteSensor
     };
 };
 

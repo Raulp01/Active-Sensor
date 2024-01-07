@@ -95,6 +95,8 @@ namespace Core
             return "Very High";
         case TrainingType::maximum:
             return "Maximum";
+        default :
+            throw Error("Not a Training Type");
         }
     }
 

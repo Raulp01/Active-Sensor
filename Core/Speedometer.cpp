@@ -56,7 +56,7 @@ namespace Core
     void Speedometer::setStandardSpeed()
     {
         // Calcola velocità media in base alla distanza percorsa, il tempo di allenamento
-        avarage_speed = distance * getTrainingTime();
+        avarage_speed = distance / getTrainingTime();
     }
 
     void Speedometer::simulate() 

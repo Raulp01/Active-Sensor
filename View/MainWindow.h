@@ -2,20 +2,21 @@
 #define MAINWINDOW
 
 #include "../Core/Container.h"
-#include <QWidget>
-#include <QGridLayout>
+#include <QMainWindow>
+#include "Viewer.h"
 // Include classi della GUI che compongono la Main Window
 
 namespace View
 {
-    class MainWindow : public QWidget
+    class MainWindow : public QMainWindow
     {
         Q_OBJECT
+
         private:
-        Core::Container& container;
+        Core::Activity& activity;
         
         public:
-        MainWindow(Core::Container& container, QWidget* parent = 0);
+        MainWindow(Core::Activity& activity);
     };
 };
 

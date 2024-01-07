@@ -1,7 +1,7 @@
 #ifndef PANEL
 #define PANEL
 
-#include "SensorInfo.h"
+#include "Info.h"
 
 namespace View
 {

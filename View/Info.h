@@ -21,7 +21,8 @@ namespace View
         Info(Core::Sensor& sensor, QWidget* parent = 0);
         void show();
 
-        // Incompleta
+        // Probabile bug: quando modifico il viewer dell'info, non penso venga aggiornata
+        // Probabilmente sistemato quando Visitor per Scrollbar
     };
 };
 

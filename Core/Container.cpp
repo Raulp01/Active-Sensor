@@ -30,6 +30,13 @@ namespace Core
 
     void Container::remove(Sensor* sensor)
     {
+        // Prima notifico la rimozione in modo che la GUI sia aggiornata
+        for(auto observer = observers.begin(); observer != observers.end(); ++observer)
+        {
+            (*observer)->notifyRemove(*this, *sensor);
+        }
+
+        // Poi elimino il sensore dal vector
         for(auto it = vector.begin(); it != vector.end(); ++it)
         {
             if(*it == sensor)
@@ -38,11 +45,11 @@ namespace Core
             }
         }
 
-        for(auto observer = observers.begin(); observer != observers.end(); ++observer)
-        {
-            (*observer)->notifyRemove(*this);
-        }
-
         //Da testare
+    }
+
+    std::vector<Sensor*>::iterator Container::begin()
+    {
+        return vector.begin();
     }
 };

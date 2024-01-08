@@ -2,8 +2,10 @@
 #define MAINWINDOW
 
 #include "../Core/Container.h"
-#include <QMainWindow>
+#include "Scrollbar.h"
 #include "Viewer.h"
+#include <QMainWindow>
+#include <QGridLayout>
 // Include classi della GUI che compongono la Main Window
 
 namespace View
@@ -13,10 +15,15 @@ namespace View
         Q_OBJECT
 
         private:
-        Core::Activity& activity;
+        Core::Container& container;
+
+        Scrollbar* scrollbar;
+        QGridLayout* layout;
+        Viewer* viewer;
         
         public:
-        MainWindow(Core::Activity& activity);
+        MainWindow(Core::Container& container);
+        void openViewer(Core::Sensor& sensor);
     };
 };
 

@@ -16,6 +16,10 @@ QT += widgets
 
 # Input
 HEADERS += Core/Activity.h Core/CaloriesCounter.h Core/Container.h Core/Error.h Core/HeartSensor.h \
-Core/Sensor.h Core/Speedometer.h IConstVisitor.h IVisitor.h ContainerObserverInterface.h
+Core/Sensor.h Core/Speedometer.h IConstVisitor.h IVisitor.h ContainerObserverInterface.h \
+View/Info.h View/MainWindow.h View/Message.h View/SensorPanel.h View/Viewer.h View/ViewerVisitor.h \
+View/Scrollbar.h
+
 SOURCES += Core/Activity.cpp Core/CaloriesCounter.cpp Core/Container.cpp Core/Error.cpp Core/HeartSensor.cpp \
-Core/Sensor.cpp Core/Speedometer.cpp main.cpp
+Core/Sensor.cpp Core/Speedometer.cpp View/Info.cpp View/MainWindow.cpp View/Message.cpp View/SensorPanel.cpp View/Viewer.cpp View/ViewerVisitor.cpp \
+View/Scrollbar.cpp main.cpp 

@@ -10,19 +10,19 @@ namespace Core
         training_type(training_type), training_time(training_time) 
         {
             // Limitatori per altezza, età, peso con gestione errori
-            if(age > 110)
+            if(age >= 110)
             {
                 throw Error("Invalid age");
             }
-            if(height < 0 || height > 2.5)
+            if(height < 0 || height >= 2.5)
             {
-                throw Error("Invali height");
+                throw Error("Invalid height");
             }
             if(training_time < 0)
             {
                 throw Error("Training time cannot be negative");
             }
-            if(weight < 0 || weight > 200)
+            if(weight < 0 || weight >= 200)
             {
                 throw Error("Invalid weight");
             }

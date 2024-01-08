@@ -42,7 +42,7 @@ int main(int argc, char* argv[])
 
     QApplication app(argc, argv);
 
-    View::MainWindow main_window(activity);
+    View::MainWindow main_window(container);
 
     main_window.resize(1920,1080);
 

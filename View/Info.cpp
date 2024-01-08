@@ -16,6 +16,8 @@ namespace View
 
         sensor_time = new QLabel();
         layout->addWidget(sensor_time);
+
+        this->show();
     }  
 
     void Info::show()

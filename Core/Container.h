@@ -22,6 +22,7 @@ namespace Core
         // Metodi di aggiunta (in coda) e rimozione (accesso casuale)
         Container& add(Sensor* sensor);
         void remove(Sensor* sensor);
+        std::vector<Sensor*>::iterator begin();
     };
 };
 

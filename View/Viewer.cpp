@@ -4,7 +4,8 @@
 
 namespace View
 {
-    Viewer::Viewer(Core::Sensor& sensor, QWidget* parent) : sensor(sensor), QWidget(parent)
+    Viewer::Viewer(MainWindow* mainwindow, Core::Container& container, Core::Sensor& sensor, QWidget* parent) : 
+    mainwindow(mainwindow), container(container), sensor(sensor), QWidget(parent)
     {
         QGridLayout* layout = new QGridLayout(this);
         layout->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
@@ -15,7 +16,7 @@ namespace View
         
         delete_sensor = new QPushButton("Delete");
         layout->addWidget(delete_sensor, 0, 1, 1, 1);
-        // connect
+        connect(delete_sensor, &QPushButton::pressed, this, &deleteSensor);
 
         simulate_sensor = new QPushButton("Simulate");
         layout->addWidget(simulate_sensor, 0, 2, 1, 1);
@@ -54,6 +55,12 @@ namespace View
     void Viewer::simulateSensor()
     {
         sensor.simulate();
+        // Aggiungi grafico
         this->show();
+    }
+
+    void Viewer::deleteSensor()
+    {
+        container.remove(&sensor);
     }
 }

@@ -23,6 +23,7 @@ namespace Core
         Container& add(Sensor* sensor);
         void remove(Sensor* sensor);
         std::vector<Sensor*>::iterator begin();
+        std::vector<Sensor*>::iterator end();
     };
 };
 

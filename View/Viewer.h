@@ -14,7 +14,7 @@ namespace View
 
         private:
         Core::Container& container;
-        Core::Sensor& sensor;
+        const Core::Sensor& sensor;
         MainWindow* mainwindow;
         QPushButton* edit_sensor;
         QPushButton* delete_sensor;
@@ -29,7 +29,7 @@ namespace View
         QLabel* age;
 
         public:
-        Viewer(MainWindow* mainwindow, Core::Container& container, Core::Sensor& sensor, QWidget* parent = 0);
+        Viewer(MainWindow* mainwindow, Core::Container& container, const Core::Sensor& sensor, QWidget* parent = 0);
 
         public slots:
         void deleteSensor();

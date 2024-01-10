@@ -4,27 +4,49 @@
 #include "../Core/Container.h"
 #include "Scrollbar.h"
 #include "Viewer.h"
+#include "../Core/Json/DataMapper/JsonFile.h"
 #include <QMainWindow>
-#include <QGridLayout>
-// Include classi della GUI che compongono la Main Window
+#include <QStackedWidget>
 
-namespace View
-{
-    class MainWindow : public QMainWindow
-    {
-        Q_OBJECT
+namespace View {
 
-        private:
-        Core::Container& container;
+class MainWindow: public QMainWindow {
+    Q_OBJECT
+  private:
+    bool has_unsaved_changes;
+    QAction* create_item;
+    QToolBar* toolbar;
+    Core::Container& container;
+    Core::Json::DataMapper::JsonFile& json_file;
+    //SearchWidget* search_widget;
+    QStackedWidget* stacked_widget;
+    //ResultsWidget* results_widget;
+    Viewer* viewer_wiget;
+  
+  public:
+    explicit MainWindow(Core::Container& container, Core::Json::DataMapper::JsonFile& json_file, QWidget *parent = 0);
+    Core::Container& getContainer();
+    MainWindow& reloadData();
+    //SearchWidget* getSearchWidget();
+  
+  private:
+    void clearStack();
 
-        Scrollbar* scrollbar;
-        QGridLayout* layout;
-        Viewer* viewer;
-        
-        public:
-        MainWindow(Core::Container& container);
-        void openViewer(Core::Sensor& sensor);
-    };
+  public slots:
+    void newDataset();
+    void openDataset();
+    void saveDataset();
+    void saveAsDataset();
+    void toggleToolbar();
+    void showStatus(QString message);
+    //void search(Engine::Query query);
+    void createSensor();
+    void showSensor(const Core::Sensor* sensor);
+    void editSensor(Core::Sensor* sensor);
+    void deleteSensor(Core::Sensor* sensor);
+    void close();
 };
+
+}
 
 #endif

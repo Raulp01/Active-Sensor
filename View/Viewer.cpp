@@ -4,7 +4,7 @@
 
 namespace View
 {
-    Viewer::Viewer(MainWindow* mainwindow, Core::Container& container, Core::Sensor& sensor, QWidget* parent) : 
+    Viewer::Viewer(MainWindow* mainwindow, Core::Container& container, const Core::Sensor& sensor, QWidget* parent) : 
     mainwindow(mainwindow), container(container), sensor(sensor), QWidget(parent)
     {
         QGridLayout* layout = new QGridLayout(this);
@@ -22,7 +22,7 @@ namespace View
         layout->addWidget(simulate_sensor, 0, 2, 1, 1);
         connect(simulate_sensor, &QPushButton::pressed, this, &Viewer::simulateSensor);
 
-        id = new QLabel("Id: " + QString::fromStdString(sensor.getId()));
+        id = new QLabel("Id: " + QString::number(sensor.getId()));
         layout->addWidget(id, 1, 0, 1, 1);
 
         name = new QLabel("Name: " + QString::fromStdString(sensor.getName()));

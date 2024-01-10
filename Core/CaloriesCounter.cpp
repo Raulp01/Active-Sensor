@@ -4,13 +4,12 @@ namespace Core
 {
     const float CaloriesCounter::bpm_percentage = 0.5;
 
-    CaloriesCounter::CaloriesCounter(std::string name, std::string description, unsigned int age, float height, float weight, TrainingType training_type,
-        float training_time) : Sensor(name, description, age, height, weight, training_type, training_time),
-        HeartSensor(name, description, age, height, weight, training_type, training_time) 
-        {
-            setId();
-            setStandardCalories();
-        }
+    CaloriesCounter::CaloriesCounter(unsigned int id, std::string name, std::string description, unsigned int age, float height, float weight, unsigned int training_type,
+    float training_time, unsigned int bpm, float calories) : Sensor(id, name, description, age, height, weight, training_type, training_time),
+    HeartSensor(id, name, description, age, height, weight, training_type, training_time, bpm) 
+    {
+        setStandardCalories();
+    }
     
     CaloriesCounter::~CaloriesCounter() {}
 
@@ -19,20 +18,9 @@ namespace Core
         return calories;
     }
 
-    std::string CaloriesCounter::getId() const
-    {
-        return Sensor::getId();
-    }
-
     std::string CaloriesCounter::getType() const
     {
         return "CaloriesCounter";
-    }
-
-    void CaloriesCounter::setId()
-    {
-        std::string str = "CaloriesCounter-" + std::to_string(Sensor::getCounter());
-        Sensor::setId(str);
     }
 
     void CaloriesCounter::setCalories(float new_calories)
@@ -43,7 +31,7 @@ namespace Core
     void CaloriesCounter::setStandardCalories()
     {
         // Calcola calorie medie
-        calories = getWeight() * getTrainingTime() + (getTrainingType() * 10);
+        calories = getWeight() * getTrainingTime() + (getTrainingType() * 2);
     }
 
     void CaloriesCounter::simulate() 
@@ -63,7 +51,7 @@ namespace Core
         visitor.visitCaloriesCounter(*this);
     }
     
-    void CaloriesCounter::accept(IConstVisitor& const_visitor)
+    void CaloriesCounter::accept(IConstVisitor& const_visitor) const
     {
         const_visitor.visitCaloriesCounter(*this);
     }

@@ -5,32 +5,9 @@ namespace Core
 {
     unsigned int Sensor::id_count = 0;
 
-    Sensor::Sensor(std::string name, std::string description, unsigned int age, float height, float weight, TrainingType training_type,
-        float training_time) : name(name), description(description), age(age), height(height), weight(weight), 
-        training_type(training_type), training_time(training_time) 
-        {
-            // Limitatori per altezza, età, peso con gestione errori
-            if(age >= 110)
-            {
-                throw Error("Invalid age");
-            }
-            if(height < 0 || height >= 2.5)
-            {
-                throw Error("Invalid height");
-            }
-            if(training_time < 0)
-            {
-                throw Error("Training time cannot be negative");
-            }
-            if(weight < 0 || weight >= 200)
-            {
-                throw Error("Invalid weight");
-            }
-            else
-            {
-                id_count++;
-            }
-        }
+    Sensor::Sensor(unsigned int id, std::string name, std::string description, unsigned int age, float height, float weight, unsigned int training_type,
+    float training_time) : id(id), name(name), description(description), age(age), height(height), weight(weight), 
+    training_type(training_type), training_time(training_time) {}
 
     Sensor::~Sensor() {}
     
@@ -39,12 +16,9 @@ namespace Core
         return id_count;
     }
 
-    std::string Sensor::getType() const
-    {
-        return "";
-    }
+    std::string Sensor::getType() const {}
 
-    std::string Sensor::getId() const
+    unsigned int Sensor::getId() const
     {
         return id;
     }
@@ -74,29 +48,27 @@ namespace Core
         return weight;
     }
 
-    float Sensor::getTrainingType() const
+    unsigned int Sensor::getTrainingType() const
     {
-        // Ritorna il valore in percentuale del tipo di allenamento
-        float tr = static_cast<float>(training_type) / 100;
-        return tr;
+        return training_type;
     }
 
     std::string Sensor::getTrainingTypeToString() const
     {
         switch (training_type)
         {
-        case TrainingType::light:
+        case 1:
             return "Light";
-        case TrainingType::moderate:
+        case 2:
             return "Moderate";
-        case TrainingType::high:
+        case 3:
             return "High";
-        case TrainingType::very_high:
+        case 4:
             return "Very High";
-        case TrainingType::maximum:
+        case 5:
             return "Maximum";
         default :
-            throw Error("Not a Training Type");
+            return "Light";
         }
     }
 
@@ -105,7 +77,7 @@ namespace Core
         return training_time;
     }
 
-    void Sensor::setId(std::string new_id)
+    void Sensor::setId(unsigned int new_id)
     {
         this->id = new_id;
     }
@@ -135,7 +107,7 @@ namespace Core
         this->weight = new_weight;
     }
 
-    void Sensor::setTrainingType(TrainingType new_trainig_type)
+    void Sensor::setTrainingType(unsigned int new_trainig_type)
     {
         this->training_type = new_trainig_type;
     }

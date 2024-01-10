@@ -48,8 +48,8 @@ namespace Core
         //Da testare
     }
 
-    std::vector<Sensor*>::iterator Container::begin()
+    std::vector<Sensor*>& Container::getVector()
     {
-        return vector.begin();
+        return vector;
     }
 };

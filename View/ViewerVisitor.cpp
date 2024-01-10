@@ -10,7 +10,7 @@ namespace View
         return widget;
     }
 
-    void ViewerVisitor::visitCaloriesCounter(Core::CaloriesCounter& calories_counter)
+    void ViewerVisitor::visitCaloriesCounter(const Core::CaloriesCounter& calories_counter)
     {
         QGridLayout* grid = new QGridLayout();
         grid->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
@@ -25,7 +25,7 @@ namespace View
         widget->setLayout(grid);
     }
     
-    void ViewerVisitor::visitActivity(Core::Activity& activity) 
+    void ViewerVisitor::visitActivity(const Core::Activity& activity) 
     {
         QGridLayout* grid = new QGridLayout();
         grid->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
@@ -46,7 +46,7 @@ namespace View
         widget->setLayout(grid);
     }
 
-    void ViewerVisitor::visitHeartSensor(Core::HeartSensor& heart_sensor) 
+    void ViewerVisitor::visitHeartSensor(const Core::HeartSensor& heart_sensor) 
     {
         QGridLayout* grid = new QGridLayout();
         grid->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
@@ -58,7 +58,7 @@ namespace View
         widget->setLayout(grid);
     }
     
-    void ViewerVisitor::visitSpeedometer(Core::Speedometer& speedometer) 
+    void ViewerVisitor::visitSpeedometer(const Core::Speedometer& speedometer) 
     {
         QGridLayout* grid = new QGridLayout();
         grid->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);

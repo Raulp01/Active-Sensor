@@ -2,31 +2,17 @@
 
 namespace Core
 {
-    Activity::Activity(std::string name, std::string description, unsigned int age, float height, float weight, TrainingType training_type,
-        float training_time, float distance) :
-        Sensor(name, description, age, height, weight, training_type, training_time), 
-        CaloriesCounter(name, description, age, height, weight, training_type, training_time),
-        Speedometer(name, description, age, height, weight, training_type, training_time, distance) 
-        {
-            setId();
-        }
-    
-    Activity::~Activity() {}
+    Activity::Activity(unsigned int id, std::string name, std::string description, unsigned int age, float height, float weight, unsigned int training_type,
+    float training_time, unsigned int bpm, float calories, float avarage_speed, float distance) :
+    Sensor(id, name, description, age, height, weight, training_type, training_time), 
+    CaloriesCounter(id, name, description, age, height, weight, training_type, training_time, bpm, calories),
+    Speedometer(id, name, description, age, height, weight, training_type, training_time, avarage_speed, distance) {}
 
-    std::string Activity::getId() const
-    {
-        return Sensor::getId();
-    }
+    Activity::~Activity() {}
 
     std::string Activity::getType() const
     {
         return "Activity";
-    }
-
-    void Activity::setId()
-    {
-        std::string str = "Activity-" + std::to_string(Sensor::getCounter());
-        Sensor::setId(str);
     }
 
     void Activity::simulate() 
@@ -41,7 +27,7 @@ namespace Core
         visitor.visitActivity(*this);
     }
 
-    void Activity::accept(IConstVisitor& const_visitor)
+    void Activity::accept(IConstVisitor& const_visitor) const
     {
         const_visitor.visitActivity(*this);
     }

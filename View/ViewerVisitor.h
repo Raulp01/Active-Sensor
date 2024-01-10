@@ -21,10 +21,10 @@ namespace View
         public:
         QWidget* getWidget();
 
-        virtual void visitCaloriesCounter(Core::CaloriesCounter& calories_counter);
-        virtual void visitActivity(Core::Activity& activity);
-        virtual void visitHeartSensor(Core::HeartSensor& heart_sensor);
-        virtual void visitSpeedometer(Core::Speedometer& speedometer);
+        virtual void visitCaloriesCounter(const Core::CaloriesCounter& calories_counter);
+        virtual void visitActivity(const Core::Activity& activity);
+        virtual void visitHeartSensor(const Core::HeartSensor& heart_sensor);
+        virtual void visitSpeedometer(const Core::Speedometer& speedometer);
     };
 };
 

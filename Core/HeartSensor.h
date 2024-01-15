@@ -18,7 +18,7 @@ namespace Core
 
         public:
         HeartSensor(unsigned int id, std::string name, std::string description, unsigned int age, float height, float weight, unsigned int training_type,
-        float training_time, unsigned int bpm);
+        float training_time, unsigned int bpm = 0);
         virtual ~HeartSensor();
 
         unsigned int getBpm() const;

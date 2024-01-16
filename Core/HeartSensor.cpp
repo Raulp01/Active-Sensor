@@ -54,11 +54,11 @@ namespace Core
 
     void HeartSensor::accept(IVisitor& visitor)
     {
-        visitor.visitHeartSensor(*this);
+        visitor.visitHeartSensor(this);
     }
 
     void HeartSensor::accept(IConstVisitor& const_visitor) const
     {
-        const_visitor.visitHeartSensor(*this);
+        const_visitor.visitHeartSensor(this);
     }
 };

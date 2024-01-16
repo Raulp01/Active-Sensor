@@ -1,8 +1,6 @@
 #ifndef SCROLLBAR
 #define SCROLLBAR
 
-#include "../Core/Container.h"
-#include "../ContainerObserverInterface.h"
 #include "SensorPanel.h"
 #include "MainWindow.h"
 #include <vector>
@@ -11,23 +9,19 @@
 
 namespace View {
 
-class Scrollbar : public QWidget, public Core::ContainerObserverInterface
+class Scrollbar : public QWidget
 {
     Q_OBJECT
     
     private:
     MainWindow* mainwindow;
-    Core::Container& container;
+    std::vector<Core::Sensor*>& vector;
     QVBoxLayout* vector_layout;
     std::vector<SensorPanel*> panel_vector;
     QWidget* content;
 
     public:
-    Scrollbar(MainWindow* mainwindow, Core::Container& container, QWidget* parent = 0);
-    virtual void notifyAdd(Core::Container& cont);
-    virtual void notifyRemove(Core::Container& cont, Core::Sensor& sensor);
-
-    void openViewer(Core::Sensor& sensor);
+    Scrollbar(MainWindow* mainwindow, std::vector<Core::Sensor*>& vector, QWidget* parent = 0);
 };
 };
 

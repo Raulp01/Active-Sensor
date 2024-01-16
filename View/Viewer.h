@@ -3,7 +3,6 @@
 
 #include <QPushButton>
 #include <QLabel>
-#include "../Core/Container.h"
 #include "MainWindow.h"
 
 namespace View
@@ -13,8 +12,8 @@ namespace View
         Q_OBJECT
 
         private:
-        Core::Container& container;
-        const Core::Sensor& sensor;
+        std::vector<Core::Sensor*> vector;
+        Core::Sensor& sensor;
         MainWindow* mainwindow;
         QPushButton* edit_sensor;
         QPushButton* delete_sensor;
@@ -29,7 +28,7 @@ namespace View
         QLabel* age;
 
         public:
-        Viewer(MainWindow* mainwindow, Core::Container& container, const Core::Sensor& sensor, QWidget* parent = 0);
+        Viewer(MainWindow* mainwindow, std::vector<Core::Sensor*> vector, Core::Sensor& sensor, QWidget* parent = 0);
 
         public slots:
         void deleteSensor();

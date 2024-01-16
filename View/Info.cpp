@@ -22,7 +22,7 @@ namespace View
 
     void Info::show()
     {
-        sensor_id->setText("Id: " + QString::fromStdString(sensor.getId()));
+        sensor_id->setText("Id: " + QString::number(sensor.getId()));
         sensor_training_type->setText("Training intensity: " + QString::number(sensor.getTrainingType()));
         sensor_time->setText("Training time: " + QString::number(sensor.getTrainingTime()));
     }

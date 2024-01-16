@@ -2,43 +2,50 @@
 #define EDITOR
 
 #include <QWidget>
-#include <QLineEdit>
-#include <QTextEdit>
-#include <QSpinBox>
-#include <QDoubleSpinBox>
-#include <QComboBox>
-
 #include "../IVisitor.h"
 #include "../Core/Activity.h"
 #include "MainWindow.h"
-#include "EditorVisitor.h"
+#include <QPushButton>
+#include <QLineEdit>
+#include <QComboBox>
+#include <QTextEdit>
+#include <QSpinBox>
+#include <QDoubleSpinBox>
+#include <QStackedLayout>
+#include <QVector>
 
 namespace View {
 
-    class Editor : public QWidget, public Core::IVisitor
+    class Editor : public QWidget
     {
         Q_OBJECT
 
         private:
         MainWindow* mainwindow;
-        Core::Sensor& sensor;
-        QLineEdit* name;
-        QTextEdit* description;
-        QSpinBox* age;
-        QDoubleSpinBox* height;
-        QDoubleSpinBox* weight;
-        QComboBox* training_type;
-        QDoubleSpinBox* training_time;
+        std::vector<Core::Sensor*>& vector;
+        Core::Sensor* sensor;
+        QVBoxLayout* layout;
+        QWidget* widget;
+        QPushButton* save;
+        QSpinBox* id_input;
+        QLineEdit* name_input;
+        QTextEdit* description_input;
+        QSpinBox* age_input;
+        QDoubleSpinBox* height_input;
+        QDoubleSpinBox* weight_input;
+        QComboBox* training_type_input;
+        QDoubleSpinBox* training_time_input;
+        QDoubleSpinBox* distance_input;
+        QComboBox* type;
+        QStackedLayout* stacked_editors;
+        QVector<SensorEditor::EditSensor*> editors;
 
         public:
-        Editor(MainWindow* mainwindow, Core::Sensor& sensor, QWidget* parent = 0);
+        Editor(MainWindow* mainwindow, std::vector<Core::Sensor*>& vector, Core::Sensor* sensor, QWidget* parent = 0);
 
-        QWidget* getWidget();
-
-        virtual void visitCaloriesCounter(Core::CaloriesCounter& calories_counter);
-        virtual void visitActivity(Core::Activity& activity);
-        virtual void visitHeartSensor(Core::HeartSensor& heart_sensor);
-        virtual void visitSpeedometer(Core::Speedometer& speedometer);
+        public slots:
+        void showType(int index);
+        void apply();
     };
 
 };

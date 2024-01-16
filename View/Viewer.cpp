@@ -4,8 +4,8 @@
 
 namespace View
 {
-    Viewer::Viewer(MainWindow* mainwindow, Core::Container& container, const Core::Sensor& sensor, QWidget* parent) : 
-    mainwindow(mainwindow), container(container), sensor(sensor), QWidget(parent)
+    Viewer::Viewer(MainWindow* mainwindow, std::vector<Core::Sensor*> vector, Core::Sensor& sensor, QWidget* parent) : 
+    mainwindow(mainwindow), vector(vector), sensor(sensor), QWidget(parent)
     {
         QGridLayout* layout = new QGridLayout(this);
         layout->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
@@ -61,6 +61,6 @@ namespace View
 
     void Viewer::deleteSensor()
     {
-        container.remove(&sensor);
+       // vector.erase(sensor);
     }
 }

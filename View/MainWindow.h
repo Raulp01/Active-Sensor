@@ -1,7 +1,7 @@
 #ifndef MAINWINDOW
 #define MAINWINDOW
 
-#include "../Core/Container.h"
+#include "../Core/Sensor.h"
 #include "Scrollbar.h"
 #include "Viewer.h"
 #include "../Core/Json/DataMapper/JsonFile.h"
@@ -16,7 +16,7 @@ class MainWindow: public QMainWindow {
     bool has_unsaved_changes;
     QAction* create_item;
     QToolBar* toolbar;
-    Core::Container& container;
+    std::vector<Core::Sensor*>& vector;
     Core::Json::DataMapper::JsonFile& json_file;
     //SearchWidget* search_widget;
     QStackedWidget* stacked_widget;
@@ -24,8 +24,7 @@ class MainWindow: public QMainWindow {
     Viewer* viewer_wiget;
   
   public:
-    explicit MainWindow(Core::Container& container, Core::Json::DataMapper::JsonFile& json_file, QWidget *parent = 0);
-    Core::Container& getContainer();
+    explicit MainWindow(std::vector<Core::Sensor*>& vector, Core::Json::DataMapper::JsonFile& json_file, QWidget *parent = 0);
     MainWindow& reloadData();
     //SearchWidget* getSearchWidget();
   
@@ -41,7 +40,7 @@ class MainWindow: public QMainWindow {
     void showStatus(QString message);
     //void search(Engine::Query query);
     void createSensor();
-    void showSensor(const Core::Sensor* sensor);
+    void showSensor(Core::Sensor* sensor);
     void editSensor(Core::Sensor* sensor);
     void deleteSensor(Core::Sensor* sensor);
     void close();

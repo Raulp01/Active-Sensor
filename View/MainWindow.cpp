@@ -18,8 +18,8 @@
 
 namespace View
 {
-    MainWindow::MainWindow(Core::Container& container, Core::Json::DataMapper::JsonFile& json_file, QWidget *parent)
-    : QMainWindow(parent), has_unsaved_changes(false), container(container), json_file(json_file)
+    MainWindow::MainWindow(std::vector<Core::Sensor*>& vector, Core::Json::DataMapper::JsonFile& json_file, QWidget *parent)
+    : QMainWindow(parent), has_unsaved_changes(false), vector(vector), json_file(json_file)
     {
         // Actions
         QAction* create = new QAction(
@@ -116,10 +116,6 @@ namespace View
 
         // Status bar
         showStatus("Ready.");
-    }
-
-    Core::Container& MainWindow::getContainer() {
-        return container;
     }
 
     /* MainWindow& MainWindow::reloadData() {
@@ -247,9 +243,9 @@ namespace View
         showStatus("Creating a new item.");
     }
 
-    void MainWindow::showSensor(const Core::Sensor* sensor) {
+    void MainWindow::showSensor(Core::Sensor* sensor) {
         clearStack();
-        viewer_wiget = new Viewer(this, container, *sensor);
+        viewer_wiget = new Viewer(this, vector, *sensor);
         QScrollArea* scroll_area = new QScrollArea();
         scroll_area->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         scroll_area->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
@@ -277,7 +273,7 @@ namespace View
     void MainWindow::deleteSensor(Core::Sensor* sensor) {
         showStatus("Sensor " + QString::fromStdString(sensor->getName()) + " removed.");
         //repository->remove(sensor->getIdentifier());
-        container.remove(sensor);
+        //vector.erase(&sensor);
         //search_widget->search();
         has_unsaved_changes = true;
     }

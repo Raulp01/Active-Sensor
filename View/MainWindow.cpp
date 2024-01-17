@@ -1,6 +1,8 @@
 #include "MainWindow.h"
 
 #include "Editor.h"
+#include "../Core/Json/Reader.h"
+#include "SensorPanel.h"
 #include <QApplication>
 #include <QPushButton>
 #include <QMessageBox>
@@ -118,8 +120,21 @@ namespace View
         showStatus("Ready.");
     }
 
-    /* MainWindow& MainWindow::reloadData() {
-        engine.clear();
+    MainWindow& MainWindow::reloadData() {
+        clearStack();
+        for(std::vector<Core::Sensor*>::iterator it = vector.begin(); it != vector.end(); ++it)
+        {
+            // NO: devo impostare una nuova scrollarea con la scrollbar
+            QScrollArea* scroll_area = new QScrollArea();
+            scroll_area->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+            scroll_area->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+            scroll_area->setWidgetResizable(true);
+            SensorPanel* panel = new SensorPanel(**it);
+            scroll_area->setWidget(panel);
+        }
+        return *this;
+        
+        /* engine.clear();
         std::vector<Item::AbstractItem*> items(repository->readAll());
         for (
             std::vector<Item::AbstractItem*>::const_iterator it = items.begin();
@@ -128,8 +143,8 @@ namespace View
         ) {
             engine.add(*it);
         }
-        return *this;
-    } */
+        return *this; */
+    }
 
     /* SearchWidget* MainWindow::getSearchWidget() {
         return search_widget;
@@ -145,7 +160,7 @@ namespace View
     }
 
 
-    /* void MainWindow::newDataset() {
+    void MainWindow::newDataset() {
         QString path = QFileDialog::getSaveFileName(
             this,
             "Creates new Dataset",
@@ -155,45 +170,38 @@ namespace View
         if (path.isEmpty()) {
             return;
         }
-        if (repository != nullptr) {
-            delete repository;
-        }
-        Item::Converter::Json::Reader reader;
-        Item::Converter::Json::Json converter(reader);
-        Item::DataMapper::JsonFile data_mapper(path.toStdString(), converter);
-        repository = new Item::Repository::JsonRepository(data_mapper);
-        engine.clear();
+        dynamic_cast<Core::Json::Reader&>(const_cast<Core::Json::IReader&>(json_file.getConverter().getReader())).clear();
+        json_file.setPath(path.toStdString());
+        vector = json_file.load();
+        // deploy();
         create_item->setEnabled(true);
+        //reloadData
+        
         showStatus("New dataset created.");
-    } */
+    }
 
-    /* void MainWindow::openDataset() {
+    void MainWindow::openDataset() {
         QString path = QFileDialog::getOpenFileName(
             this,
             "Creates new Dataset",
             "./",
             "JSON files *.json"
         );
-        if (path.isEmpty()) {
-            return;
-        }
-        if (repository != nullptr) {
-            delete repository;
-        }
-        Item::Converter::Json::Reader reader;
-        Item::Converter::Json::Json converter(reader);
-        Item::DataMapper::JsonFile data_mapper(path.toStdString(), converter);
-        repository = new Item::Repository::JsonRepository(data_mapper);
-        reloadData();
+        dynamic_cast<Core::Json::Reader&>(const_cast<Core::Json::IReader&>(json_file.getConverter().getReader())).clear();
+        json_file.setPath(path.toStdString());
+        vector = json_file.load();
+        // deploy();
+        //reload_item->setEnabled(true);   
         create_item->setEnabled(true);
         showStatus("Data successfully loaded from " + path + ".");
-    } */
+    }
 
-    /* void MainWindow::saveDataset() {
-        if (repository == nullptr) {
+     void MainWindow::saveDataset() {
+        if(json_file.getPath() == "")
+        {
             return;
         }
-        repository->store();
+        json_file.store(vector);
         has_unsaved_changes = false;
         showStatus("Dataset saved.");
     }
@@ -205,13 +213,14 @@ namespace View
             "./",
             "JSON files *.json"
         );
-        if (path.isEmpty() || repository == nullptr) {
+        if (json_file.getPath() == "")
+        {
             return;
         }
-        repository->setPath(path.toStdString()).store();
+        json_file.setPath(path.toStdString()).store(vector);
         has_unsaved_changes = false;
         showStatus("Dataset saved as \"" + path + "\".");
-    } */
+    }
 
     void MainWindow::toggleToolbar() {
         toolbar->setVisible(!toolbar->isVisible());
@@ -235,8 +244,8 @@ namespace View
         scroll_area->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         scroll_area->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         scroll_area->setWidgetResizable(true);
-        // EditWidget* edit_widget = new EditWidget(this, repository, nullptr);
-        //scroll_area->setWidget(edit_widget);
+        Editor* editor = new Editor(this, vector, nullptr);
+        scroll_area->setWidget(editor);
         stacked_widget->addWidget(scroll_area);
         stacked_widget->setCurrentIndex(1);
         has_unsaved_changes = true;
@@ -262,8 +271,8 @@ namespace View
         scroll_area->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         scroll_area->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         scroll_area->setWidgetResizable(true);
-        //EditWidget* edit_widget = new EditWidget(this, repository, item);
-        //scroll_area->setWidget(edit_widget);
+        Editor* editor = new Editor(this, vector, sensor);
+        scroll_area->setWidget(editor);
         stacked_widget->addWidget(scroll_area);
         stacked_widget->setCurrentIndex(1);
         has_unsaved_changes = true;
@@ -272,8 +281,19 @@ namespace View
 
     void MainWindow::deleteSensor(Core::Sensor* sensor) {
         showStatus("Sensor " + QString::fromStdString(sensor->getName()) + " removed.");
-        //repository->remove(sensor->getIdentifier());
-        //vector.erase(&sensor);
+        std::vector<Core::Sensor*>::iterator it = vector.begin();
+        while(*it != sensor || it != vector.end())
+        {
+            ++it;
+        }
+        if(it != vector.end())
+        {
+            vector.erase(it);
+        }
+        else
+        {
+            return;
+        }
         //search_widget->search();
         has_unsaved_changes = true;
     }

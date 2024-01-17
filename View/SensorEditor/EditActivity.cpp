@@ -2,7 +2,7 @@
 #include <QFormLayout>
 
 namespace View {
-namespace Editor {
+namespace SensorEditor {
     EditActivity::EditActivity(QWidget* parent) : EditSensor(parent) 
     {
         QFormLayout* form = new QFormLayout(this);

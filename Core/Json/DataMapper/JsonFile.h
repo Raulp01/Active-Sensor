@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "../Sensor.h"
+#include "../../Sensor.h"
 #include "../JsonConverter.h"
 
 namespace Core {

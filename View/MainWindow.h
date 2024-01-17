@@ -2,7 +2,6 @@
 #define MAINWINDOW
 
 #include "../Core/Sensor.h"
-#include "Scrollbar.h"
 #include "Viewer.h"
 #include "../Core/Json/DataMapper/JsonFile.h"
 #include <QMainWindow>
@@ -10,41 +9,41 @@
 
 namespace View {
 
-class MainWindow: public QMainWindow {
-    Q_OBJECT
-  private:
-    bool has_unsaved_changes;
-    QAction* create_item;
-    QToolBar* toolbar;
-    std::vector<Core::Sensor*>& vector;
-    Core::Json::DataMapper::JsonFile& json_file;
-    //SearchWidget* search_widget;
-    QStackedWidget* stacked_widget;
-    //ResultsWidget* results_widget;
-    Viewer* viewer_wiget;
-  
-  public:
-    explicit MainWindow(std::vector<Core::Sensor*>& vector, Core::Json::DataMapper::JsonFile& json_file, QWidget *parent = 0);
-    MainWindow& reloadData();
-    //SearchWidget* getSearchWidget();
-  
-  private:
-    void clearStack();
+  class MainWindow: public QMainWindow {
+      Q_OBJECT
+    private:
+      bool has_unsaved_changes;
+      QAction* create_item;
+      QToolBar* toolbar;
+      std::vector<Core::Sensor*>& vector;
+      Core::Json::DataMapper::JsonFile& json_file;
+      //SearchWidget* search_widget;
+      QStackedWidget* stacked_widget;
+      //ResultsWidget* results_widget;
+      Viewer* viewer_wiget;
+    
+    public:
+      explicit MainWindow(std::vector<Core::Sensor*>& vector, Core::Json::DataMapper::JsonFile& json_file, QWidget *parent = 0);
+      MainWindow& reloadData();
+      //SearchWidget* getSearchWidget();
+    
+    private:
+      void clearStack();
 
-  public slots:
-    void newDataset();
-    void openDataset();
-    void saveDataset();
-    void saveAsDataset();
-    void toggleToolbar();
-    void showStatus(QString message);
-    //void search(Engine::Query query);
-    void createSensor();
-    void showSensor(Core::Sensor* sensor);
-    void editSensor(Core::Sensor* sensor);
-    void deleteSensor(Core::Sensor* sensor);
-    void close();
-};
+    public slots:
+      void newDataset();
+      void openDataset();
+      void saveDataset();
+      void saveAsDataset();
+      void toggleToolbar();
+      void showStatus(QString message);
+      //void search(Engine::Query query);
+      void createSensor();
+      void showSensor(Core::Sensor* sensor);
+      void editSensor(Core::Sensor* sensor);
+      void deleteSensor(Core::Sensor* sensor);
+      void close();
+  };
 
 }
 

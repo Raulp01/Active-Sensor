@@ -48,11 +48,11 @@ namespace Core
 
     void CaloriesCounter::accept(IVisitor& visitor)
     {
-        visitor.visitCaloriesCounter(this);
+        visitor.visitCaloriesCounter(*this);
     }
     
     void CaloriesCounter::accept(IConstVisitor& const_visitor) const
     {
-        const_visitor.visitCaloriesCounter(this);
+        const_visitor.visitCaloriesCounter(*this);
     }
 };

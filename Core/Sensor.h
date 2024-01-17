@@ -51,6 +51,9 @@ namespace Core
         void setTrainingType(unsigned int new_training_type);
         void setTrainingTime(float new_training_time);
 
+        // Overloading operatori
+        bool operator==(const Sensor& sensor) const;
+
         // Metodi per l'accesso del Visitor in lettura-scrittura e lettura
         virtual void accept(IVisitor& visitor) = 0;
         virtual void accept(IConstVisitor& const_visitor) const = 0;

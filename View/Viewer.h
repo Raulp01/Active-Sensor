@@ -12,7 +12,7 @@ namespace View
         Q_OBJECT
 
         private:
-        std::vector<Core::Sensor*> vector;
+        std::vector<Core::Sensor*>& vector;
         Core::Sensor& sensor;
         MainWindow* mainwindow;
         QPushButton* edit_sensor;
@@ -28,7 +28,7 @@ namespace View
         QLabel* age;
 
         public:
-        Viewer(MainWindow* mainwindow, std::vector<Core::Sensor*> vector, Core::Sensor& sensor, QWidget* parent = 0);
+        Viewer(MainWindow* mainwindow, std::vector<Core::Sensor*>& vector, Core::Sensor& sensor);
 
         public slots:
         void deleteSensor();
@@ -38,6 +38,6 @@ namespace View
         // connect editSensor
         // connect deleteSensor
     };
-};
+}
 
 #endif

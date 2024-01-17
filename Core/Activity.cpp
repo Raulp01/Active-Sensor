@@ -24,11 +24,11 @@ namespace Core
 
     void Activity::accept(IVisitor& visitor)
     {
-        visitor.visitActivity(this);
+        visitor.visitActivity(*this);
     }
 
     void Activity::accept(IConstVisitor& const_visitor) const
     {
-        const_visitor.visitActivity(this);
+        const_visitor.visitActivity(*this);
     }
 };

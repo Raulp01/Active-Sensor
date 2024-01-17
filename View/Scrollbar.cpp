@@ -2,7 +2,7 @@
 
 namespace View
 {
-    Scrollbar::Scrollbar(MainWindow* mainwindow, std::vector<Core::Sensor*>& vector, QWidget* parent) :
+    Scrollbar::Scrollbar(MainWindow* mainwindow, std::vector<Core::Sensor*>&, QWidget* parent) :
     mainwindow(mainwindow), vector(vector), QWidget(parent)
     {
         QVBoxLayout* layout = new QVBoxLayout(this);
@@ -19,10 +19,5 @@ namespace View
 
         vector_layout = new QVBoxLayout(content);
         vector_layout->setAlignment(Qt::AlignTop | Qt::AlignCenter);
-    }
-
-    void Scrollbar::openViewer(Core::Sensor& sensor)
-    {
-        mainwindow->openViewer(sensor);
     }
 };

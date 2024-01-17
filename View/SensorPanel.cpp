@@ -4,8 +4,7 @@
 
 namespace View
 {
-    SensorPanel::SensorPanel(Scrollbar* scrollbar, Core::Sensor& sensor, QWidget* parent) :
-    scrollbar(scrollbar), sensor(sensor), QWidget(parent)
+    SensorPanel::SensorPanel(Core::Sensor& sensor, QWidget* parent) : sensor(sensor), QWidget(parent)
     {
         QHBoxLayout* layout = new QHBoxLayout();
         layout->setAlignment(Qt::AlignTop | Qt::AlignCenter);
@@ -30,6 +29,6 @@ namespace View
 
     void SensorPanel::openViewer()
     {
-        scrollbar->openViewer(sensor);
+        //scrollbar->openViewer(sensor);
     }
 };

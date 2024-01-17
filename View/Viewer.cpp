@@ -4,8 +4,8 @@
 
 namespace View
 {
-    Viewer::Viewer(MainWindow* mainwindow, std::vector<Core::Sensor*> vector, Core::Sensor& sensor, QWidget* parent) : 
-    mainwindow(mainwindow), vector(vector), sensor(sensor), QWidget(parent)
+    Viewer::Viewer(MainWindow* mainwindow, std::vector<Core::Sensor*>& vector, Core::Sensor& sensor) : 
+    mainwindow(mainwindow), vector(vector), sensor(sensor)
     {
         QGridLayout* layout = new QGridLayout(this);
         layout->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);

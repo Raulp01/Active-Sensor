@@ -1,5 +1,4 @@
 #include "Editor.h"
-#include "TypeSelector.h"
 #include <QGridLayout>
 #include <QLabel>
 #include <QFormLayout>
@@ -13,8 +12,8 @@
 
 namespace View
 {
-    Editor::Editor(MainWindow* mainwindow, std::vector<Core::Sensor*>& vector, Core::Sensor* sensor, QWidget* parent) : 
-    mainwindow(mainwindow), vector(vector), sensor(sensor), QWidget(parent)
+    Editor::Editor(MainWindow* mainwindow, std::vector<Core::Sensor*>& vector, Core::Sensor* sensor) : 
+    mainwindow(mainwindow), vector(vector), sensor(sensor)
     {
         layout = new QVBoxLayout();
         layout->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);

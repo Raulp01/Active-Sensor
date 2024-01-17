@@ -5,6 +5,7 @@
 #include "../IVisitor.h"
 #include "../Core/Activity.h"
 #include "MainWindow.h"
+#include "SensorEditor/EditSensor.h"
 #include <QPushButton>
 #include <QLineEdit>
 #include <QComboBox>
@@ -41,13 +42,13 @@ namespace View {
         QVector<SensorEditor::EditSensor*> editors;
 
         public:
-        Editor(MainWindow* mainwindow, std::vector<Core::Sensor*>& vector, Core::Sensor* sensor, QWidget* parent = 0);
+        Editor(MainWindow* mainwindow, std::vector<Core::Sensor*>& vector, Core::Sensor* sensor);
 
         public slots:
         void showType(int index);
         void apply();
     };
 
-};
+}
 
 #endif

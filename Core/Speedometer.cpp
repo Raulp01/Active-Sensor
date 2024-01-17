@@ -1,5 +1,4 @@
 #include "Speedometer.h"
-#include "Error.h"
 
 namespace Core
 {
@@ -52,10 +51,10 @@ namespace Core
 
     void Speedometer::accept(IVisitor& visitor)
     {
-        visitor.visitSpeedometer(this);
+        visitor.visitSpeedometer(*this);
     }
     void Speedometer::accept(IConstVisitor& const_visitor) const
     {
-        const_visitor.visitSpeedometer(this);
+        const_visitor.visitSpeedometer(*this);
     }
 };

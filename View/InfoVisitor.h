@@ -1,22 +1,20 @@
-#ifndef VIEWER_VISITOR
-#define VIEWER_VISITOR
+#ifndef INFO_VISITOR
+#define INFO_VISITOR
 
-#include "../IVisitor.h"
-#include "../Core/Activity.h"
-#include "../Core/CaloriesCounter.h"
-#include "../Core/HeartSensor.h"
-#include "../Core/Speedometer.h"
 #include <QWidget>
-#include <QVBoxLayout>
+#include "../IVisitor.h"
+#include <QLabel>
+#include "Info.h"
 
 namespace View
 {
-    class ViewerVisitor : public QWidget, public Core::IVisitor
+    class InfoVisitor : public QWidget, public Core::IVisitor
     {
         Q_OBJECT
 
         private:
         QWidget* widget;
+        QLabel* artwork;
 
         public:
         QWidget* getWidget();
@@ -26,6 +24,6 @@ namespace View
         virtual void visitHeartSensor(Core::HeartSensor& heart_sensor);
         virtual void visitSpeedometer(Core::Speedometer& speedometer);
     };
-};
+}
 
 #endif

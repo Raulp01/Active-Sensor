@@ -4,8 +4,7 @@
 
 namespace View
 {
-    Viewer::Viewer(MainWindow* mainwindow, std::vector<Core::Sensor*>& vector, Core::Sensor& sensor) : 
-    mainwindow(mainwindow), vector(vector), sensor(sensor)
+    Viewer::Viewer(std::vector<Core::Sensor*>& vector, Core::Sensor& sensor) : vector(vector), sensor(sensor)
     {
         QGridLayout* layout = new QGridLayout(this);
         layout->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
@@ -16,7 +15,7 @@ namespace View
         
         delete_sensor = new QPushButton("Delete");
         layout->addWidget(delete_sensor, 0, 1, 1, 1);
-        connect(delete_sensor, &QPushButton::pressed, this, &deleteSensor);
+        // connect(delete_sensor, &QPushButton::pressed, this, &deleteSensor);
 
         simulate_sensor = new QPushButton("Simulate");
         layout->addWidget(simulate_sensor, 0, 2, 1, 1);
@@ -59,8 +58,8 @@ namespace View
         this->show();
     }
 
-    void Viewer::deleteSensor()
+    /* void Viewer::deleteSensor()
     {
        // vector.erase(sensor);
-    }
+    } */
 }

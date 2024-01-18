@@ -3,7 +3,7 @@
 #include <QFile>
 #include <QJsonDocument>
 #include <QJsonArray>
-#include "../Json/Reader.h"
+#include "../Reader.h"
 
 namespace Core {
 namespace Json {

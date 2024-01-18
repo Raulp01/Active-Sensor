@@ -4,6 +4,7 @@
 #include "../Core/Activity.h"
 #include <QWidget>
 #include <QLabel>
+#include <QHBoxLayout>
 
 namespace View
 {
@@ -12,10 +13,10 @@ namespace View
         Q_OBJECT
 
         private:
-        Core::Sensor& sensor;
+        const Core::Sensor& sensor;
         QLabel* sensor_id;
+        QLabel* sensor_name;
         QLabel* sensor_training_type;
-        QLabel* sensor_time;
 
         public:
         Info(Core::Sensor& sensor, QWidget* parent = 0);

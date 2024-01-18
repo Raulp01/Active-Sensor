@@ -2,6 +2,7 @@
 #define MAINWINDOW
 
 #include "../Core/Sensor.h"
+#include "Results.h"
 #include "Viewer.h"
 #include "../Core/Json/DataMapper/JsonFile.h"
 #include <QMainWindow>
@@ -19,8 +20,7 @@ namespace View {
       Core::Json::DataMapper::JsonFile& json_file;
       //SearchWidget* search_widget;
       QStackedWidget* stacked_widget;
-      //ResultsWidget* results_widget;
-      Viewer* viewer_wiget;
+      Results* results;
     
     public:
       explicit MainWindow(std::vector<Core::Sensor*>& vector, Core::Json::DataMapper::JsonFile& json_file, QWidget *parent = 0);

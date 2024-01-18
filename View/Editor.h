@@ -3,10 +3,9 @@
 
 #include <QWidget>
 #include "../IVisitor.h"
-#include "../Core/Activity.h"
+#include "../Core/Sensor.h"
 #include "MainWindow.h"
 #include "SensorEditor/EditSensor.h"
-#include <QPushButton>
 #include <QLineEdit>
 #include <QComboBox>
 #include <QTextEdit>
@@ -26,8 +25,6 @@ namespace View {
         std::vector<Core::Sensor*>& vector;
         Core::Sensor* sensor;
         QVBoxLayout* layout;
-        QWidget* widget;
-        QPushButton* save;
         QSpinBox* id_input;
         QLineEdit* name_input;
         QTextEdit* description_input;
@@ -36,7 +33,6 @@ namespace View {
         QDoubleSpinBox* weight_input;
         QComboBox* training_type_input;
         QDoubleSpinBox* training_time_input;
-        QDoubleSpinBox* distance_input;
         QComboBox* type;
         QStackedLayout* stacked_editors;
         QVector<SensorEditor::EditSensor*> editors;

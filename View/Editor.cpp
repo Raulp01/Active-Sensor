@@ -12,8 +12,7 @@
 
 namespace View
 {
-    Editor::Editor(MainWindow* mainwindow, std::vector<Core::Sensor*>& vector, Core::Sensor* sensor) : 
-    mainwindow(mainwindow), vector(vector), sensor(sensor)
+    Editor::Editor(MainWindow* mainwindow, std::vector<Core::Sensor*>& vector, Core::Sensor* sensor) : mainwindow(mainwindow), vector(vector), sensor(sensor)
     {
         layout = new QVBoxLayout();
         layout->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
@@ -148,6 +147,7 @@ namespace View
         layout->addWidget(apply);
 
         connect(apply, &QPushButton::pressed, this, &apply);
+        connect(type, qOverload<int>(&QComboBox::currentIndexChanged), this, &Editor::showType);
     }
 
     void Editor::showType(int index)
@@ -168,6 +168,7 @@ namespace View
 
         SensorEditor::EditSensor* editor = editors[stacked_editors->currentIndex()];
         Core::Sensor* new_sensor = editor->create(id, name, description, age, height, weight, training_type, training_time);
+        // To-do fare un push_back dell'item e ricaricare la lista in Mainwindow
         // main_window->getRepository()->update(item);
         // main_window->reloadData();
         // main_window->getSearchWidget()->search();

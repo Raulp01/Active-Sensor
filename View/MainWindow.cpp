@@ -2,7 +2,6 @@
 
 #include "Editor.h"
 #include "../Core/Json/Reader.h"
-#include "SensorPanel.h"
 #include <QApplication>
 #include <QPushButton>
 #include <QMessageBox>
@@ -17,6 +16,7 @@
 #include <QFileDialog>
 #include <QStackedWidget>
 #include <QScrollArea>
+#include <QVBoxLayout>
 
 namespace View
 {
@@ -87,15 +87,25 @@ namespace View
         QSplitter* splitter = new QSplitter(this);
         setCentralWidget(splitter);
 
+        //Widget che contiene searchbar, lista di widget e pulsante per aggiungere widget
+        QWidget* widget = new QWidget();
+
+        QVBoxLayout* v_layout = new QVBoxLayout(this);
+        //searchbar
+        //v_layout->addWidget(searchbar);
+
+        results = new Results();
+        v_layout->addWidget(results);
+
+        widget->setLayout(v_layout);
+
         stacked_widget = new QStackedWidget(this);
         splitter->addWidget(stacked_widget);
+        stacked_widget->addWidget(widget);
 
         /*
         search_widget = new SearchWidget();
         splitter->addWidget(search_widget);
-
-        results_widget = new ResultsWidget();
-        stacked_widget->addWidget(results_widget);
         */
 
         splitter->setSizes(QList<int>() << 1000 << 3000);
@@ -109,8 +119,6 @@ namespace View
         connect(togge_toolbar, &QAction::triggered, this, &MainWindow::toggleToolbar);
         //connect(search_widget, &SearchWidget::search_event, this, &MainWindow::search);
         //connect(results_widget, &ResultsWidget::refreshResults, search_widget, &SearchWidget::search);
-        //connect(results_widget, &ResultsWidget::previousPage, search_widget, &SearchWidget::previousPage);
-        //connect(results_widget, &ResultsWidget::nextPage, search_widget, &SearchWidget::nextPage);
         //connect(results_widget, &ResultsWidget::showItem, this, &MainWindow::showItem);
         connect(create_item, &QAction::triggered, this, &MainWindow::createSensor);
         //connect(results_widget, &ResultsWidget::editItem, this, &MainWindow::editItem);
@@ -129,8 +137,8 @@ namespace View
             scroll_area->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
             scroll_area->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
             scroll_area->setWidgetResizable(true);
-            SensorPanel* panel = new SensorPanel(**it);
-            scroll_area->setWidget(panel);
+            results = new Results();
+            scroll_area->setWidget(results);
         }
         return *this;
         
@@ -254,7 +262,7 @@ namespace View
 
     void MainWindow::showSensor(Core::Sensor* sensor) {
         clearStack();
-        viewer_wiget = new Viewer(this, vector, *sensor);
+        Viewer* viewer_wiget = new Viewer(vector, *sensor);
         QScrollArea* scroll_area = new QScrollArea();
         scroll_area->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         scroll_area->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
@@ -294,7 +302,7 @@ namespace View
         {
             return;
         }
-        //search_widget->search();
+        // Chiamata per aggiornare la lista
         has_unsaved_changes = true;
     }
 

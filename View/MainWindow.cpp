@@ -1,6 +1,4 @@
 #include "MainWindow.h"
-
-#include "Editor.h"
 #include "../Core/Json/Reader.h"
 #include <QApplication>
 #include <QPushButton>
@@ -90,11 +88,13 @@ namespace View
         //Widget che contiene searchbar, lista di widget e pulsante per aggiungere widget
         QWidget* widget = new QWidget();
 
-        QVBoxLayout* v_layout = new QVBoxLayout(this);
+        std::cout << "Creato il widget nel MainWindow" << std::endl;
+
+        QVBoxLayout* v_layout = new QVBoxLayout();
         //searchbar
         //v_layout->addWidget(searchbar);
 
-        results = new Results();
+        results = new Results(vector);
         v_layout->addWidget(results);
 
         widget->setLayout(v_layout);
@@ -107,6 +107,8 @@ namespace View
         search_widget = new SearchWidget();
         splitter->addWidget(search_widget);
         */
+
+       std::cout << "Finito con lo splitter" << std::endl;
 
         splitter->setSizes(QList<int>() << 1000 << 3000);
 
@@ -123,6 +125,11 @@ namespace View
         connect(create_item, &QAction::triggered, this, &MainWindow::createSensor);
         //connect(results_widget, &ResultsWidget::editItem, this, &MainWindow::editItem);
         //connect(results_widget, &ResultsWidget::deleteItem, this, &MainWindow::deleteItem);
+        connect(results, &Results::showSensor, this, &MainWindow::showSensor);
+        connect(results, &Results::editSensor, this, &MainWindow::editSensor);
+        connect(results, &Results::deleteSensor, this, &MainWindow::deleteSensor);
+
+        std::cout << "Collegati tutti i signal-slots" << std::endl;
 
         // Status bar
         showStatus("Ready.");
@@ -130,16 +137,13 @@ namespace View
 
     MainWindow& MainWindow::reloadData() {
         clearStack();
-        for(std::vector<Core::Sensor*>::iterator it = vector.begin(); it != vector.end(); ++it)
-        {
-            // NO: devo impostare una nuova scrollarea con la scrollbar
-            QScrollArea* scroll_area = new QScrollArea();
-            scroll_area->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-            scroll_area->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-            scroll_area->setWidgetResizable(true);
-            results = new Results();
-            scroll_area->setWidget(results);
-        }
+        // NO: devo impostare una nuova scrollarea con la scrollbar
+        QScrollArea* scroll_area = new QScrollArea();
+        scroll_area->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+        scroll_area->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+        scroll_area->setWidgetResizable(true);
+        results = new Results(vector);
+        scroll_area->setWidget(results);
         return *this;
         
         /* engine.clear();
@@ -247,17 +251,21 @@ namespace View
     } */
 
     void MainWindow::createSensor() {
+        std::cout << "Inizio createSensor" << std::endl;
         clearStack();
         QScrollArea* scroll_area = new QScrollArea();
         scroll_area->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         scroll_area->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         scroll_area->setWidgetResizable(true);
-        Editor* editor = new Editor(this, vector, nullptr);
+        std::cout << "Prima di EditSensor" << std::endl;
+        Editor* editor = new Editor(vector, nullptr);
+        std::cout << "Dopo Editor" << std::endl;
         scroll_area->setWidget(editor);
         stacked_widget->addWidget(scroll_area);
         stacked_widget->setCurrentIndex(1);
         has_unsaved_changes = true;
         showStatus("Creating a new item.");
+        connect(editor, &Editor::save, results, &Results::showAll);
     }
 
     void MainWindow::showSensor(Core::Sensor* sensor) {
@@ -279,12 +287,13 @@ namespace View
         scroll_area->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         scroll_area->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         scroll_area->setWidgetResizable(true);
-        Editor* editor = new Editor(this, vector, sensor);
+        Editor* editor = new Editor(vector, sensor);
         scroll_area->setWidget(editor);
         stacked_widget->addWidget(scroll_area);
         stacked_widget->setCurrentIndex(1);
         has_unsaved_changes = true;
         showStatus("Editing sensor " + QString::fromStdString(sensor->getName()) + ".");
+        connect(editor, &Editor::save, results, &Results::showAll);
     }
 
     void MainWindow::deleteSensor(Core::Sensor* sensor) {
@@ -303,6 +312,7 @@ namespace View
             return;
         }
         // Chiamata per aggiornare la lista
+        results->refresh();
         has_unsaved_changes = true;
     }
 

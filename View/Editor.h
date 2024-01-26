@@ -14,6 +14,8 @@
 #include <QStackedLayout>
 #include <QVector>
 
+#include <QMainWindow>
+
 namespace View {
 
     class Editor : public QWidget
@@ -21,7 +23,6 @@ namespace View {
         Q_OBJECT
 
         private:
-        MainWindow* mainwindow;
         std::vector<Core::Sensor*>& vector;
         Core::Sensor* sensor;
         QVBoxLayout* layout;
@@ -38,11 +39,14 @@ namespace View {
         QVector<SensorEditor::EditSensor*> editors;
 
         public:
-        Editor(MainWindow* mainwindow, std::vector<Core::Sensor*>& vector, Core::Sensor* sensor);
+        Editor(std::vector<Core::Sensor*>& vector, Core::Sensor* sensor);
 
         public slots:
         void showType(int index);
         void apply();
+
+        signals:
+        void save();
     };
 
 }

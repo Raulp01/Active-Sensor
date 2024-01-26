@@ -12,9 +12,9 @@
 
 namespace View
 {
-    Editor::Editor(MainWindow* mainwindow, std::vector<Core::Sensor*>& vector, Core::Sensor* sensor) : mainwindow(mainwindow), vector(vector), sensor(sensor)
+    Editor::Editor(std::vector<Core::Sensor*>& vector, Core::Sensor* sensor) : vector(vector), sensor(sensor)
     {
-        layout = new QVBoxLayout();
+        layout = new QVBoxLayout(this);
         layout->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
         QFormLayout* form_layout = new QFormLayout();
@@ -24,21 +24,21 @@ namespace View
         id_input->setMinimum(0);
         id_input->setMaximum(INT_MAX);
         id_input->setSingleStep(1);
-        if(&sensor != nullptr)
+        if(sensor != nullptr)
         {
             id_input->setValue(sensor->getId());
         }
         form_layout->addRow("Id:", id_input);
 
         name_input = new QLineEdit();
-        if(&sensor != nullptr)
+        if(sensor != nullptr)
         {
             name_input->setText(QString::fromStdString(sensor->getName()));
         }
         form_layout->addRow("Name:", name_input);
 
         description_input = new QTextEdit();
-        if(&sensor != nullptr)
+        if(sensor != nullptr)
         {
             description_input->setText(QString::fromStdString(sensor->getDescription()));
         }
@@ -48,7 +48,7 @@ namespace View
         age_input->setMinimum(1);
         age_input->setMaximum(110);
         age_input->setSingleStep(1);
-        if(&sensor != nullptr)
+        if(sensor != nullptr)
         {
             age_input->setValue(sensor->getAge());
         }
@@ -58,7 +58,7 @@ namespace View
         height_input->setMinimum(0);
         height_input->setMaximum(2.5);
         height_input->setSingleStep(1);
-        if(&sensor != nullptr)
+        if(sensor != nullptr)
         {
             height_input->setValue(sensor->getHeight());
         }
@@ -68,7 +68,7 @@ namespace View
         weight_input->setMinimum(0);
         weight_input->setMaximum(200);
         height_input->setSingleStep(1);
-        if(&sensor != nullptr)
+        if(sensor != nullptr)
         {
             weight_input->setValue(sensor->getWeight());
         }
@@ -76,14 +76,14 @@ namespace View
 
         training_time_input = new QDoubleSpinBox();
         training_time_input->setMinimum(0);
-        if(&sensor != nullptr)
+        if(sensor != nullptr)
         {
             training_time_input->setValue(sensor->getTrainingTime());
         }
         form_layout->addRow(training_time_input);
 
         training_type_input = new QComboBox();
-        if(&sensor != nullptr)
+        if(sensor != nullptr)
         {
             training_type_input->setPlaceholderText(QString::fromStdString(sensor->getTrainingTypeToString()));
         }
@@ -112,6 +112,8 @@ namespace View
 
         stacked_editors = new QStackedLayout();
         layout->addLayout(stacked_editors);
+
+        std::cout << "Dopo stackedEditors in Editor" << std::endl;
 
         SensorEditor::EditHeartSensor* edit_heart_sensor = new SensorEditor::EditHeartSensor();
         stacked_editors->addWidget(edit_heart_sensor);
@@ -146,7 +148,7 @@ namespace View
         QPushButton* apply = new QPushButton("Apply");
         layout->addWidget(apply);
 
-        connect(apply, &QPushButton::pressed, this, &apply);
+        connect(apply, &QPushButton::pressed, this, &Editor::apply);
         connect(type, qOverload<int>(&QComboBox::currentIndexChanged), this, &Editor::showType);
     }
 
@@ -168,9 +170,10 @@ namespace View
 
         SensorEditor::EditSensor* editor = editors[stacked_editors->currentIndex()];
         Core::Sensor* new_sensor = editor->create(id, name, description, age, height, weight, training_type, training_time);
+
         // To-do fare un push_back dell'item e ricaricare la lista in Mainwindow
-        // main_window->getRepository()->update(item);
-        // main_window->reloadData();
-        // main_window->getSearchWidget()->search();
+        vector.push_back(new_sensor);
+        emit save();
+        this->close();
     }
 };

@@ -7,11 +7,14 @@
 #include "../Core/Json/DataMapper/JsonFile.h"
 #include <QMainWindow>
 #include <QStackedWidget>
+#include "Editor.h"
 
 namespace View {
 
-  class MainWindow: public QMainWindow {
-      Q_OBJECT
+  class MainWindow: public QMainWindow 
+  {
+    Q_OBJECT
+
     private:
       bool has_unsaved_changes;
       QAction* create_item;

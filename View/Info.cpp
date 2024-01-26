@@ -7,6 +7,9 @@ namespace View
 {
     Info::Info(Core::Sensor& sensor, QWidget* parent) : sensor(sensor), QWidget(parent)
     {
+        QVBoxLayout* layout = new QVBoxLayout(this);
+        layout->setAlignment(Qt::AlignTop | Qt::AlignCenter);
+
         QHBoxLayout* h_layout = new QHBoxLayout();
         h_layout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
 
@@ -31,6 +34,20 @@ namespace View
 
         h_layout->addLayout(icon_layout);
         h_layout->addLayout(info_layout);
+        layout->addLayout(h_layout);
+
+        QHBoxLayout* button_layout = new QHBoxLayout();
+        button_layout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
+        layout->addLayout(button_layout);
+
+        open = new QPushButton("Open");
+        button_layout->addWidget(open);
+
+        edit = new QPushButton("Edit");
+        button_layout->addWidget(edit);
+
+        remove = new QPushButton("Delete");
+        button_layout->addWidget(remove);
 
         this->show();
     }  
@@ -40,5 +57,20 @@ namespace View
         sensor_id->setText("Id: " + QString::number(sensor.getId()));
         sensor_name->setText("Name: " + QString::fromStdString(sensor.getName()));
         sensor_training_type->setText("Training intensity: " + QString::number(sensor.getTrainingType()));
+    }
+
+    QPushButton* Info::getOpenButton()
+    {
+        return open;
+    }
+
+    QPushButton* Info::getEditButton()
+    {
+        return edit;
+    }
+
+    QPushButton* Info::getRemoveButton()
+    {
+        return remove;
     }
 }

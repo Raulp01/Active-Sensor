@@ -11,6 +11,7 @@
 #include <QStatusBar>
 #include <QTextEdit>
 #include <QSplitter>
+#include <QVBoxLayout>
 #include <QFileDialog>
 #include <QStackedWidget>
 #include <QScrollArea>
@@ -81,34 +82,36 @@ namespace View
         toolbar->addSeparator();
         toolbar->addAction(close);
 
-        // Sets main panel
+        std::cout << "Prima di splitter" << std::endl;
+
         QSplitter* splitter = new QSplitter(this);
-        setCentralWidget(splitter);
+        setCentralWidget(this);
 
-        //Widget che contiene searchbar, lista di widget e pulsante per aggiungere widget
         QWidget* widget = new QWidget();
+        splitter->addWidget(widget);
 
-        std::cout << "Creato il widget nel MainWindow" << std::endl;
+        QVBoxLayout* layout = new QVBoxLayout();
+        layout->setAlignment(Qt::AlignTop | Qt::AlignCenter);
+        widget->setLayout(layout);
 
-        QVBoxLayout* v_layout = new QVBoxLayout();
-        //searchbar
-        //v_layout->addWidget(searchbar);
+        search = new Search();
+        layout->addWidget(search);
+
+        left_stacked_widget = new QStackedWidget();
+        layout->addWidget(left_stacked_widget);
+
+        std::cout << "Parte sinistra" << std::endl;
 
         results = new Results(vector);
-        v_layout->addWidget(results);
+        left_stacked_widget->addWidget(results);
 
-        widget->setLayout(v_layout);
+        right_stacked_widget = new QStackedWidget();
+        splitter->addWidget(right_stacked_widget);
 
-        stacked_widget = new QStackedWidget(this);
-        splitter->addWidget(stacked_widget);
-        stacked_widget->addWidget(widget);
+        QWidget* place_holder = new QWidget();
+        right_stacked_widget->addWidget(place_holder);
 
-        /*
-        search_widget = new SearchWidget();
-        splitter->addWidget(search_widget);
-        */
-
-       std::cout << "Finito con lo splitter" << std::endl;
+        std::cout << "Parte destra" << std::endl;
 
         splitter->setSizes(QList<int>() << 1000 << 3000);
 
@@ -137,13 +140,16 @@ namespace View
 
     MainWindow& MainWindow::reloadData() {
         clearStack();
-        // NO: devo impostare una nuova scrollarea con la scrollbar
         QScrollArea* scroll_area = new QScrollArea();
         scroll_area->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         scroll_area->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         scroll_area->setWidgetResizable(true);
         results = new Results(vector);
+        results->showAll();
         scroll_area->setWidget(results);
+        left_stacked_widget->addWidget(scroll_area);
+        left_stacked_widget->setCurrentIndex(1);
+        has_unsaved_changes = true;
         return *this;
         
         /* engine.clear();
@@ -158,16 +164,16 @@ namespace View
         return *this; */
     }
 
-    /* SearchWidget* MainWindow::getSearchWidget() {
-        return search_widget;
-    } */
+    Search* MainWindow::getSearch() {
+        return search;
+    }
 
     void MainWindow::clearStack() {
-        QWidget* widget = stacked_widget->widget(1);
+        QWidget* widget = right_stacked_widget->widget(1);
         while (widget) {
-            stacked_widget->removeWidget(widget);
+            right_stacked_widget->removeWidget(widget);
             delete widget;
-            widget = stacked_widget->widget(1);
+            widget = right_stacked_widget->widget(1);
         }
     }
 
@@ -234,21 +240,34 @@ namespace View
         showStatus("Dataset saved as \"" + path + "\".");
     }
 
-    void MainWindow::toggleToolbar() {
+    void MainWindow::toggleToolbar() 
+    {
         toolbar->setVisible(!toolbar->isVisible());
         showStatus("Toolbar toggled.");
     }
 
-    void MainWindow::showStatus(QString message) {
+    void MainWindow::showStatus(QString message) 
+    {
         statusBar()->showMessage(message);
     }
 
-    /* void MainWindow::search(Engine::Query query) {
-        showStatus("Running query for \"" + QString::fromStdString(query.getText()) + "\".");
-        results_widget->showResults(query, engine.search(query));
-        stacked_widget->setCurrentIndex(0);
+    void MainWindow::searchById(unsigned int id) 
+    {
+        emit getSearch()->search();
+        //results riceve segnale e viene aggiornato.
+        // setta results
+
         clearStack();
-    } */
+    }
+
+    void MainWindow::searchByFilter(std::string filter)
+    {
+        emit getSearch()->filter();
+        //results riceve segnale e viene aggiornato.
+        // setta results
+
+        clearStack();
+    }
 
     void MainWindow::createSensor() {
         std::cout << "Inizio createSensor" << std::endl;
@@ -261,8 +280,8 @@ namespace View
         Editor* editor = new Editor(vector, nullptr);
         std::cout << "Dopo Editor" << std::endl;
         scroll_area->setWidget(editor);
-        stacked_widget->addWidget(scroll_area);
-        stacked_widget->setCurrentIndex(1);
+        right_stacked_widget->addWidget(scroll_area);
+        right_stacked_widget->setCurrentIndex(1);
         has_unsaved_changes = true;
         showStatus("Creating a new item.");
         connect(editor, &Editor::save, results, &Results::showAll);
@@ -276,8 +295,8 @@ namespace View
         scroll_area->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         scroll_area->setWidgetResizable(true);
         scroll_area->setWidget(viewer_wiget);
-        stacked_widget->addWidget(scroll_area);
-        stacked_widget->setCurrentIndex(1);
+        right_stacked_widget->addWidget(scroll_area);
+        right_stacked_widget->setCurrentIndex(1);
         showStatus("Showing sensor " + QString::number(sensor->getId()));
     }
 
@@ -289,8 +308,8 @@ namespace View
         scroll_area->setWidgetResizable(true);
         Editor* editor = new Editor(vector, sensor);
         scroll_area->setWidget(editor);
-        stacked_widget->addWidget(scroll_area);
-        stacked_widget->setCurrentIndex(1);
+        right_stacked_widget->addWidget(scroll_area);
+        right_stacked_widget->setCurrentIndex(1);
         has_unsaved_changes = true;
         showStatus("Editing sensor " + QString::fromStdString(sensor->getName()) + ".");
         connect(editor, &Editor::save, results, &Results::showAll);

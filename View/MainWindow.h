@@ -8,6 +8,7 @@
 #include <QMainWindow>
 #include <QStackedWidget>
 #include "Editor.h"
+#include "Search.h"
 
 namespace View {
 
@@ -21,14 +22,15 @@ namespace View {
       QToolBar* toolbar;
       std::vector<Core::Sensor*>& vector;
       Core::Json::DataMapper::JsonFile& json_file;
-      //SearchWidget* search_widget;
-      QStackedWidget* stacked_widget;
+      Search* search;
+      QStackedWidget* left_stacked_widget;
+      QStackedWidget* right_stacked_widget;
       Results* results;
     
     public:
       explicit MainWindow(std::vector<Core::Sensor*>& vector, Core::Json::DataMapper::JsonFile& json_file, QWidget *parent = 0);
       MainWindow& reloadData();
-      //SearchWidget* getSearchWidget();
+      Search* getSearch();
     
     private:
       void clearStack();
@@ -40,7 +42,8 @@ namespace View {
       void saveAsDataset();
       void toggleToolbar();
       void showStatus(QString message);
-      //void search(Engine::Query query);
+      void searchById(unsigned int id);
+      void searchByFilter(std::string filter);
       void createSensor();
       void showSensor(Core::Sensor* sensor);
       void editSensor(Core::Sensor* sensor);

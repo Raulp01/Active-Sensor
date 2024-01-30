@@ -116,17 +116,6 @@ namespace Core
         this->training_time = new_training_time;
     }
 
-    bool Sensor::operator==(const Sensor& sensor) const
-    {
-        if(id == sensor.getId() && name == sensor.getName() && description == sensor.getDescription() &&
-        age == sensor.getAge() && height == sensor.getHeight() && weight == sensor.getWeight() && 
-        training_type ==sensor.getTrainingType() && training_time == sensor.getTrainingTime())
-        {
-            return true;
-        }
-        return false;
-    }
-
     float Sensor::getRandomNumber(float range_min, float range_max)
     {
         // Provvede alla generazione di un numero randomico non-deterministico 

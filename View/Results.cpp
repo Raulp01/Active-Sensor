@@ -1,23 +1,15 @@
 #include "Results.h"
 
 #include <QVBoxLayout>
-#include <QScrollArea>
 
 namespace View
 {
     Results::Results(std::vector<Core::Sensor*>& vector, QWidget* parent) : vector(vector), QWidget(parent)
     {
-        QScrollArea* scroll = new QScrollArea();
-        scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-        scroll->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-        scroll->setWidgetResizable(true);
-
-        layout = new QVBoxLayout(scroll);
+        layout = new QVBoxLayout(this);
         layout->setAlignment(Qt::AlignTop | Qt::AlignCenter);
 
-        refresh();
-
-        connect(this, &Results::searchId, this, &Results::showResults);
+        showResults(vector);
     }
 
     void Results::clear()
@@ -27,118 +19,96 @@ namespace View
             //Pulizia
             while(container.count())
             {
-                layout->removeWidget(container.takeLast());
+                std::cout << "Clearing previous data" << std::endl;
+                layout->removeWidget(container.last());
                 delete container.takeLast();
             }
         }
     }
 
-    void Results::refresh()
+    void Results::emitShowSensor()
     {
-        clear();
-        
-        if(vector.empty() == false)
-        {
-            for(auto it = vector.begin(); it != vector.end(); ++it)
-            {
-                Info* info = new Info(**it);
-                container.push_back(info);
-                layout->addWidget(container.takeLast());
-
-                connect(info->getOpenButton(), SIGNAL(pressed()), this, SLOT(emitShowSensor(*it)));
-                connect(info->getEditButton(), SIGNAL(pressed()), this, SLOT(emitEditSensor(*it)));
-                connect(info->getRemoveButton(), SIGNAL(pressed()), this, SLOT(emitDeleteSensor(*it)));
-            }
-        }
+        Core::Sensor& sensor = container.last()->getSensor(); 
+        emit showSensor(&sensor);
     }
 
-    void Results::emitShowSensor(Core::Sensor* sensor)
+    void Results::emitEditSensor()
     {
-        emit showSensor(sensor);
+        Core::Sensor& sensor = container.last()->getSensor(); 
+        emit editSensor(&sensor);
     }
 
-    void Results::emitEditSensor(Core::Sensor* sensor)
+    void Results::emitDeleteSensor()
     {
-        emit editSensor(sensor);
-    }
-
-    void Results::emitDeleteSensor(Core::Sensor* sensor)
-    {
-        emit deleteSensor(sensor);
-    }
-
-    void Results::showAll()
-    {
-        refresh();
+        Core::Sensor& sensor = container.last()->getSensor(); 
+        emit deleteSensor(&sensor);
     }
 
     void Results::showResults(std::vector<Core::Sensor*>& results_vector)
     {
         clear();
 
+        std::cout << "showResults dimensione vector = " << vector.size() << std::endl;
+        std::cout << "showResults dimensione results_vector = " << results_vector.size() << std::endl;
+
         if(results_vector.empty() == false)
         {
-            for(auto it = results_vector.begin(); it != results_vector.end(); ++it)
+            std::cout << "Container non vuoto in showResult" << std::endl;
+            for(auto it = results_vector.begin(); it != results_vector.end(); it++)
             {
+                std::cout << "Caricando i risultati..." << std::endl;
                 Info* info = new Info(**it);
                 container.push_back(info);
-                layout->addWidget(container.takeLast());
+                layout->addWidget(container.last());
 
-                connect(info->getOpenButton(), SIGNAL(pressed()), this, SIGNAL(showSensor(*it)));
-                connect(info->getEditButton(), SIGNAL(pressed()), this, SIGNAL(editSensor(*it)));
-                connect(info->getRemoveButton(), SIGNAL(pressed()), this, SIGNAL(deleteSensor(*it)));
+                connect(container.last()->getOpenButton(), &QPushButton::pressed, this, &Results::emitShowSensor);
+                connect(container.last()->getEditButton(), &QPushButton::pressed, this, &Results::emitEditSensor);
+                connect(container.last()->getRemoveButton(), &QPushButton::pressed, this, &Results::emitDeleteSensor);
             }
         }
     }
 
     void Results::showResultsById(unsigned int id)
     {
+        clear();
         std::cout << "entrato in Results::receiveId" << std::endl;
 
         std::vector<Core::Sensor*> results_vector;
 
-        std::vector<unsigned int> vector_id_input = convertId(id);
+        std::string id_input_string = std::to_string(id);
+
+        if(vector.empty())
+        {
+            std::cout << "showResultsById :: vector vuoto" << std::endl;
+        }
 
         for(auto it = vector.begin(); it != vector.end(); ++it)
         {
-            std::vector<unsigned int> vector_id_sensor =convertId((**it).getId());
+            std::cout << "entrato ciclo for Results::showResultsById" << std::endl;
 
-            auto id_it = vector_id_input.begin();
+            std::string sensor_id_string = std::to_string((**it).getId());
+
             bool match = true;
+            unsigned int i = 0;
 
-            while(id_it != vector_id_input.end() || match == true)
+            while(i != id_input_string.length() && match == true)
             {
-                if(vector_id_sensor[*id_it] == *id_it)
-                {
-                    id_it++;
-                }
-                else
+                std::cout << "id_input_string["<< i << "] = " << id_input_string[i] << std::endl;
+                std::cout << "sensor_id_string[" << i << "] = " << sensor_id_string[i] << std::endl;
+                if(id_input_string[i] != sensor_id_string[i])
                 {
                     match = false;
                 }
+                i++;
             }
+            
 
-            if(id_it == vector_id_input.end())
+            if(match==true)
             {
                 results_vector.push_back(*it);
             }
         }
 
-        emit searchId(results_vector);
-    }
-
-    std::vector<unsigned int> Results::convertId(unsigned int id)
-    {
-        std::vector<unsigned int> vector_id;
-
-        while (true)
-        {
-            vector_id.insert(vector_id.begin(), id % 10);
-            id /= 10;
-            if(id == 0)
-            {
-                return vector_id;
-            }
-        }
+        showResults(results_vector);
     }
 };

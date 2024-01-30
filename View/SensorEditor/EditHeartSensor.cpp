@@ -1,10 +1,14 @@
 #include "EditHeartSensor.h"
+#include <QVBoxLayout>
 
 namespace View {
 namespace SensorEditor {
     EditHeartSensor::EditHeartSensor(QWidget* parent) : EditSensor(parent) 
     {
+        QVBoxLayout* layout = new QVBoxLayout();
+        layout->setAlignment(Qt::AlignTop | Qt::AlignCenter);
         label = new QLabel("No additional parameters are required");
+        layout->addWidget(label);
     }
     
     EditHeartSensor::~EditHeartSensor() {}

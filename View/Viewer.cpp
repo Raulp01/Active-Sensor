@@ -9,14 +9,6 @@ namespace View
         QGridLayout* layout = new QGridLayout(this);
         layout->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
 
-        edit_sensor = new QPushButton("Edit");
-        layout->addWidget(edit_sensor, 0, 0, 1 ,1);
-        // connect
-        
-        delete_sensor = new QPushButton("Delete");
-        layout->addWidget(delete_sensor, 0, 1, 1, 1);
-        // connect(delete_sensor, &QPushButton::pressed, this, &deleteSensor);
-
         simulate_sensor = new QPushButton("Simulate");
         layout->addWidget(simulate_sensor, 0, 2, 1, 1);
         connect(simulate_sensor, &QPushButton::pressed, this, &Viewer::simulateSensor);
@@ -57,9 +49,4 @@ namespace View
         // Aggiungi grafico
         this->show();
     }
-
-    /* void Viewer::deleteSensor()
-    {
-       // vector.erase(sensor);
-    } */
 }

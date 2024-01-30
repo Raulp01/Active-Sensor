@@ -14,6 +14,7 @@ namespace View
 {
     Editor::Editor(std::vector<Core::Sensor*>& vector, Core::Sensor* sensor) : vector(vector), sensor(sensor)
     {
+        std::cout << "Costruttore Editor vector = " << vector.size() << std::endl;
         layout = new QVBoxLayout(this);
         layout->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
@@ -97,7 +98,6 @@ namespace View
         
         layout->addLayout(form_layout);
         
-
         QFormLayout* type_form = new QFormLayout();
         type_form->setLabelAlignment(Qt::AlignRight | Qt::AlignTop);
         type = new QComboBox();
@@ -116,6 +116,7 @@ namespace View
         layout->addLayout(stacked_editors);
 
         std::cout << "Dopo stackedEditors in Editor" << std::endl;
+        std::cout << "Dimensione vector prima degli EditSensor = " << vector.size() << std::endl;
 
         SensorEditor::EditHeartSensor* edit_heart_sensor = new SensorEditor::EditHeartSensor();
         stacked_editors->addWidget(edit_heart_sensor);
@@ -161,6 +162,8 @@ namespace View
 
     void Editor::apply()
     {
+        std::cout << "Dimensione attuale di vector (prima di push_back() in Editor) " << vector.size() << std::endl;
+
         unsigned int id = id_input->value();
         QString name = name_input->text();
         QString description = description_input->toPlainText();
@@ -171,11 +174,13 @@ namespace View
         float training_time = training_time_input->value();
 
         SensorEditor::EditSensor* editor = editors[stacked_editors->currentIndex()];
-        Core::Sensor* new_sensor = editor->create(id, name, description, age, height, weight, training_type, training_time);
+        std::cout << "Creato nuovo Sensor in Editor" << std::endl;
+        sensor = editor->create(id, name, description, age, height, weight, training_type, training_time);
 
-        // To-do fare un push_back dell'item e ricaricare la lista in Mainwindow
-        vector.push_back(new_sensor);
+        vector.push_back(sensor);
+        std::cout << "Sensor inserito corettamente in vector" << std::endl;
+        std::cout << "Dimensione attuale di vector (dopo push_back() in Editor) " << vector.size() << std::endl;
         emit save();
-        this->close();
+        std::cout << "DOPO save in Editor" << std::endl;
     }
 };

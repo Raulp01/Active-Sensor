@@ -23,13 +23,13 @@ namespace View
         QVBoxLayout* info_layout = new QVBoxLayout();
         info_layout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
 
-        sensor_id = new QLabel();
+        sensor_id = new QLabel("Id: " + QString::number(sensor.getId()));
         info_layout->addWidget(sensor_id);
 
-        sensor_name = new QLabel();
+        sensor_name = new QLabel("Name: " + QString::fromStdString(sensor.getName()));
         info_layout->addWidget(sensor_name);
 
-        sensor_training_type = new QLabel();
+        sensor_training_type = new QLabel("Training intensity: " + QString::number(sensor.getTrainingType()));
         info_layout->addWidget(sensor_training_type);
 
         h_layout->addLayout(icon_layout);
@@ -48,15 +48,11 @@ namespace View
 
         remove = new QPushButton("Delete");
         button_layout->addWidget(remove);
-
-        this->show();
     }  
 
-    void Info::show()
+    Core::Sensor& Info::getSensor()
     {
-        sensor_id->setText("Id: " + QString::number(sensor.getId()));
-        sensor_name->setText("Name: " + QString::fromStdString(sensor.getName()));
-        sensor_training_type->setText("Training intensity: " + QString::number(sensor.getTrainingType()));
+        return sensor;
     }
 
     QPushButton* Info::getOpenButton()

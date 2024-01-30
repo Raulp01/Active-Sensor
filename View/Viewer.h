@@ -14,8 +14,6 @@ namespace View
         private:
         std::vector<Core::Sensor*>& vector;
         Core::Sensor& sensor;
-        QPushButton* edit_sensor;
-        QPushButton* delete_sensor;
         QPushButton* simulate_sensor;
         QLabel* id;
         QLabel* name;

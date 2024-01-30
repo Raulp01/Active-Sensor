@@ -1,10 +1,14 @@
 #include "EditCaloriesCounter.h"
+#include <QVBoxLayout>
 
 namespace View {
 namespace SensorEditor {
     EditCaloriesCounter::EditCaloriesCounter(QWidget* parent) : EditSensor(parent) 
     {
+        QVBoxLayout* layout = new QVBoxLayout();
+        layout->setAlignment(Qt::AlignTop | Qt::AlignCenter);
         label = new QLabel("No additional parameters are required");
+        layout->addWidget(label);
     }
     
     EditCaloriesCounter::~EditCaloriesCounter() {}

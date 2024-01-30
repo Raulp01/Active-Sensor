@@ -29,7 +29,7 @@ namespace View {
     
     public:
       explicit MainWindow(std::vector<Core::Sensor*>& vector, Core::Json::DataMapper::JsonFile& json_file, QWidget *parent = 0);
-      MainWindow& reloadData();
+      void reloadData();
       Search* getSearch();
     
     private:
@@ -41,13 +41,13 @@ namespace View {
       void saveDataset();
       void saveAsDataset();
       void toggleToolbar();
-      void showStatus(QString message);
       void searchById(unsigned int id);
       void searchByFilter(std::string filter);
       void createSensor();
       void showSensor(Core::Sensor* sensor);
       void editSensor(Core::Sensor* sensor);
       void deleteSensor(Core::Sensor* sensor);
+      void reloadResults();
       void close();
   };
 

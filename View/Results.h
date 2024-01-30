@@ -22,6 +22,8 @@ namespace View {
         void refresh();
         void clear();
         std::vector<unsigned int> convertId(unsigned int);
+        void showResults(std::vector<Core::Sensor*>& results_vector);
+        void showResultsById(unsigned int id);
 
         signals:
         void editSensor(Core::Sensor* sensor);
@@ -30,9 +32,11 @@ namespace View {
         void searchId(std::vector<Core::Sensor*>& results_vector);
 
         public slots:
-        void receiveId(unsigned int id);
+        void emitShowSensor(Core::Sensor* sensor);
+        void emitEditSensor(Core::Sensor* sensor);
+        void emitDeleteSensor(Core::Sensor* sensor);
         void showAll();
-        void showResults(std::vector<Core::Sensor*>& results_vector);
+        
     };
 };
 

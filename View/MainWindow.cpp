@@ -85,17 +85,25 @@ namespace View
         std::cout << "Prima di splitter" << std::endl;
 
         QSplitter* splitter = new QSplitter(this);
-        setCentralWidget(this);
+        setCentralWidget(splitter);
 
-        QWidget* widget = new QWidget();
+        std::cout << "Creato Splitter" << std::endl;
+
+        QWidget* widget = new QWidget(this);
         splitter->addWidget(widget);
+
+        std::cout << "Aggiunto widget a sinistra" << std::endl;
 
         QVBoxLayout* layout = new QVBoxLayout();
         layout->setAlignment(Qt::AlignTop | Qt::AlignCenter);
         widget->setLayout(layout);
 
+        std::cout << "Layout widget a sinistra" << std::endl;
+
         search = new Search();
         layout->addWidget(search);
+
+        std::cout << "Aggiunto search" << std::endl;
 
         left_stacked_widget = new QStackedWidget();
         layout->addWidget(left_stacked_widget);
@@ -122,12 +130,10 @@ namespace View
         connect(save_as, &QAction::triggered, this, &MainWindow::saveAsDataset);
         connect(close, &QAction::triggered, this, &MainWindow::close);
         connect(togge_toolbar, &QAction::triggered, this, &MainWindow::toggleToolbar);
-        //connect(search_widget, &SearchWidget::search_event, this, &MainWindow::search);
-        //connect(results_widget, &ResultsWidget::refreshResults, search_widget, &SearchWidget::search);
-        //connect(results_widget, &ResultsWidget::showItem, this, &MainWindow::showItem);
+        connect(search, &Search::searchSensorId, this, &MainWindow::searchById);
+        connect(search, &Search::filterSensor, this, &MainWindow::searchByFilter);
+        connect(results, &Results::showResults, search, &Search::search);
         connect(create_item, &QAction::triggered, this, &MainWindow::createSensor);
-        //connect(results_widget, &ResultsWidget::editItem, this, &MainWindow::editItem);
-        //connect(results_widget, &ResultsWidget::deleteItem, this, &MainWindow::deleteItem);
         connect(results, &Results::showSensor, this, &MainWindow::showSensor);
         connect(results, &Results::editSensor, this, &MainWindow::editSensor);
         connect(results, &Results::deleteSensor, this, &MainWindow::deleteSensor);
@@ -253,16 +259,21 @@ namespace View
 
     void MainWindow::searchById(unsigned int id) 
     {
-        emit getSearch()->search();
-        //results riceve segnale e viene aggiornato.
-        // setta results
-
         clearStack();
+        QScrollArea* scroll_area = new QScrollArea();
+        scroll_area->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+        scroll_area->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+        scroll_area->setWidgetResizable(true);
+        results = new Results(vector);
+        scroll_area->setWidget(results);
+        left_stacked_widget->addWidget(scroll_area);
+        left_stacked_widget->setCurrentIndex(1);
+        results->showResultsById(id);
+        has_unsaved_changes = true;
     }
 
     void MainWindow::searchByFilter(std::string filter)
     {
-        emit getSearch()->filter();
         //results riceve segnale e viene aggiornato.
         // setta results
 

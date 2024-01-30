@@ -45,11 +45,26 @@ namespace View
                 container.push_back(info);
                 layout->addWidget(container.takeLast());
 
-                connect(info->getOpenButton(), SIGNAL(pressed()), this, SIGNAL(showSensor(*it)));
-                connect(info->getEditButton(), SIGNAL(pressed()), this, SIGNAL(editSensor(*it)));
-                connect(info->getRemoveButton(), SIGNAL(pressed()), this, SIGNAL(deleteSensor(*it)));
+                connect(info->getOpenButton(), SIGNAL(pressed()), this, SLOT(emitShowSensor(*it)));
+                connect(info->getEditButton(), SIGNAL(pressed()), this, SLOT(emitEditSensor(*it)));
+                connect(info->getRemoveButton(), SIGNAL(pressed()), this, SLOT(emitDeleteSensor(*it)));
             }
         }
+    }
+
+    void Results::emitShowSensor(Core::Sensor* sensor)
+    {
+        emit showSensor(sensor);
+    }
+
+    void Results::emitEditSensor(Core::Sensor* sensor)
+    {
+        emit editSensor(sensor);
+    }
+
+    void Results::emitDeleteSensor(Core::Sensor* sensor)
+    {
+        emit deleteSensor(sensor);
     }
 
     void Results::showAll()
@@ -76,8 +91,10 @@ namespace View
         }
     }
 
-    void Results::receiveId(unsigned int id)
+    void Results::showResultsById(unsigned int id)
     {
+        std::cout << "entrato in Results::receiveId" << std::endl;
+
         std::vector<Core::Sensor*> results_vector;
 
         std::vector<unsigned int> vector_id_input = convertId(id);

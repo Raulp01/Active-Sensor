@@ -27,8 +27,8 @@ namespace View
         form->addRow("ID:", id_input);
 
         filter_input = new QComboBox();
-        filter_input->addItem("Heart Sensor");
-        filter_input->addItem("Calories Counter");
+        filter_input->addItem("HeartSensor");
+        filter_input->addItem("CaloriesCounter");
         filter_input->addItem("Speedometer");
         filter_input->addItem("Activity");
         form->addRow("Filter:", filter_input);

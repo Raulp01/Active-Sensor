@@ -52,7 +52,7 @@ namespace View
         {
             age_input->setValue(sensor->getAge());
         }
-        form_layout->addRow(age_input);
+        form_layout->addRow("Age:", age_input);
 
         height_input = new QDoubleSpinBox();
         height_input->setMinimum(0);
@@ -62,7 +62,7 @@ namespace View
         {
             height_input->setValue(sensor->getHeight());
         }
-        form_layout->addRow(height_input);
+        form_layout->addRow("Height:", height_input);
 
         weight_input = new QDoubleSpinBox();
         weight_input->setMinimum(0);
@@ -72,15 +72,16 @@ namespace View
         {
             weight_input->setValue(sensor->getWeight());
         }
-        form_layout->addRow(weight_input);
+        form_layout->addRow("Weight:", weight_input);
 
         training_time_input = new QDoubleSpinBox();
         training_time_input->setMinimum(0);
+        training_time_input->setSingleStep(0.5);
         if(sensor != nullptr)
         {
             training_time_input->setValue(sensor->getTrainingTime());
         }
-        form_layout->addRow(training_time_input);
+        form_layout->addRow("Training Time:", training_time_input);
 
         training_type_input = new QComboBox();
         if(sensor != nullptr)
@@ -92,9 +93,10 @@ namespace View
         training_type_input->addItem(QIcon("../Assets/High.svg"), "High");
         training_type_input->addItem(QIcon("../Assets/Very High.png"), "Very High");
         training_type_input->addItem(QIcon("../Assets/Maximum.jpg"), "Maximum");
-
+        form_layout->addRow("Training Type:", training_type_input);
+        
         layout->addLayout(form_layout);
-        layout->addWidget(training_type_input);
+        
 
         QFormLayout* type_form = new QFormLayout();
         type_form->setLabelAlignment(Qt::AlignRight | Qt::AlignTop);

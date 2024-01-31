@@ -1,10 +1,8 @@
 #ifndef VIEWER
 #define VIEWER
 
-#include <QPushButton>
-#include <QGridLayout>
-#include <QLabel>
 #include "MainWindow.h"
+#include <QGridLayout>
 
 namespace View
 {
@@ -15,15 +13,6 @@ namespace View
         private:
         std::vector<Core::Sensor*>& vector;
         Core::Sensor& sensor;
-        QPushButton* simulate_sensor;
-        QLabel* id;
-        QLabel* name;
-        QLabel* training_time;
-        QLabel* training_type;
-        QLabel* weight;
-        QLabel* height;
-        QLabel* description;
-        QLabel* age;
         QGridLayout* layout;
 
         public:
@@ -31,12 +20,8 @@ namespace View
         void show();
 
         public slots:
-        // void deleteSensor();
         void simulateSensor();
-
-        //Incompleta
-        // connect editSensor
-        // connect deleteSensor
+        void reset();
     };
 }
 

@@ -8,7 +8,7 @@ namespace View
     Info::Info(Core::Sensor& sensor, QWidget* parent) : sensor(sensor), QWidget(parent)
     {
         QVBoxLayout* layout = new QVBoxLayout(this);
-        layout->setAlignment(Qt::AlignTop | Qt::AlignCenter);
+        layout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
 
         QHBoxLayout* h_layout = new QHBoxLayout();
         h_layout->setAlignment(Qt::AlignCenter | Qt::AlignTop);

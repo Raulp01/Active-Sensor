@@ -16,10 +16,10 @@ namespace View
     {
         std::cout << "Editor::Editor Costruttore Editor vector = " << vector.size() << std::endl;
         layout = new QVBoxLayout(this);
-        layout->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+        layout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
 
         QFormLayout* form_layout = new QFormLayout();
-        form_layout->setLabelAlignment(Qt::AlignRight | Qt::AlignTop);
+        form_layout->setLabelAlignment(Qt::AlignCenter | Qt::AlignTop);
 
         id_input = new QSpinBox();
         id_input->setMinimum(0);

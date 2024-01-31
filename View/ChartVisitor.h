@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "../IConstVisitor.h"
+#include "../Core/Activity.h"
 
 namespace View
 {
@@ -15,11 +16,11 @@ namespace View
 
         public:
         QWidget* getWidget();
-
         virtual void visitCaloriesCounter(const Core::CaloriesCounter& calories_counter);
         virtual void visitActivity(const Core::Activity& activity);
         virtual void visitHeartSensor(const Core::HeartSensor& heart_sensor);
         virtual void visitSpeedometer(const Core::Speedometer& speedometer);
+
     };
 }
 

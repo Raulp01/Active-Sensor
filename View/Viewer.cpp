@@ -1,13 +1,13 @@
 #include "Viewer.h"
 #include "ViewerVisitor.h"
-#include <QGridLayout>
+#include "ChartVisitor.h"
 
 namespace View
 {
     Viewer::Viewer(std::vector<Core::Sensor*>& vector, Core::Sensor& sensor) : vector(vector), sensor(sensor)
     {
-        QGridLayout* layout = new QGridLayout(this);
-        layout->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
+        layout = new QGridLayout(this);
+        layout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
 
         simulate_sensor = new QPushButton("Simulate");
         layout->addWidget(simulate_sensor, 0, 2, 1, 1);
@@ -36,17 +36,23 @@ namespace View
         
         training_time = new QLabel("Training time: " + QString::number(sensor.getTrainingTime(), 'f', 1));
         layout->addWidget(training_time, 5, 1, 1, 1);
-
-        ViewerVisitor visitor;
-        sensor.accept(visitor);
-        layout->addWidget(visitor.getWidget(), 6, 0);
-        this->show();
     }
 
     void Viewer::simulateSensor()
     {
+        sensor.setTimeChanged(false);
         sensor.simulate();
-        // Aggiungi grafico
         this->show();
+    }
+
+    void Viewer::show()
+    {
+        ViewerVisitor visitor;
+        sensor.accept(visitor);
+        layout->addWidget(visitor.getWidget(), 6, 0);
+
+        ChartVisitor chart;
+        sensor.accept(chart);
+        layout->addWidget(chart.getWidget(), 7, 0, Qt::AlignCenter);
     }
 }

@@ -6,7 +6,7 @@ namespace Core
 
     CaloriesCounter::CaloriesCounter(unsigned int id, std::string name, std::string description, unsigned int age, float height, float weight, unsigned int training_type,
     float training_time, unsigned int bpm, float calories) : Sensor(id, name, description, age, height, weight, training_type, training_time),
-    HeartSensor(id, name, description, age, height, weight, training_type, training_time, bpm) 
+    HeartSensor(id, name, description, age, height, weight, training_type, training_time, bpm), calories(calories)
     {
         setStandardCalories();
     }
@@ -31,7 +31,7 @@ namespace Core
     void CaloriesCounter::setStandardCalories()
     {
         // Calcola calorie medie
-        calories = getWeight() * getTrainingTime() + (getTrainingType() * 2);
+        setCalories(getWeight() * getTrainingTime() + (getTrainingType() * 2));
     }
 
     void CaloriesCounter::simulate() 
@@ -40,10 +40,16 @@ namespace Core
         HeartSensor::simulate();
 
         setStandardCalories();
-        // Incidenza dei bpm nella simulazione del calcolo delle calorie bruciate (20%)
+        // Incidenza dei bpm nella simulazione del calcolo delle calorie bruciate (50%)
         float calories_range = getBpm() * bpm_percentage;
         float rand_calories = getRandomNumber(getCalories(), getCalories() + calories_range / 2);
         setCalories(rand_calories);
+    }
+
+    void CaloriesCounter::reset()
+    {
+        HeartSensor::reset();
+        setCalories(0);
     }
 
     void CaloriesCounter::accept(IVisitor& visitor)

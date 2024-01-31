@@ -22,6 +22,12 @@ namespace Core
         Speedometer::simulate();
     }
 
+    void Activity::reset()
+    {
+        Speedometer::reset();
+        CaloriesCounter::reset();
+    }
+
     void Activity::accept(IVisitor& visitor)
     {
         visitor.visitActivity(*this);

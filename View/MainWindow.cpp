@@ -110,14 +110,11 @@ namespace View
 
         std::cout << "MainWindow::MainWindow Parte sinistra" << std::endl;
 
-        results = new Results(vector);
+        results = new Results(vector, left_stacked_widget);
         left_stacked_widget->addWidget(results);
 
         right_stacked_widget = new QStackedWidget();
         splitter->addWidget(right_stacked_widget);
-
-        QWidget* place_holder = new QWidget();
-        right_stacked_widget->addWidget(place_holder);
 
         std::cout << "MainWindow::MainWindow Parte destra" << std::endl;
 

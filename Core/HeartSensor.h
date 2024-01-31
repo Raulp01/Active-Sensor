@@ -28,6 +28,7 @@ namespace Core
         void setStandardBpm();
 
         void simulate() override;
+        void reset() override;
 
         void accept(IVisitor& visitor) override;
         void accept(IConstVisitor& const_visitor) const override;

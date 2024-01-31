@@ -2,18 +2,12 @@
 
 namespace Core
 {
-    unsigned int Sensor::id_count = 0;
-
-    Sensor::Sensor(unsigned int id, std::string name, std::string description, unsigned int age, float height, float weight, unsigned int training_type,
-    float training_time) : id(id), name(name), description(description), age(age), height(height), weight(weight), 
-    training_type(training_type), training_time(training_time) {}
+    Sensor::Sensor(unsigned int id, std::string name, std::string description, unsigned int age, float height, float weight, 
+    unsigned int training_type, float training_time = 0) 
+    : id(id), name(name), description(description), age(age), height(height), weight(weight), 
+    training_type(training_type), training_time(training_time), time_changed(false) {}
 
     Sensor::~Sensor() {}
-    
-    unsigned int Sensor::getCounter() const
-    {
-        return id_count;
-    }
 
     std::string Sensor::getType() const {}
 
@@ -76,44 +70,54 @@ namespace Core
         return training_time;
     }
 
+    bool Sensor::getTimeChanged() const
+    {
+        return time_changed;
+    }
+
     void Sensor::setId(unsigned int new_id)
     {
-        this->id = new_id;
+        id = new_id;
     }
 
     void Sensor::setName(std::string new_name)
     {
-        this->name = new_name;
+        name = new_name;
     }
 
     void Sensor::setDescription(std::string new_description)
     {
-        this->description = new_description; 
+        description = new_description; 
     }
 
     void Sensor::setAge(unsigned int new_age)
     {
-        this->age = new_age;
+        age = new_age;
     }
 
     void Sensor::setHeight(float new_height)
     {
-        this->height = new_height;
+        height = new_height;
     }
 
     void Sensor::setWeight(float new_weight)
     {
-        this->weight = new_weight;
+        weight = new_weight;
     }
 
     void Sensor::setTrainingType(unsigned int new_trainig_type)
     {
-        this->training_type = new_trainig_type;
+        training_type = new_trainig_type;
     }
 
     void Sensor::setTrainingTime(float new_training_time)
     {
-        this->training_time = new_training_time;
+        training_time = new_training_time;
+    }
+
+    void Sensor::setTimeChanged(bool change)
+    {
+        time_changed = change;
     }
 
     float Sensor::getRandomNumber(float range_min, float range_max)
@@ -126,5 +130,19 @@ namespace Core
         std::uniform_real_distribution<> distr(range_min, range_max);
         // Ritorna il numero casuale nella distribuzione
         return distr(gen);
+    }
+
+    void Sensor::simulate()
+    {
+        if(getTimeChanged() == false)
+        {
+            setTrainingTime(getTrainingTime() + 0.20);
+            setTimeChanged(true);
+        }
+    }
+
+    void Sensor::reset()
+    {
+        setTrainingTime(0);
     }
 };

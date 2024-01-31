@@ -12,8 +12,8 @@ namespace Core
         float distance;
 
         public:
-        Speedometer(unsigned int id, std::string name, std::string description, unsigned int age, float height, float weight, unsigned int training_type,
-        float training_time, float avarage_speed, float distance = 0);
+        Speedometer(unsigned int id, std::string name, std::string description, unsigned int age, float height, float weight, 
+        unsigned int training_type, float training_time, float avarage_speed = 0, float distance = 0);
         virtual ~Speedometer();
 
         std::string getType() const override;
@@ -25,6 +25,7 @@ namespace Core
         void setStandardSpeed();
 
         void simulate() override;
+        void reset() override;
 
         void accept(IVisitor& visitor) override;
         void accept(IConstVisitor& const_visitor) const override;

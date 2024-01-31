@@ -11,7 +11,6 @@ namespace Core
     class Sensor
     {
         private:
-        static unsigned int id_count;
         unsigned int id;
         std::string name;
         std::string description;
@@ -20,14 +19,14 @@ namespace Core
         float weight;
         unsigned int training_type;
         float training_time;
+        bool time_changed;
 
         public:
-        Sensor(unsigned int id, std::string name, std::string description, unsigned int age, float height, float weight, unsigned int training_type,
-        float training_time);
+        Sensor(unsigned int id, std::string name, std::string description, unsigned int age, float height, float weight, 
+        unsigned int training_type, float training_time);
         virtual ~Sensor() = 0;
 
-        // getter
-        unsigned int getCounter() const;
+        //getter 
         // Utile per ritornare la stringa col nome del tipo della classe per selezionare
         // l'artwork nell'interfaccia
         virtual std::string getType() const = 0;
@@ -40,6 +39,7 @@ namespace Core
         unsigned int getTrainingType() const;
         std::string getTrainingTypeToString() const;
         float getTrainingTime() const;
+        bool getTimeChanged() const;
 
         // setter
         void setId(unsigned int new_id);
@@ -50,13 +50,15 @@ namespace Core
         void setWeight(float new_weight);
         void setTrainingType(unsigned int new_training_type);
         void setTrainingTime(float new_training_time);
+        void setTimeChanged(bool change);
 
         // Metodi per l'accesso del Visitor in lettura-scrittura e lettura
         virtual void accept(IVisitor& visitor) = 0;
         virtual void accept(IConstVisitor& const_visitor) const = 0;
+        virtual void reset();
 
         // Metodo virtuale puro che permette la simulazione
-        virtual void simulate() = 0;
+        virtual void simulate();
 
         // Metodo che permette di calcolare un valore randomico in un range
         float getRandomNumber(float range_min, float range_max);

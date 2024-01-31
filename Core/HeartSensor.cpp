@@ -40,16 +40,24 @@ namespace Core
         max_bpm = heart_frequence_constant - age_percentage_constant * getAge();
 
         // Crea i bpm medi moltiplicando i bpm massimi per l'intensità dell'allenamento
-        unsigned int ran_bpm = (min_bpm + max_bpm) / 2 * getTrainingTime();
+        unsigned int ran_bpm = (min_bpm + max_bpm) / 2 * getTrainingType();
 
         bpm = getRandomNumber(min_bpm, ran_bpm);
     }
 
     void HeartSensor::simulate() 
     {
-        setStandardBpm();
+        HeartSensor::simulate();
+        // Bpm nel tempo
+
         unsigned int rand_bpm = getRandomNumber(getBpm() - 5, getBpm() + 5);
         setBpm(rand_bpm);
+    }
+
+    void HeartSensor::reset()
+    {
+        Sensor::reset();
+        setBpm(0);
     }
 
     void HeartSensor::accept(IVisitor& visitor)

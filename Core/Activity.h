@@ -17,6 +17,7 @@ namespace Core
         std::string getType() const override;
 
         void simulate() override;
+        void reset() override;
 
         void accept(IVisitor& visitor) override;
         void accept(IConstVisitor& const_visitor) const override;

@@ -6,6 +6,7 @@ TEMPLATE = app
 TARGET = Progetto-PaO-2023-2024
 INCLUDEPATH += .
 QT += widgets
+QT += charts
 
 # You can make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -22,7 +23,7 @@ Core/Json/DataMapper/JsonFile.h \
 Core/Json/IReader.h Core/Json/Reader.h Core/Json/JsonVisitor.h Core/Json/JsonConverter.h \
 View/SensorEditor/EditSensor.h View/SensorEditor/EditHeartSensor.h \
 View/SensorEditor/EditCaloriesCounter.h View/SensorEditor/EditSpeedometer.h \
-View/SensorEditor/EditActivity.h View/SensorEditor/SensorInjector.h View/Editor.h View/Search.h
+View/SensorEditor/EditActivity.h View/SensorEditor/SensorInjector.h View/Editor.h View/Search.h View/ChartVisitor.h
 
 SOURCES += Core/Activity.cpp Core/CaloriesCounter.cpp Core/HeartSensor.cpp \
 Core/Sensor.cpp Core/Speedometer.cpp View/Info.cpp View/InfoVisitor.cpp View/MainWindow.cpp View/Viewer.cpp View/ViewerVisitor.cpp  View/Results.cpp\
@@ -30,5 +31,5 @@ Core/Json/DataMapper/JsonFile.cpp \
 Core/Json/Reader.cpp Core/Json/JsonVisitor.cpp Core/Json/JsonConverter.cpp \
 View/SensorEditor/EditSensor.cpp View/SensorEditor/EditHeartSensor.cpp \
 View/SensorEditor/EditCaloriesCounter.cpp View/SensorEditor/EditSpeedometer.cpp \
-View/SensorEditor/EditActivity.cpp View/SensorEditor/SensorInjector.cpp View/Editor.cpp View/Search.cpp\
+View/SensorEditor/EditActivity.cpp View/SensorEditor/SensorInjector.cpp View/Editor.cpp View/Search.cpp View/ChartVisitor.cpp\
 main.cpp  

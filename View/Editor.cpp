@@ -181,6 +181,7 @@ namespace View
         SensorEditor::EditSensor* editor = editors[stacked_editors->currentIndex()];
         std::cout << "Editor::apply Creato nuovo Sensor in Editor" << std::endl;
         sensor = editor->create(id, name, description, age, height, weight, training_type, training_time);
+        sensor->reset();
 
         std::cout << "Editor::apply Sensor inserito corettamente in vector" << std::endl;
         std::cout << "Editor::apply Dimensione attuale di vector (dopo push_back() in Editor) " << vector.size() << std::endl;

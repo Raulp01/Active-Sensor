@@ -2,6 +2,7 @@
 #define VIEWER
 
 #include <QPushButton>
+#include <QGridLayout>
 #include <QLabel>
 #include "MainWindow.h"
 
@@ -23,9 +24,11 @@ namespace View
         QLabel* height;
         QLabel* description;
         QLabel* age;
+        QGridLayout* layout;
 
         public:
         Viewer(std::vector<Core::Sensor*>& vector, Core::Sensor& sensor);
+        void show();
 
         public slots:
         // void deleteSensor();

@@ -25,9 +25,16 @@ namespace View
         public:
         Info(Core::Sensor& sensor, QWidget* parent = 0);
         Core::Sensor& getSensor();
-        QPushButton* getOpenButton();
-        QPushButton* getEditButton();
-        QPushButton* getRemoveButton();
+
+        signals:
+        void showSensor(Core::Sensor& sensor);
+        void editSensor(Core::Sensor& sensor);
+        void deleteSensor(Core::Sensor& sensor);
+
+        public slots:
+        void emitShowSensor();
+        void emitEditSensor();
+        void emitDeleteSensor();
     };
 };
 

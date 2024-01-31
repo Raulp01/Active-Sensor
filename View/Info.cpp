@@ -48,6 +48,10 @@ namespace View
 
         remove = new QPushButton("Delete");
         button_layout->addWidget(remove);
+
+        connect(open, &QPushButton::pressed, this, &Info::emitShowSensor);
+        connect(edit, &QPushButton::pressed, this, &Info::emitEditSensor);
+        connect(remove, &QPushButton::pressed, this, &Info::emitDeleteSensor);
     }  
 
     Core::Sensor& Info::getSensor()
@@ -55,18 +59,18 @@ namespace View
         return sensor;
     }
 
-    QPushButton* Info::getOpenButton()
+    void Info::emitShowSensor()
     {
-        return open;
+        emit showSensor(sensor);
     }
 
-    QPushButton* Info::getEditButton()
+    void Info::emitEditSensor()
     {
-        return edit;
+        emit editSensor(sensor);
     }
 
-    QPushButton* Info::getRemoveButton()
+    void Info::emitDeleteSensor()
     {
-        return remove;
+        emit deleteSensor(sensor);
     }
 }

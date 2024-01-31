@@ -9,7 +9,7 @@ namespace View
         layout = new QVBoxLayout(this);
         layout->setAlignment(Qt::AlignTop | Qt::AlignCenter);
 
-        showResults(vector);
+        std::cout << "Results::Results" << std::endl;
     }
 
     void Results::clear()
@@ -17,30 +17,31 @@ namespace View
         if(container.isEmpty() == false)
         {
             //Pulizia
-            while(container.count())
+            while(!container.isEmpty())
             {
-                std::cout << "Clearing previous data" << std::endl;
-                layout->removeWidget(container.last());
-                delete container.takeLast();
+                std::cout << "Results::clear Clearing previous data. Container size = " << container.size() << std::endl;
+                Info* info = container.takeLast();
+                layout->removeWidget(info);
+                delete info;
             }
         }
     }
 
-    void Results::emitShowSensor()
+    void Results::emitShowSensor(Core::Sensor& sensor)
     {
-        Core::Sensor& sensor = container.last()->getSensor(); 
+        std::cout << "Results::emitShowSensor" << std::endl;
         emit showSensor(&sensor);
     }
 
-    void Results::emitEditSensor()
+    void Results::emitEditSensor(Core::Sensor& sensor)
     {
-        Core::Sensor& sensor = container.last()->getSensor(); 
+        std::cout << "Results::emitEditSensor" << std::endl;
         emit editSensor(&sensor);
     }
 
-    void Results::emitDeleteSensor()
+    void Results::emitDeleteSensor(Core::Sensor& sensor)
     {
-        Core::Sensor& sensor = container.last()->getSensor(); 
+        std::cout << "Results::emitDeleteSensor" << std::endl;
         emit deleteSensor(&sensor);
     }
 
@@ -48,30 +49,30 @@ namespace View
     {
         clear();
 
-        std::cout << "showResults dimensione vector = " << vector.size() << std::endl;
-        std::cout << "showResults dimensione results_vector = " << results_vector.size() << std::endl;
+        std::cout << "Results::showResults dimensione vector = " << vector.size() << std::endl;
+        std::cout << "Results::showResults dimensione results_vector = " << results_vector.size() << std::endl;
 
-        if(results_vector.empty() == false)
+        if(!results_vector.empty())
         {
-            std::cout << "Container non vuoto in showResult" << std::endl;
+            std::cout << "Results::showResults Container non vuoto in showResult" << std::endl;
             for(auto it = results_vector.begin(); it != results_vector.end(); it++)
             {
-                std::cout << "Caricando i risultati..." << std::endl;
+                std::cout << "Results::showResults Caricando i risultati..." << std::endl;
                 Info* info = new Info(**it);
                 container.push_back(info);
+                std::cout << "Results::showResults Dimensione container di Info in showResults = " << container.size() << std::endl;
                 layout->addWidget(container.last());
 
-                connect(container.last()->getOpenButton(), &QPushButton::pressed, this, &Results::emitShowSensor);
-                connect(container.last()->getEditButton(), &QPushButton::pressed, this, &Results::emitEditSensor);
-                connect(container.last()->getRemoveButton(), &QPushButton::pressed, this, &Results::emitDeleteSensor);
+                connect(info, &Info::showSensor, this, &Results::emitShowSensor);
+                connect(info, &Info::editSensor, this, &Results::emitEditSensor);
+                connect(info, &Info::deleteSensor, this, &Results::emitDeleteSensor);
             }
         }
     }
 
     void Results::showResultsById(unsigned int id)
     {
-        clear();
-        std::cout << "entrato in Results::receiveId" << std::endl;
+        std::cout << "Results::showResultsById entrato in Results::receiveId" << std::endl;
 
         std::vector<Core::Sensor*> results_vector;
 
@@ -79,12 +80,12 @@ namespace View
 
         if(vector.empty())
         {
-            std::cout << "showResultsById :: vector vuoto" << std::endl;
+            std::cout << "Results::showResultsById vector vuoto" << std::endl;
         }
 
         for(auto it = vector.begin(); it != vector.end(); ++it)
         {
-            std::cout << "entrato ciclo for Results::showResultsById" << std::endl;
+            std::cout << "Results::showResultsById entrato ciclo for Results::showResultsById" << std::endl;
 
             std::string sensor_id_string = std::to_string((**it).getId());
 
@@ -93,8 +94,8 @@ namespace View
 
             while(i != id_input_string.length() && match == true)
             {
-                std::cout << "id_input_string["<< i << "] = " << id_input_string[i] << std::endl;
-                std::cout << "sensor_id_string[" << i << "] = " << sensor_id_string[i] << std::endl;
+                std::cout << "Results::showResultsById id_input_string["<< i << "] = " << id_input_string[i] << std::endl;
+                std::cout << "Results::showResultsById sensor_id_string[" << i << "] = " << sensor_id_string[i] << std::endl;
                 if(id_input_string[i] != sensor_id_string[i])
                 {
                     match = false;
@@ -106,9 +107,12 @@ namespace View
             if(match==true)
             {
                 results_vector.push_back(*it);
+                std::cout << "Results::showResultsById elemento inserito correttamente in results_vector" << std::endl;
             }
         }
 
+        std::cout << "Results::showResultsById invocazione di Results::showResults" << std::endl;
+        
         showResults(results_vector);
     }
 };

@@ -16,6 +16,7 @@ namespace View {
         QVector<Info*> container;
         std::vector<Core::Sensor*>& vector;
         QVBoxLayout* layout;
+
         
         public:
         Results(std::vector<Core::Sensor*>& vector, QWidget* parent = 0);
@@ -30,9 +31,9 @@ namespace View {
         void searchId(std::vector<Core::Sensor*>& results_vector);
 
         public slots:
-        void emitShowSensor();
-        void emitEditSensor();
-        void emitDeleteSensor();
+        void emitShowSensor(Core::Sensor& sensor);
+        void emitEditSensor(Core::Sensor& sensor);
+        void emitDeleteSensor(Core::Sensor& sensor);
         
     };
 };

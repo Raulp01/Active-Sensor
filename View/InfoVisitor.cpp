@@ -10,81 +10,81 @@ namespace View
 
     void InfoVisitor::visitCaloriesCounter(Core::CaloriesCounter& calories_counter)
     {
+        widget = new QWidget();
+
         QVBoxLayout* layout = new QVBoxLayout();
         layout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
+        widget->setLayout(layout);
 
-        QLabel* type = new QLabel(QString::fromStdString(calories_counter.getTrainingTypeToString()));
+        QLabel* type = new QLabel("Type" + QString::fromStdString(calories_counter.getTrainingTypeToString()));
         layout->addWidget(type);
 
         layout->addStretch();
 
-        QPixmap image(":Assets/CaloriesCounter.png");
+        QPixmap image("../Assets/CaloriesCounter.png");
 
         artwork = new QLabel();
         artwork->setPixmap(image.scaledToHeight(256));
         layout->addWidget(artwork);
-
-        widget = new QWidget();
-        widget->setLayout(layout);
     }
 
     void InfoVisitor::visitActivity(Core::Activity& activity)
     {
+        widget = new QWidget();
+
         QVBoxLayout* layout = new QVBoxLayout();
         layout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
+        widget->setLayout(layout);
 
-        QLabel* type = new QLabel(QString::fromStdString(activity.getTrainingTypeToString()));
+        QLabel* type = new QLabel("Type" + QString::fromStdString(activity.getTrainingTypeToString()));
         layout->addWidget(type);
 
         layout->addStretch();
 
-        QPixmap image(":Assets/Activity.png");
+        QPixmap image("../Assets/Activity.png");
 
         artwork = new QLabel();
         artwork->setPixmap(image.scaledToHeight(256));
         layout->addWidget(artwork);
-
-        widget = new QWidget();
-        widget->setLayout(layout);
     }
     
     void InfoVisitor::visitHeartSensor(Core::HeartSensor& heart_sensor)
     {
+        widget = new QWidget();
+
         QVBoxLayout* layout = new QVBoxLayout();
         layout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
+        widget->setLayout(layout);
 
-        QLabel* type = new QLabel(QString::fromStdString(heart_sensor.getTrainingTypeToString()));
+        QLabel* type = new QLabel("Type" + QString::fromStdString(heart_sensor.getTrainingTypeToString()));
         layout->addWidget(type);
 
         layout->addStretch();
 
-        QPixmap image(":Assets/HeartSensor.png");
+        QPixmap image("../Assets/HeartSensor.png");
 
         artwork = new QLabel();
         artwork->setPixmap(image.scaledToHeight(256));
         layout->addWidget(artwork);
-
-        widget = new QWidget();
-        widget->setLayout(layout);
     }
     
     void InfoVisitor::visitSpeedometer(Core::Speedometer& speedometer)
     {
+        widget = new QWidget();
+
         QVBoxLayout* layout = new QVBoxLayout();
         layout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
+        widget->setLayout(layout);
 
-        QLabel* type = new QLabel(QString::fromStdString(speedometer.getTrainingTypeToString()));
+        QLabel* type = new QLabel("Type" + QString::fromStdString(speedometer.getTrainingTypeToString()));
         layout->addWidget(type);
 
         layout->addStretch();
 
-        QPixmap image(":Assets/Speedometer.png");
+        QPixmap image("../Assets/Speedometer.png");
 
         artwork = new QLabel();
         artwork->setPixmap(image.scaledToHeight(256));
         layout->addWidget(artwork);
-
-        widget = new QWidget();
-        widget->setLayout(layout);
     }
 }

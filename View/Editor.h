@@ -46,7 +46,7 @@ namespace View {
         void apply();
 
         signals:
-        void save();
+        void save(std::vector<Core::Sensor*>& reload_vector);
     };
 
 }

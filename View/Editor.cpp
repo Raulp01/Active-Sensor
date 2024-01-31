@@ -14,7 +14,7 @@ namespace View
 {
     Editor::Editor(std::vector<Core::Sensor*>& vector, Core::Sensor* sensor) : vector(vector), sensor(sensor)
     {
-        std::cout << "Costruttore Editor vector = " << vector.size() << std::endl;
+        std::cout << "Editor::Editor Costruttore Editor vector = " << vector.size() << std::endl;
         layout = new QVBoxLayout(this);
         layout->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
@@ -115,8 +115,8 @@ namespace View
         stacked_editors = new QStackedLayout();
         layout->addLayout(stacked_editors);
 
-        std::cout << "Dopo stackedEditors in Editor" << std::endl;
-        std::cout << "Dimensione vector prima degli EditSensor = " << vector.size() << std::endl;
+        std::cout << "Editor::Editor Dopo stackedEditors in Editor" << std::endl;
+        std::cout << "Editor::Editor Dimensione vector prima degli EditSensor = " << vector.size() << std::endl;
 
         SensorEditor::EditHeartSensor* edit_heart_sensor = new SensorEditor::EditHeartSensor();
         stacked_editors->addWidget(edit_heart_sensor);
@@ -162,7 +162,7 @@ namespace View
 
     void Editor::apply()
     {
-        std::cout << "Dimensione attuale di vector (prima di push_back() in Editor) " << vector.size() << std::endl;
+        std::cout << "Editor::apply Dimensione attuale di vector (prima di push_back() in Editor) " << vector.size() << std::endl;
 
         unsigned int id = id_input->value();
         QString name = name_input->text();
@@ -173,14 +173,18 @@ namespace View
         unsigned int training_type = training_type_input->currentIndex();
         float training_time = training_time_input->value();
 
+        if(sensor == nullptr)
+        {
+            vector.push_back(sensor);
+        }
+
         SensorEditor::EditSensor* editor = editors[stacked_editors->currentIndex()];
-        std::cout << "Creato nuovo Sensor in Editor" << std::endl;
+        std::cout << "Editor::apply Creato nuovo Sensor in Editor" << std::endl;
         sensor = editor->create(id, name, description, age, height, weight, training_type, training_time);
 
-        vector.push_back(sensor);
-        std::cout << "Sensor inserito corettamente in vector" << std::endl;
-        std::cout << "Dimensione attuale di vector (dopo push_back() in Editor) " << vector.size() << std::endl;
-        emit save();
-        std::cout << "DOPO save in Editor" << std::endl;
+        std::cout << "Editor::apply Sensor inserito corettamente in vector" << std::endl;
+        std::cout << "Editor::apply Dimensione attuale di vector (dopo push_back() in Editor) " << vector.size() << std::endl;
+        emit save(vector);
+        std::cout << "Editor::apply DOPO save in Editor" << std::endl;
     }
 };

@@ -52,21 +52,18 @@ namespace View
         std::cout << "Results::showResults dimensione vector = " << vector.size() << std::endl;
         std::cout << "Results::showResults dimensione results_vector = " << results_vector.size() << std::endl;
 
-        if(!results_vector.empty())
+        std::cout << "Results::showResults Container non vuoto in showResult" << std::endl;
+        for(auto it = results_vector.begin(); it != results_vector.end(); it++)
         {
-            std::cout << "Results::showResults Container non vuoto in showResult" << std::endl;
-            for(auto it = results_vector.begin(); it != results_vector.end(); it++)
-            {
-                std::cout << "Results::showResults Caricando i risultati..." << std::endl;
-                Info* info = new Info(**it);
-                container.push_back(info);
-                std::cout << "Results::showResults Dimensione container di Info in showResults = " << container.size() << std::endl;
-                layout->addWidget(container.last());
+            std::cout << "Results::showResults Caricando i risultati..." << std::endl;
+            Info* info = new Info(**it);
+            container.push_back(info);
+            std::cout << "Results::showResults Dimensione container di Info in showResults = " << container.size() << std::endl;
+            layout->addWidget(container.last());
 
-                connect(info, &Info::showSensor, this, &Results::emitShowSensor);
-                connect(info, &Info::editSensor, this, &Results::emitEditSensor);
-                connect(info, &Info::deleteSensor, this, &Results::emitDeleteSensor);
-            }
+            connect(info, &Info::showSensor, this, &Results::emitShowSensor);
+            connect(info, &Info::editSensor, this, &Results::emitEditSensor);
+            connect(info, &Info::deleteSensor, this, &Results::emitDeleteSensor);
         }
     }
 

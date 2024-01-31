@@ -332,15 +332,16 @@ namespace View
     void MainWindow::deleteSensor(Core::Sensor* sensor) {
         std::cout << "MainWindow::deleteSensor" << std::endl;
         auto it = vector.begin();
-        while(it != vector.end() || *it != sensor)
+        while(it != vector.end() && *it != sensor)
         {
             std::cout << "MainWindow::deleteSensor nel ciclo while" << std::endl;
             it++;
         }
         if(it != vector.end())
         {
+            Core::Sensor* hold = *it;
             vector.erase(it);
-            delete sensor;
+            delete hold;
             std::cout << "MainWindow::deleteSensor " << QString::fromStdString(sensor->getName()).toStdString() << " removed." << std::endl;
         }
         else

@@ -140,20 +140,30 @@ namespace Core
 
     void Sensor::simulate()
     {
+        std::cout << "Sensor::simulate()"<< std::endl;
         // Controllo per aumentare il tempo una volta nella gerarchia
         if(getTimeChanged() == false)
         {
+            std::cout << "Sensor::simulate() time_changed: " << getTimeChanged() << std::endl;
             setTrainingTime(getTrainingTime() + 0.20);
+            std::cout << "Sensor::simulate() training_time: " << getTrainingTime() << std::endl;
             time_vector.push_back(getTrainingTime());
+            std::cout << "Sensor::simulate() time_vector: " << time_vector.size() << std::endl;
             setTimeChanged(true);
+            std::cout << "Sensor::simulate() time_changed: " << getTimeChanged() << std::endl;
         }
     }
 
     void Sensor::reset()
     {
+        std::cout << "Sensor::reset()" << std::endl;
         setTimeChanged(false);
-        setTrainingTime(0);
+        std::cout << "Sensor::reset() time_changed: " << getTimeChanged() << std::endl;
         time_vector.clear();
+        std::cout << "Sensor::reset() time_vector: " << time_vector.size() << std::endl;
+        setTrainingTime(0);
+        std::cout << "Sensor::reset() training_time: " << getTrainingTime() << std::endl;
         time_vector.push_back(getTrainingTime());
+        std::cout << "Sensor::reset() time_vector: " << time_vector.size() << std::endl;
     }
 };

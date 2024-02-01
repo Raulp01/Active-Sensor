@@ -4,6 +4,7 @@
 #include <QWidget>
 #include "../IConstVisitor.h"
 #include "../Core/Activity.h"
+#include <QVBoxLayout>
 
 namespace View
 {
@@ -13,6 +14,7 @@ namespace View
 
         private:
         QWidget* widget;
+        QVBoxLayout* layout;
 
         public:
         QWidget* getWidget();
@@ -21,6 +23,10 @@ namespace View
         virtual void visitHeartSensor(const Core::HeartSensor& heart_sensor);
         virtual void visitSpeedometer(const Core::Speedometer& speedometer);
 
+        public:
+        void createBpmChart(const Core::HeartSensor& heart_sensor);
+        void createCaloriesChart(const Core::CaloriesCounter& calories_counter);
+        void createSpeedChart(const Core::Speedometer& speedometer);
     };
 }
 

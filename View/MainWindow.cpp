@@ -311,6 +311,7 @@ namespace View
         std::cout << "MainWindow::showSensor Settato widget in scroll_area" << std::endl;
         right_stacked_widget->addWidget(scroll_area);
         right_stacked_widget->setCurrentIndex(1);
+        connect(viewer_wiget, &Viewer::showViewer, this, &MainWindow::showSensor);
         std::cout << "MainWindow::showSensor Showing sensor " + QString::number(sensor->getId()).toStdString() << std::endl;
     }
 

@@ -52,30 +52,46 @@ namespace Core
     {
         // Calcola la velocità la prima volta prendendo un numero casuale tra 1 e training_type + 2
         setAvarageSpeed(getRandomNumber(1, avarage_speed + getTrainingType() + 2));
+        std::cout << "Speedometer: set to standard speed: " << getAvarageSpeed() << std::endl;
         speed_vector.push_back(getAvarageSpeed());
+        std::cout << "Speedometer: speed vector: " << speed_vector.size() << std::endl;
+        distance_vector.push_back(getDistance());
+        std::cout << "Speedometer: distance vector: " << distance_vector.size() << std::endl;
     }
 
     void Speedometer::simulate() 
     {
+        std::cout << "Speedometer::simulate()" << std::endl;
         Sensor::simulate();
         //Distanza calcolata ad ogni iterazione 
         setDistance(getAvarageSpeed() * getTrainingTime()); 
+        std::cout << "Speedometer::simulate() distance: " << getDistance() << std::endl;
         distance_vector.push_back(getDistance());
+        std::cout << "Speedometer::simulate() distance_vector: " << distance_vector.size() << std::endl;
 
         //Ricalcola la velocità con un numero semi-randomico
         float rand_speed = getRandomNumber(avarage_speed - getTrainingType(), avarage_speed + getTrainingType());
         setAvarageSpeed(rand_speed);
+        std::cout << "Speedometer::simulate() avarage_speed: " << getAvarageSpeed() << std::endl;
         speed_vector.push_back(getAvarageSpeed());
+        std::cout << "Speedometer::simulate() speed_vector: " << speed_vector.size() << std::endl;
     }
 
     void Speedometer::reset()
     {
-        setTimeChanged(false);
+        std::cout << "Speedometer::reset()" << std::endl;
         Sensor::reset();
         speed_vector.clear();
+        std::cout << "Speedometer::reset() speed_vector: " << speed_vector.size() << std::endl;
+        setAvarageSpeed(0);
+        std::cout << "Speedometer::reset() avarage_speed: " << getAvarageSpeed() << std::endl;
+        //speed_vector.push_back(getAvarageSpeed());
         distance_vector.clear();
+        std::cout << "Speedometer::reset() distance_vector: " << distance_vector.size() << std::endl;
         setDistance(0);
+        std::cout << "Speedometer::reset() distance: " << getDistance() << std::endl;
         distance_vector.push_back(getDistance());
+        std::cout << "Speedometer::reset() distance_vector: " << distance_vector.size() << std::endl;
         setStandardSpeed();
     }
 

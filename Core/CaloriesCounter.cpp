@@ -2,7 +2,7 @@
 
 namespace Core
 {
-    const float CaloriesCounter::bpm_percentage = 0.5;
+    const float CaloriesCounter::bpm_percentage = 0.25;
 
     CaloriesCounter::CaloriesCounter(unsigned int id, std::string name, std::string description, unsigned int age, float height, float weight, unsigned int training_type,
     float training_time, unsigned int bpm, float calories) : Sensor(id, name, description, age, height, weight, training_type, training_time),
@@ -36,29 +36,39 @@ namespace Core
 
     void CaloriesCounter::setStandardCalories()
     {
+        std::cout << "CaloriesCounter::setStandardCalories()";
         // Calcola calorie medie
         setCalories(getWeight() * getTrainingTime() + (getTrainingType() * 2));
+        std::cout << " calories set to " << getCalories() << " in setStandardCalories()" << std::endl;
     }
 
     void CaloriesCounter::simulate() 
     {
+        std::cout << "CaloriesCounter::simulate()";
         // Simulazione del sottooggetto
         HeartSensor::simulate();
 
         setStandardCalories();
-        // Incidenza dei bpm nella simulazione del calcolo delle calorie bruciate (50%)
+        // Incidenza dei bpm nella simulazione del calcolo delle calorie bruciate (25%)
         float calories_range = getBpm() * bpm_percentage;
-        float rand_calories = getRandomNumber(getCalories(), getCalories() + calories_range / 2);
+        std::cout << "CaloriesCounter::simulate() calories_range set to " << calories_range << std::endl;
+        float rand_calories = getRandomNumber(getCalories(), getCalories() + calories_range);
         setCalories(rand_calories);
+        std::cout << "CaloriesCounter::simulate() calories " << getCalories() << std::endl;
         calories_vector.push_back(getCalories());
+        std::cout << "CaloriesCounter::simulate() calories_vector " << calories_vector.size() << std::endl;
     }
 
     void CaloriesCounter::reset()
     {
+        std::cout << "CaloriesCounter::reset()";
         HeartSensor::reset();
         calories_vector.clear();
-        setCalories(0);
+        std::cout << "CaloriesCounter::reset() calories_vector " << calories_vector.size() << std::endl;
+        setStandardCalories();
+        std::cout << "CaloriesCounter::reset() calories " << getCalories() << std::endl;
         calories_vector.push_back(getCalories());
+        std::cout << "CaloriesCounter::reset() calories_vector " << calories_vector.size() << std::endl;
     }
 
     void CaloriesCounter::accept(IVisitor& visitor)

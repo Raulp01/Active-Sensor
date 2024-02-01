@@ -3,7 +3,7 @@
 namespace Core
 {
     Sensor::Sensor(unsigned int id, std::string name, std::string description, unsigned int age, float height, float weight, 
-    unsigned int training_type, float training_time = 0) 
+    unsigned int training_type, float training_time) 
     : id(id), name(name), description(description), age(age), height(height), weight(weight), 
     training_type(training_type), training_time(training_time), time_changed(false) 
     {
@@ -11,8 +11,6 @@ namespace Core
     }
 
     Sensor::~Sensor() {}
-
-    std::string Sensor::getType() const {}
 
     unsigned int Sensor::getId() const
     {

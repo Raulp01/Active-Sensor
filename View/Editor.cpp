@@ -4,11 +4,6 @@
 #include <QFormLayout>
 #include <QIcon>
 #include <QVBoxLayout>
-#include "SensorEditor/EditActivity.h"
-#include "SensorEditor/EditCaloriesCounter.h"
-#include "SensorEditor/EditHeartSensor.h"
-#include "SensorEditor/EditSpeedometer.h"
-#include "SensorEditor/SensorInjector.h"
 
 namespace View
 {
@@ -22,7 +17,7 @@ namespace View
         form_layout->setLabelAlignment(Qt::AlignCenter | Qt::AlignTop);
 
         id_input = new QSpinBox();
-        id_input->setMinimum(0);
+        id_input->setMinimum(1);
         id_input->setMaximum(INT_MAX);
         id_input->setSingleStep(1);
         if(sensor != nullptr)
@@ -75,33 +70,24 @@ namespace View
         }
         form_layout->addRow("Weight:", weight_input);
 
-        training_time_input = new QDoubleSpinBox();
-        training_time_input->setMinimum(0);
-        training_time_input->setSingleStep(0.5);
-        if(sensor != nullptr)
-        {
-            training_time_input->setValue(sensor->getTrainingTime());
-        }
-        form_layout->addRow("Training Time:", training_time_input);
-
         training_type_input = new QComboBox();
         if(sensor != nullptr)
         {
             training_type_input->setPlaceholderText(QString::fromStdString(sensor->getTrainingTypeToString()));
         }
-        training_type_input->addItem(QIcon("../Assets/Light.svg"), "Light");
-        training_type_input->addItem(QIcon("../Assets/Moderate.svg"), "Moderate");
-        training_type_input->addItem(QIcon("../Assets/High.svg"), "High");
-        training_type_input->addItem(QIcon("../Assets/Very High.png"), "Very High");
-        training_type_input->addItem(QIcon("../Assets/Maximum.jpg"), "Maximum");
+        training_type_input->addItem(QIcon(QPixmap(":/Assets/Light.svg")), "Light");
+        training_type_input->addItem(QIcon(QPixmap(":/Assets/Moderate.svg")), "Moderate");
+        training_type_input->addItem(QIcon(QPixmap(":/Assets/High.svg")), "High");
+        training_type_input->addItem(QIcon(QPixmap(":/Assets/Very High.png")), "Very High");
+        training_type_input->addItem(QIcon(QPixmap(":/Assets/Maximum.jpg")), "Maximum");
         form_layout->addRow("Training Type:", training_type_input);
         
         layout->addLayout(form_layout);
         
         QFormLayout* type_form = new QFormLayout();
-        type_form->setLabelAlignment(Qt::AlignRight | Qt::AlignTop);
+        type_form->setLabelAlignment(Qt::AlignCenter | Qt::AlignTop);
         type = new QComboBox();
-        type->addItem("Heart Sensor");
+        type->addItem("HeartSensor");
         type->addItem("CaloriesCounter");
         type->addItem("Speedometer");
         type->addItem("Activity");
@@ -111,40 +97,8 @@ namespace View
         }
         type_form->addRow("Type:", type);
         layout->addLayout(type_form);
-
-        stacked_editors = new QStackedLayout();
-        layout->addLayout(stacked_editors);
-
-        std::cout << "Editor::Editor Dopo stackedEditors in Editor" << std::endl;
         std::cout << "Editor::Editor Dimensione vector prima degli EditSensor = " << vector.size() << std::endl;
 
-        SensorEditor::EditHeartSensor* edit_heart_sensor = new SensorEditor::EditHeartSensor();
-        stacked_editors->addWidget(edit_heart_sensor);
-        editors.push_back(edit_heart_sensor);
-
-        SensorEditor::EditCaloriesCounter* edit_calories_counter = new SensorEditor::EditCaloriesCounter();
-        stacked_editors->addWidget(edit_calories_counter);
-        editors.push_back(edit_calories_counter);
-
-        SensorEditor::EditSpeedometer* edit_speedometer = new SensorEditor::EditSpeedometer();
-        stacked_editors->addWidget(edit_speedometer);
-        editors.push_back(edit_speedometer);
-
-        SensorEditor::EditActivity* edit_activity = new SensorEditor::EditActivity();
-        stacked_editors->addWidget(edit_activity);
-        editors.push_back(edit_activity);
-
-        if(sensor != nullptr)
-        {
-            SensorEditor::SensorInjector sensor_injector(
-                *edit_activity,
-                *edit_calories_counter,
-                *edit_speedometer,
-                *edit_heart_sensor
-            );
-            sensor->accept(sensor_injector);
-        }
-        showType(type->currentIndex());
 
         layout->addStretch();
 
@@ -152,17 +106,12 @@ namespace View
         layout->addWidget(apply);
 
         connect(apply, &QPushButton::pressed, this, &Editor::apply);
-        connect(type, qOverload<int>(&QComboBox::currentIndexChanged), this, &Editor::showType);
+        connect(type, qOverload<int>(&QComboBox::currentIndexChanged), this, &Editor::changedIndex);
     }
 
-    void Editor::showType(int index)
+    void Editor::changedIndex()
     {
-        stacked_editors->setCurrentIndex(index);
-    }
-
-    void Editor::apply()
-    {
-        std::cout << "Editor::apply Dimensione attuale di vector (prima di push_back() in Editor) " << vector.size() << std::endl;
+        //Si è scelto di cambiare il tipo di sensore
 
         unsigned int id = id_input->value();
         QString name = name_input->text();
@@ -171,20 +120,106 @@ namespace View
         float height = height_input->value();
         float weight = weight_input->value();
         unsigned int training_type = training_type_input->currentIndex();
-        float training_time = training_time_input->value();
+
+        // Sensore esistente: viene tolto dal vettore, ricreato e aggiunto al vettore
+
+        if(sensor != nullptr)
+        {
+            auto it = vector.begin();
+            while(it!= vector.end())
+            {
+                if(*it == sensor)
+                {
+                    vector.erase(it);
+                    delete sensor;
+                }
+            }
+        }
+
+        // Sensore nuovo: viene creato e aggiunto al vettore
+
+        switch (type->currentIndex())
+        {
+        case 0:
+            sensor = new Core::HeartSensor(id, name.toStdString(), description.toStdString(), age, height, weight, training_type);
+            std::cout << "Editor::changedIndex creazione HeartSensor 1 index: " << type->currentIndex() << std::endl;
+            break;
+        case 1:
+            sensor = new Core::CaloriesCounter(id, name.toStdString(), description.toStdString(), age, height, weight, training_type);
+            std::cout << "Editor::changedIndex creazione CaloriesCounter 2 index: " << type->currentIndex() << std::endl;
+            break;
+        case 2:
+            sensor = new Core::Speedometer(id, name.toStdString(), description.toStdString(), age, height, weight, training_type);
+            std::cout << "Editor::changedIndex creazione Speedometer 3 index: " << type->currentIndex() << std::endl;
+            break;
+        case 3:
+            std::cout << "Editor::changedIndex creazione Activity 4 index: " << type->currentIndex() << std::endl;
+            sensor = new Core::Activity(id, name.toStdString(), description.toStdString(), age, height, weight, training_type);
+            break;
+        }
+        vector.push_back(sensor);
+        std::cout << "Editor::changedIndex Dimensione attuale di vector (dopo push_back() in Editor) " << vector.size() << std::endl;
+    }
+
+    void Editor::apply()
+    {
+        //Slot per il tasto Apply
+
+        unsigned int id = id_input->value();
+        QString name = name_input->text();
+        QString description = description_input->toPlainText();
+        unsigned int age = age_input->value();
+        float height = height_input->value();
+        float weight = weight_input->value();
+        unsigned int training_type = training_type_input->currentIndex();
+
+        //Sensore creato scegliendo il tipo di default sul QComboBox
 
         if(sensor == nullptr)
         {
+            switch (type->currentIndex())
+            {
+            case 0:
+                std::cout << "Editor::apply case 1, index: " << type->currentIndex() << std::endl;
+                sensor = new Core::HeartSensor(id, name.toStdString(), description.toStdString(), age, height, weight, training_type);
+                break;
+            case 1:
+                std::cout << "Editor::apply case 2, index: " << type->currentIndex() << std::endl;
+                sensor = new Core::CaloriesCounter(id, name.toStdString(), description.toStdString(), age, height, weight, training_type);
+                break;
+            case 2:
+                std::cout << "Editor::apply case 3, index: " << type->currentIndex() << std::endl;
+                sensor = new Core::Speedometer(id, name.toStdString(), description.toStdString(), age, height, weight, training_type);
+                break;
+            case 3:
+                std::cout << "Editor::apply case 4, index: " << type->currentIndex() << std::endl;
+                sensor = new Core::Activity(id, name.toStdString(), description.toStdString(), age, height, weight, training_type);
+                break;
+            }
+
             vector.push_back(sensor);
+            std::cout << "Editor::apply Dimensione attuale di vector (dopo push_back() in Editor) " << vector.size() << std::endl; 
+        }
+        else
+        {
+            //Sensore esistente: chiamati i metodi per aggiornarlo
+
+            sensor->setId(id);
+            std::cout << "Editor::apply id: " << sensor->getId() << std::endl;
+            sensor->setName(name.toStdString());
+            std::cout << "Editor::apply name: " << sensor->getName() << std::endl;
+            sensor->setDescription(description.toStdString());
+            sensor->setAge(age);
+            std::cout << "Editor::apply age: " << sensor->getAge() << std::endl;
+            sensor->setHeight(height);
+            std::cout << "Editor::apply height: " << sensor->getHeight() << std::endl;
+            sensor->setWeight(weight);
+            std::cout << "Editor::apply weight: " << sensor->getWeight() << std::endl;
+            sensor->setTrainingType(training_type);
+            std::cout << "Editor::apply training_type: " << sensor->getTrainingType() << std::endl;
+            std::cout << "Editor::apply Dimensione attuale di vector (dopo modifica in Editor) " << vector.size() << std::endl;
         }
 
-        SensorEditor::EditSensor* editor = editors[stacked_editors->currentIndex()];
-        std::cout << "Editor::apply Creato nuovo Sensor in Editor" << std::endl;
-        sensor = editor->create(id, name, description, age, height, weight, training_type, training_time);
-        sensor->reset();
-
-        std::cout << "Editor::apply Sensor inserito corettamente in vector" << std::endl;
-        std::cout << "Editor::apply Dimensione attuale di vector (dopo push_back() in Editor) " << vector.size() << std::endl;
         emit save(vector);
         std::cout << "Editor::apply DOPO save in Editor" << std::endl;
     }

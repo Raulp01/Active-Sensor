@@ -64,16 +64,9 @@ namespace View
         QChart* calories_chart = new QChart();
         QLineSeries* series_calories = new QLineSeries();
 
-        for(
-            auto it_t = calories_counter.getSensorVector().begin(); 
-            it_t != calories_counter.getSensorVector().end(); it_t++
-        )
+        for(auto it_t = calories_counter.getSensorVector().begin(); it_t != calories_counter.getSensorVector().end(); it_t++) 
         {
-            for
-            (
-                auto it_c = calories_counter.getCaloriesVector().begin();
-                it_c != calories_counter.getCaloriesVector().end(); it_c++
-            )
+            for(auto it_c = calories_counter.getCaloriesVector().begin(); it_c != calories_counter.getCaloriesVector().end(); it_c++)
             {
                 series_calories->append(*it_t, *it_c);
             }       
@@ -108,19 +101,16 @@ namespace View
         QLabel* bpm_label = new QLabel("Heart Sensor Chart: x-time, y-bpm");
         layout->addWidget(bpm_label);
 
+        // Creazione del grafico per i bpm
+
         QChart* bpm_chart = new QChart();
         QLineSeries* series_bpm = new QLineSeries();
 
-        for(
-            auto it_t = activity.getSensorVector().begin(); 
-            it_t != activity.getSensorVector().end(); it_t++
-        )
-        {
-            for
-            (
-                auto it_b = activity.getBpmVector().begin();
-                it_b != activity.getBpmVector().end(); it_b++
-            )
+        // Iterazione sugli elementi che andranno a comporre l'asse x
+        for(auto it_t = activity.getSensorVector().begin(); it_t != activity.getSensorVector().end(); it_t++)
+        {   
+            // Iterazione sugli elementi che andranno a comporre l'asse y
+            for(auto it_b = activity.getBpmVector().begin(); it_b != activity.getBpmVector().end(); it_b++)
             {
                 series_bpm->append(*it_t, *it_b);
             }       
@@ -129,16 +119,19 @@ namespace View
         bpm_chart->legend()->hide();
         bpm_chart->addSeries(series_bpm);
 
+        // Creazione asse x con range da 0 a 24
         QValueAxis* bpm_x = new QValueAxis();
         bpm_x->setRange(0, 24);
         bpm_chart->addAxis(bpm_x, Qt::AlignBottom);
         series_bpm->attachAxis(bpm_x);
 
+        // Creazione asse y con range da 0 a 200
         QValueAxis* bpm_y = new QValueAxis();
         bpm_y->setRange(0, 200);
         bpm_chart->addAxis(bpm_y, Qt::AlignLeft);
         series_bpm->attachAxis(bpm_y);
 
+        // Creazione vista del grafico
         QChartView* bpm_view = new QChartView(bpm_chart);
         bpm_view->setRenderHint(QPainter::Antialiasing);
 
@@ -150,16 +143,9 @@ namespace View
         QChart* calories_chart = new QChart();
         QLineSeries* series_calories = new QLineSeries();
 
-        for(
-            auto it_t = activity.getSensorVector().begin(); 
-            it_t != activity.getSensorVector().end(); it_t++
-        )
+        for(auto it_t = activity.getSensorVector().begin(); it_t != activity.getSensorVector().end(); it_t++)
         {
-            for
-            (
-                auto it_c = activity.getCaloriesVector().begin();
-                it_c != activity.getCaloriesVector().end(); it_c++
-            )
+            for(auto it_c = activity.getCaloriesVector().begin(); it_c != activity.getCaloriesVector().end(); it_c++)
             {
                 series_calories->append(*it_t, *it_c);
             }       
@@ -189,16 +175,9 @@ namespace View
         QChart* speed_chart = new QChart();
         QLineSeries* series_speed = new QLineSeries();
 
-        for(
-            auto it_d = activity.getDistanceVector().begin(); 
-            it_d != activity.getDistanceVector().end(); it_d++
-        )
+        for(auto it_d = activity.getDistanceVector().begin(); it_d != activity.getDistanceVector().end(); it_d++)
         {
-            for
-            (
-                auto it_s = activity.getSpeedVector().begin();
-                it_s != activity.getSpeedVector().end(); it_s++
-            )
+            for(auto it_s = activity.getSpeedVector().begin(); it_s != activity.getSpeedVector().end(); it_s++)
             {
                 series_speed->append(*it_d, *it_s);
             }       
@@ -236,16 +215,9 @@ namespace View
         QChart* bpm_chart = new QChart();
         QLineSeries* series_bpm = new QLineSeries();
 
-        for(
-            auto it_t = heart_sensor.getSensorVector().begin(); 
-            it_t != heart_sensor.getSensorVector().end(); it_t++
-        )
+        for(auto it_t = heart_sensor.getSensorVector().begin(); it_t != heart_sensor.getSensorVector().end(); it_t++)
         {
-            for
-            (
-                auto it_b = heart_sensor.getBpmVector().begin();
-                it_b != heart_sensor.getBpmVector().end(); it_b++
-            )
+            for(auto it_b = heart_sensor.getBpmVector().begin(); it_b != heart_sensor.getBpmVector().end(); it_b++)
             {
                 series_bpm->append(*it_t, *it_b);
             }       
@@ -283,16 +255,9 @@ namespace View
         QChart* speed_chart = new QChart();
         QLineSeries* series_speed = new QLineSeries();
 
-        for(
-            auto it_d = speedometer.getDistanceVector().begin(); 
-            it_d != speedometer.getDistanceVector().end(); it_d++
-        )
+        for(auto it_d = speedometer.getDistanceVector().begin(); it_d != speedometer.getDistanceVector().end(); it_d++)
         {
-            for
-            (
-                auto it_s = speedometer.getSpeedVector().begin();
-                it_s != speedometer.getSpeedVector().end(); it_s++
-            )
+            for(auto it_s = speedometer.getSpeedVector().begin(); it_s != speedometer.getSpeedVector().end(); it_s++)
             {
                 series_speed->append(*it_d, *it_s);
             }       

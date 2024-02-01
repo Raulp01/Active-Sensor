@@ -15,7 +15,7 @@ namespace Core
 
         public:
         Speedometer(unsigned int id, std::string name, std::string description, unsigned int age, float height, float weight, 
-        unsigned int training_type, float training_time, float avarage_speed = 0, float distance = 0);
+        unsigned int training_type, float training_time = 0, float avarage_speed = 0, float distance = 0);
         virtual ~Speedometer();
 
         std::string getType() const override;

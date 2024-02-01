@@ -25,7 +25,7 @@ namespace Core
 
         public:
         Sensor(unsigned int id, std::string name, std::string description, unsigned int age, float height, float weight, 
-        unsigned int training_type, float training_time);
+        unsigned int training_type, float training_time = 0);
         virtual ~Sensor() = 0;
 
         //getter 

@@ -1,53 +1,58 @@
 #include "Viewer.h"
 #include "ViewerVisitor.h"
 #include "ChartVisitor.h"
-#include <QPushButton>
-#include <QLabel>
 
 namespace View
 {
     Viewer::Viewer(std::vector<Core::Sensor*>& vector, Core::Sensor& sensor) : vector(vector), sensor(sensor)
     {
-        layout = new QGridLayout(this);
-        layout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+        std::cout << "Viewer::Viewer Costruttore Viewer vector = " << vector.size() << std::endl;
 
-        QPushButton* simulate_sensor = new QPushButton("Simulate");
+        v_layout = new QVBoxLayout(this);
+        v_layout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
+
+        layout = new QGridLayout();
+        layout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
+        v_layout->addLayout(layout);
+
+        simulate_sensor = new QPushButton();
         layout->addWidget(simulate_sensor, 1, 1, 1, 1);
         connect(simulate_sensor, &QPushButton::pressed, this, &Viewer::simulateSensor);
 
-        QPushButton* reset_sensor = new QPushButton("Reset");
+        reset_sensor = new QPushButton();
         layout->addWidget(reset_sensor, 1, 2, 1, 1);
         connect(reset_sensor, &QPushButton::pressed, this, &Viewer::reset);
 
-        QLabel* id = new QLabel("Id: " + QString::number(sensor.getId()));
+        id = new QLabel();
         layout->addWidget(id, 2, 1, 1, 1);
 
-        QLabel* name = new QLabel("Name: " + QString::fromStdString(sensor.getName()));
+        name = new QLabel();
         layout->addWidget(name, 2, 2, 1, 1);
         
-        QLabel* description = new QLabel("Description: " + QString::fromStdString(sensor.getDescription()));
+        description = new QLabel();
         layout->addWidget(description, 3, 1, 1, 1);
 
-        QLabel* age = new QLabel("Age: " + QString::number(sensor.getAge()));
+        age = new QLabel();
         layout->addWidget(age, 4, 1, 1, 1);
 
-        QLabel* height = new QLabel("Height: " + QString::number(sensor.getHeight(), 'f', 2));
+        height = new QLabel();
         layout->addWidget(height, 5, 1, 1, 1);
 
-        QLabel* weight = new QLabel("Weight: " + QString::number(sensor.getWeight(), 'f', 2));
+        weight = new QLabel();
         layout->addWidget(weight, 5, 2, 1, 1);
 
-        QLabel* training_type = new QLabel("Training type: " + QString::fromStdString(sensor.getTrainingTypeToString()));
+        training_type = new QLabel();
         layout->addWidget(training_type, 6, 1, 1, 1);
-        
-        QLabel* training_time = new QLabel("Training time: " + QString::number(sensor.getTrainingTime(), 'f', 1));
-        layout->addWidget(training_time, 6, 2, 1, 1);
 
-        show();
+        this->show();
+
+        std::cout << "Viewer::Viewer dopo la creazione dei widget, prima del visitor" << std::endl;
+        std::cout << "Viewer::Viewer chiama show" << std::endl;
     }
 
     void Viewer::simulateSensor()
     {
+        std::cout << "Viewer::simulateSensor" << std::endl;
         sensor.setTimeChanged(false);
         sensor.simulate();
         this->show();
@@ -55,18 +60,47 @@ namespace View
 
     void Viewer::reset()
     {
+        std::cout << "Viewer::reset" << std::endl;
         sensor.reset();
         this->show();
     }
 
     void Viewer::show()
     {
+        std::cout << "Viewer::show" << std::endl;
+
+        simulate_sensor->setText("Simulate");
+        reset_sensor->setText("Reset");
+        id->setText("Id: " + QString::number(sensor.getId()));
+        name->setText("Name: " + QString::fromStdString(sensor.getName()));
+        description->setText("Description: " + QString::fromStdString(sensor.getDescription()));
+        age->setText("Age: " + QString::number(sensor.getAge()));  
+        height->setText("Height: " + QString::number(sensor.getHeight(), 'f', 2));
+        weight->setText("Weight: " + QString::number(sensor.getWeight(), 'f', 2));
+        training_type->setText("Training Type: " + QString::fromStdString(sensor.getTrainingTypeToString()));
+        
+
+        if(visitor_widget != nullptr)
+        {
+            std::cout << "Viewer::show visitor_widget!= nullptr" << std::endl;
+            v_layout->removeWidget(visitor_widget);
+            visitor_widget = new QWidget();
+        }
+        if(chart_widget!= nullptr)
+        {
+            std::cout << "Viewer::show chart_widget != nullptr" << std::endl;
+            v_layout->removeWidget(chart_widget);
+            chart_widget = new QWidget();
+        }
+        std::cout << "Viewer::show visitor_widget == nullptr && chart_widget == nullptr" << std::endl;
         ViewerVisitor visitor;
         sensor.accept(visitor);
-        layout->addWidget(visitor.getWidget(), 7, 1);
+        visitor_widget = visitor.getWidget();
+        v_layout->addWidget(visitor_widget);
 
-        ChartVisitor chart;
-        sensor.accept(chart);
-        layout->addWidget(chart.getWidget(), 8, 1, 3, -1);
+        ChartVisitor chart_visitor;
+        sensor.accept(chart_visitor);
+        chart_widget = chart_visitor.getWidget();
+        v_layout->addWidget(chart_widget);
     }
 }

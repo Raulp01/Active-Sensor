@@ -14,7 +14,7 @@ namespace Core
 
         public:
         CaloriesCounter(unsigned int id, std::string name, std::string description, unsigned int age, float height, float weight, unsigned int training_type,
-        float training_time, unsigned int bpm = 0, float calories = 0);
+        float training_time = 0, unsigned int bpm = 0, float calories = 0);
         virtual ~CaloriesCounter();
 
         float getCalories() const;

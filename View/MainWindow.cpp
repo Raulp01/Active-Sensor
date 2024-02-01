@@ -358,7 +358,7 @@ namespace View
             exit_message = QMessageBox::question(
                 this,
                 "Quit?",
-                "There are unsaved changes.\nDo you really want to quit?",
+                "There are unsaved changes.\nUnsaved data will be lost.\nDo you really want to quit?",
                 QMessageBox::Yes | QMessageBox::No
             );
             if (exit_message == QMessageBox::Yes) {

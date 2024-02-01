@@ -5,7 +5,10 @@ namespace Core
     Sensor::Sensor(unsigned int id, std::string name, std::string description, unsigned int age, float height, float weight, 
     unsigned int training_type, float training_time = 0) 
     : id(id), name(name), description(description), age(age), height(height), weight(weight), 
-    training_type(training_type), training_time(training_time), time_changed(false) {}
+    training_type(training_type), training_time(training_time), time_changed(false) 
+    {
+        time_vector.push_back(getTrainingTime());
+    }
 
     Sensor::~Sensor() {}
 
@@ -75,6 +78,11 @@ namespace Core
         return time_changed;
     }
 
+    std::vector<float> Sensor::getSensorVector() const
+    {
+        return time_vector;
+    }
+
     void Sensor::setId(unsigned int new_id)
     {
         id = new_id;
@@ -134,15 +142,20 @@ namespace Core
 
     void Sensor::simulate()
     {
+        // Controllo per aumentare il tempo una volta nella gerarchia
         if(getTimeChanged() == false)
         {
             setTrainingTime(getTrainingTime() + 0.20);
+            time_vector.push_back(getTrainingTime());
             setTimeChanged(true);
         }
     }
 
     void Sensor::reset()
     {
+        setTimeChanged(false);
         setTrainingTime(0);
+        time_vector.clear();
+        time_vector.push_back(getTrainingTime());
     }
 };

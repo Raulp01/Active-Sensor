@@ -20,6 +20,8 @@ namespace Core
         unsigned int training_type;
         float training_time;
         bool time_changed;
+        // vettore che raccoglie i dati della simulazione
+        std::vector<float> time_vector;
 
         public:
         Sensor(unsigned int id, std::string name, std::string description, unsigned int age, float height, float weight, 
@@ -27,9 +29,7 @@ namespace Core
         virtual ~Sensor() = 0;
 
         //getter 
-        // Utile per ritornare la stringa col nome del tipo della classe per selezionare
-        // l'artwork nell'interfaccia
-        virtual std::string getType() const = 0;
+        virtual std::string getType() const = 0; // Utile per ritornare la stringa col nome del tipo della classe per selezionare l'artwork nell'interfaccia
         unsigned int getId() const;
         std::string getName() const;
         std::string getDescription() const;
@@ -40,6 +40,7 @@ namespace Core
         std::string getTrainingTypeToString() const;
         float getTrainingTime() const;
         bool getTimeChanged() const;
+        std::vector<float> getSensorVector() const;
 
         // setter
         void setId(unsigned int new_id);
@@ -55,7 +56,7 @@ namespace Core
         // Metodi per l'accesso del Visitor in lettura-scrittura e lettura
         virtual void accept(IVisitor& visitor) = 0;
         virtual void accept(IConstVisitor& const_visitor) const = 0;
-        virtual void reset();
+        virtual void reset(); // resetta i valori di distance e speed. Pulisce i vector
 
         // Metodo virtuale puro che permette la simulazione
         virtual void simulate();

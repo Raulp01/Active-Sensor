@@ -10,6 +10,8 @@ namespace Core
         private:
         float avarage_speed;
         float distance;
+        std::vector<float> distance_vector;
+        std::vector<float> speed_vector;
 
         public:
         Speedometer(unsigned int id, std::string name, std::string description, unsigned int age, float height, float weight, 
@@ -19,6 +21,8 @@ namespace Core
         std::string getType() const override;
         float getAvarageSpeed() const;
         float getDistance() const;
+        std::vector<float> getDistanceVector() const;
+        std::vector<float> getSpeedVector() const;
 
         void setAvarageSpeed(float new_avarage_speed);
         void setDistance(float new_distance);

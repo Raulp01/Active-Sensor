@@ -9,6 +9,7 @@ namespace Core
     {
         private:
         float calories;
+        std::vector<float> calories_vector;
         static const float bpm_percentage;
 
         public:
@@ -18,6 +19,7 @@ namespace Core
 
         float getCalories() const;
         std::string getType() const override;
+        std::vector<float> getCaloriesVector() const;
 
         void setCalories(float new_calories);
         void setStandardCalories();

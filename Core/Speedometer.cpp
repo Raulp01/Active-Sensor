@@ -28,6 +28,16 @@ namespace Core
         return distance;
     }
 
+    std::vector<float> Speedometer::getDistanceVector() const
+    {
+        return distance_vector;
+    }
+    
+    std::vector<float> Speedometer::getSpeedVector() const
+    {
+        return speed_vector;
+    }
+
     void Speedometer::setAvarageSpeed(float new_avarage_speed)
     {
         this->avarage_speed = new_avarage_speed;
@@ -40,24 +50,32 @@ namespace Core
 
     void Speedometer::setStandardSpeed()
     {
-        // Calcola velocità media in base alla distanza percorsa, il tempo di allenamento
-        avarage_speed = getRandomNumber(1, avarage_speed + getTrainingType() + 2);
+        // Calcola la velocità la prima volta prendendo un numero casuale tra 1 e training_type + 2
+        setAvarageSpeed(getRandomNumber(1, avarage_speed + getTrainingType() + 2));
+        speed_vector.push_back(getAvarageSpeed());
     }
 
     void Speedometer::simulate() 
     {
         Sensor::simulate();
-        //Velocità nel tempo
-        setDistance(getDistance() + getAvarageSpeed() * getTrainingTime()); 
-        setAvarageSpeed(getDistance() / getTrainingTime());
+        //Distanza calcolata ad ogni iterazione 
+        setDistance(getAvarageSpeed() * getTrainingTime()); 
+        distance_vector.push_back(getDistance());
+
+        //Ricalcola la velocità con un numero semi-randomico
         float rand_speed = getRandomNumber(avarage_speed - getTrainingType(), avarage_speed + getTrainingType());
         setAvarageSpeed(rand_speed);
+        speed_vector.push_back(getAvarageSpeed());
     }
 
     void Speedometer::reset()
     {
+        setTimeChanged(false);
         Sensor::reset();
+        speed_vector.clear();
+        distance_vector.clear();
         setDistance(0);
+        distance_vector.push_back(getDistance());
         setStandardSpeed();
     }
 

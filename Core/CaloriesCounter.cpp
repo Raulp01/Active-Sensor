@@ -9,6 +9,7 @@ namespace Core
     HeartSensor(id, name, description, age, height, weight, training_type, training_time, bpm), calories(calories)
     {
         setStandardCalories();
+        calories_vector.push_back(getCalories());
     }
     
     CaloriesCounter::~CaloriesCounter() {}
@@ -23,9 +24,14 @@ namespace Core
         return "CaloriesCounter";
     }
 
+    std::vector<float> CaloriesCounter::getCaloriesVector() const
+    {
+        return calories_vector;
+    }
+
     void CaloriesCounter::setCalories(float new_calories)
     {
-        this->calories = new_calories;
+        calories = new_calories;
     }
 
     void CaloriesCounter::setStandardCalories()
@@ -44,12 +50,15 @@ namespace Core
         float calories_range = getBpm() * bpm_percentage;
         float rand_calories = getRandomNumber(getCalories(), getCalories() + calories_range / 2);
         setCalories(rand_calories);
+        calories_vector.push_back(getCalories());
     }
 
     void CaloriesCounter::reset()
     {
         HeartSensor::reset();
+        calories_vector.clear();
         setCalories(0);
+        calories_vector.push_back(getCalories());
     }
 
     void CaloriesCounter::accept(IVisitor& visitor)

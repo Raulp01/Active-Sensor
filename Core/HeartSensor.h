@@ -9,6 +9,7 @@ namespace Core
     {
         private:
         unsigned int bpm;
+        std::vector<unsigned int> bpm_vector;
         unsigned int max_bpm;
         unsigned int min_bpm;
         static const unsigned int heart_frequence_constant;
@@ -23,6 +24,7 @@ namespace Core
 
         unsigned int getBpm() const;
         std::string getType() const override;
+        std::vector<unsigned int> getBpmVector() const;
 
         void setBpm(unsigned int new_bpm);
         void setStandardBpm();

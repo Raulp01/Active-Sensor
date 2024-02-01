@@ -9,7 +9,7 @@ namespace Core
     const unsigned int HeartSensor::rest_bpm_high = 100;
 
     HeartSensor::HeartSensor(unsigned int id, std::string name, std::string description, unsigned int age, float height, float weight, unsigned int training_type,
-        float training_time, unsigned int bpm) : Sensor(id, name, description, age, height, weight, training_type, training_time) 
+        float training_time, unsigned int bpm) : Sensor(id, name, description, age, height, weight, training_type, training_time), bpm(bpm) 
         {
             setStandardBpm();
         }
@@ -24,6 +24,11 @@ namespace Core
     std::string HeartSensor::getType() const
     {
         return "HeartSensor";
+    }
+
+    std::vector<unsigned int> HeartSensor::getBpmVector() const
+    {
+        return bpm_vector;
     }
 
     void HeartSensor::setBpm(unsigned int new_bpm)
@@ -42,7 +47,8 @@ namespace Core
         // Crea i bpm medi moltiplicando i bpm massimi per l'intensità dell'allenamento
         unsigned int ran_bpm = (min_bpm + max_bpm) / 2 * getTrainingType();
 
-        bpm = getRandomNumber(min_bpm, ran_bpm);
+        setBpm(getRandomNumber(min_bpm, ran_bpm));
+        bpm_vector.push_back(getBpm());
     }
 
     void HeartSensor::simulate() 
@@ -52,12 +58,15 @@ namespace Core
 
         unsigned int rand_bpm = getRandomNumber(getBpm() - 5, getBpm() + 5);
         setBpm(rand_bpm);
+        bpm_vector.push_back(getBpm());
     }
 
     void HeartSensor::reset()
     {
         Sensor::reset();
+        bpm_vector.clear();
         setBpm(0);
+        bpm_vector.push_back(getBpm());
     }
 
     void HeartSensor::accept(IVisitor& visitor)

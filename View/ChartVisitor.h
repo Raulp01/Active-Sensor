@@ -24,9 +24,9 @@ namespace View
         virtual void visitSpeedometer(const Core::Speedometer& speedometer);
 
         public:
-        void createBpmChart(const Core::HeartSensor& heart_sensor);
-        void createCaloriesChart(const Core::CaloriesCounter& calories_counter);
-        void createSpeedChart(const Core::Speedometer& speedometer);
+        QWidget* createBpmChart(const Core::HeartSensor& heart_sensor);
+        QWidget* createCaloriesChart(const Core::CaloriesCounter& calories_counter);
+        QWidget* createSpeedChart(const Core::Speedometer& speedometer);
     };
 }
 

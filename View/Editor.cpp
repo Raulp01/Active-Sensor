@@ -222,5 +222,6 @@ namespace View
 
         emit save(vector);
         std::cout << "Editor::apply DOPO save in Editor" << std::endl;
+        this->close();
     }
 };

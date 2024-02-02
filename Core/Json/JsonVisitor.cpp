@@ -74,6 +74,7 @@ void JsonVisitor::visitActivity(const Activity& activity)
     activity_object.insert("calories", QJsonValue::fromVariant(activity.getCalories()));
     activity_object.insert("avarage_speed", QJsonValue::fromVariant(activity.getAvarageSpeed()));
     activity_object.insert("distance", QJsonValue::fromVariant(activity.getDistance()));
+    object = activity_object;
 }
 
 }

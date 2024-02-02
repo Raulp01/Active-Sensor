@@ -36,7 +36,7 @@ namespace Core
 
     void CaloriesCounter::setStandardCalories()
     {
-        std::cout << "CaloriesCounter::setStandardCalories()";
+        std::cout << "CaloriesCounter::setStandardCalories()" << std::endl;
         // Calcola calorie medie
         setCalories(getWeight() * getTrainingTime() + (getTrainingType() * 2));
         std::cout << " calories set to " << getCalories() << " in setStandardCalories()" << std::endl;

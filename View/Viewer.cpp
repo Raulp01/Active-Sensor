@@ -65,7 +65,7 @@ namespace View
         std::cout << "Viewer::simulateSensor" << std::endl;
         sensor.setTimeChanged(false);
         sensor.simulate();
-        emit showViewer(&sensor);
+        emit reloadViewer(&sensor);
         std::cout << "Viewer::simulateSensor chiama show()" << std::endl;
     }
 
@@ -73,6 +73,6 @@ namespace View
     {
         std::cout << "Viewer::reset" << std::endl;
         sensor.reset();
-        emit showViewer(&sensor);
+        emit reloadViewer(&sensor);
     }
 }

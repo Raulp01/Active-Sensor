@@ -25,7 +25,6 @@ namespace View {
       Search* search;
       QStackedWidget* left_stacked_widget;
       QStackedWidget* right_stacked_widget;
-      Results* results;
     
     public:
       explicit MainWindow(std::vector<Core::Sensor*>& vector, Core::Json::DataMapper::JsonFile& json_file, QWidget *parent = 0);

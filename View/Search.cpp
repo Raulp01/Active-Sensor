@@ -16,6 +16,9 @@ namespace View
         title->setAlignment(Qt::AlignHCenter);
         layout->addWidget(title);
 
+        QPushButton* show_all = new QPushButton("Show All");
+        layout->addWidget(show_all);
+
         QFormLayout* form = new QFormLayout();
         form->setAlignment(Qt::AlignCenter | Qt::AlignTop);
         layout->addLayout(form);
@@ -41,6 +44,7 @@ namespace View
 
         connect(apply_id, &QPushButton::pressed, this, &Search::search);
         connect(apply_filter, &QPushButton::pressed, this, &Search::filter);
+        connect(show_all, &QPushButton::pressed, this, &Search::showAll);
     }
 
     void Search::search()

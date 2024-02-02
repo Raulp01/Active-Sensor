@@ -19,8 +19,13 @@ namespace View
         layout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
         widget->setLayout(layout);
 
+        QLabel* bpm_label = new QLabel("Heart Sensor Chart: x-time, y-bpm");
+        layout->addWidget(bpm_label);
         createBpmChart(calories_counter);
-        createCaloriesChart(calories_counter);
+
+        QLabel* calories_label = new QLabel("Calories Chart: x-time, y-calories burned");
+        layout->addWidget(calories_label);
+        layout->addWidget(createCaloriesChart(calories_counter));
     }
 
     void ChartVisitor::visitActivity(const Core::Activity& activity)
@@ -30,9 +35,18 @@ namespace View
         layout->setAlignment(Qt::AlignTop | Qt::AlignCenter);
         widget->setLayout(layout);
 
-        createBpmChart(activity);
-        createCaloriesChart(activity);
-        createSpeedChart(activity);
+        QLabel* bpm_label = new QLabel("Heart Sensor Chart: x-time, y-bpm");
+        layout->addWidget(bpm_label);
+        layout->addWidget(createBpmChart(activity));
+
+        QLabel* calories_label = new QLabel("Calories Chart: x-time, y-calories burned");
+        layout->addWidget(calories_label);
+        layout->addWidget(createCaloriesChart(activity));
+
+        QLabel* speed_label = new QLabel("Speedometer Chart: x-distance, y-avarage speed");
+        layout->addWidget(speed_label);
+        layout->addWidget(createSpeedChart(activity));
+
     }
 
     void ChartVisitor::visitHeartSensor(const Core::HeartSensor& heart_sensor)
@@ -42,7 +56,9 @@ namespace View
         layout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
         widget->setLayout(layout);
 
-        createBpmChart(heart_sensor);
+        QLabel* bpm_label = new QLabel("Heart Sensor Chart: x-time, y-bpm");
+        layout->addWidget(bpm_label);
+        layout->addWidget(createBpmChart(heart_sensor));
     }
 
     void ChartVisitor::visitSpeedometer(const Core::Speedometer& speedometer)
@@ -52,14 +68,13 @@ namespace View
         layout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
         widget->setLayout(layout);
 
-        createSpeedChart(speedometer);
+        QLabel* speed_label = new QLabel("Speedometer Chart: x-distance, y-avarage speed");
+        layout->addWidget(speed_label);
+        layout->addWidget(createSpeedChart(speedometer));
     }
 
-    void ChartVisitor::createCaloriesChart(const Core::CaloriesCounter& calories_counter)
+    QWidget* ChartVisitor::createCaloriesChart(const Core::CaloriesCounter& calories_counter)
     {   
-        QLabel* calories_label = new QLabel("Calories Chart: x-time, y-calories burned");
-        layout->addWidget(calories_label);
-
         QChart* calories_chart = new QChart();
         QLineSeries* series_calories = new QLineSeries();
 
@@ -81,7 +96,7 @@ namespace View
         calories_chart->addSeries(series_calories);
 
         QValueAxis* calories_x = new QValueAxis();
-        calories_x->setRange(0, 24);
+        calories_x->setRange(0, 12);
         calories_chart->addAxis(calories_x, Qt::AlignBottom);
         series_calories->attachAxis(calories_x);
 
@@ -93,14 +108,11 @@ namespace View
         QChartView* calories_view = new QChartView(calories_chart);
         calories_view->setRenderHint(QPainter::Antialiasing);
 
-        layout->addWidget(calories_view);
+        return calories_view;
     }
 
-    void ChartVisitor::createBpmChart(const Core::HeartSensor& heart_sensor)
+    QWidget* ChartVisitor::createBpmChart(const Core::HeartSensor& heart_sensor)
     {
-        QLabel* bpm_label = new QLabel("Heart Sensor Chart: x-time, y-bpm");
-        layout->addWidget(bpm_label);
-
         QChart* bpm_chart = new QChart();
         QLineSeries* series_bpm = new QLineSeries();
 
@@ -120,26 +132,23 @@ namespace View
         bpm_chart->addSeries(series_bpm);
 
         QValueAxis* bpm_x = new QValueAxis();
-        bpm_x->setRange(0, 24);
+        bpm_x->setRange(0, 12);
         bpm_chart->addAxis(bpm_x, Qt::AlignBottom);
         series_bpm->attachAxis(bpm_x);
 
         QValueAxis* bpm_y = new QValueAxis();
-        bpm_y->setRange(0, 200);
+        bpm_y->setRange(0, 300);
         bpm_chart->addAxis(bpm_y, Qt::AlignLeft);
         series_bpm->attachAxis(bpm_y);
 
         QChartView* bpm_view = new QChartView(bpm_chart);
         bpm_view->setRenderHint(QPainter::Antialiasing);
 
-        layout->addWidget(bpm_view);
+        return bpm_view;
     }
 
-    void ChartVisitor::createSpeedChart(const Core::Speedometer& speedometer)
+    QWidget* ChartVisitor::createSpeedChart(const Core::Speedometer& speedometer)
     {
-        QLabel* speed_label = new QLabel("Speedometer Chart: x-distance, y-avarage speed");
-        layout->addWidget(speed_label);
-
         QChart* speed_chart = new QChart();
         QLineSeries* series_speed = new QLineSeries();
 
@@ -171,6 +180,6 @@ namespace View
         QChartView* speed_view = new QChartView(speed_chart);
         speed_view->setRenderHint(QPainter::Antialiasing);
 
-        layout->addWidget(speed_view);
+        return speed_view;
     }
 }

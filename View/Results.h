@@ -15,12 +15,10 @@ namespace View {
         private:
         QVector<Info*> container;
         std::vector<Core::Sensor*>& vector;
-        QVBoxLayout* layout;
 
         
         public:
         Results(std::vector<Core::Sensor*>& vector, QWidget* parent = 0);
-        void clear();
         void showResults(std::vector<Core::Sensor*>& results_vector);
         void showResultsById(unsigned int id);
 

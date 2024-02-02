@@ -6,22 +6,7 @@ namespace View
 {
     Results::Results(std::vector<Core::Sensor*>& vector, QWidget* parent) : vector(vector), QWidget(parent)
     {
-        layout = new QVBoxLayout(this);
-        layout->setAlignment(Qt::AlignTop | Qt::AlignCenter);
-
         std::cout << "Results::Results" << std::endl;
-    }
-
-    void Results::clear()
-    {
-        //Pulizia
-        while(!container.isEmpty())
-        {
-            std::cout << "Results::clear Clearing previous data. Container size = " << container.size() << std::endl;
-            Info* info = container.takeLast();
-            layout->removeWidget(info);
-            delete info;
-        }
     }
 
     void Results::emitShowSensor(Core::Sensor& sensor)
@@ -44,7 +29,9 @@ namespace View
 
     void Results::showResults(std::vector<Core::Sensor*>& results_vector)
     {
-        clear();
+        QVBoxLayout* layout = new QVBoxLayout(this);
+        layout->setAlignment(Qt::AlignTop | Qt::AlignCenter);
+
 
         std::cout << "Results::showResults dimensione vector = " << vector.size() << std::endl;
         std::cout << "Results::showResults dimensione results_vector = " << results_vector.size() << std::endl;

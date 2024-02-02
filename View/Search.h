@@ -22,6 +22,7 @@ namespace View
         signals:
         void searchSensorId(unsigned int id);
         void filterSensor(std::string type);
+        void showAll();
 
         public slots:
         void search();

@@ -110,9 +110,6 @@ namespace View
 
         std::cout << "MainWindow::MainWindow Parte sinistra" << std::endl;
 
-        results = new Results(vector, left_stacked_widget);
-        left_stacked_widget->addWidget(results);
-
         right_stacked_widget = new QStackedWidget();
         splitter->addWidget(right_stacked_widget);
 
@@ -129,10 +126,8 @@ namespace View
         connect(togge_toolbar, &QAction::triggered, this, &MainWindow::toggleToolbar);
         connect(search, &Search::searchSensorId, this, &MainWindow::searchById);
         connect(search, &Search::filterSensor, this, &MainWindow::searchByFilter);
+        connect(search, &Search::showAll, this, &MainWindow::reloadResults);
         connect(create_item, &QAction::triggered, this, &MainWindow::createSensor);
-        connect(results, &Results::showSensor, this, &MainWindow::showSensor);
-        connect(results, &Results::editSensor, this, &MainWindow::editSensor);
-        connect(results, &Results::deleteSensor, this, &MainWindow::deleteSensor);
 
         std::cout << "MainWindow::MainWindow Collegati tutti i signal-slots" << std::endl;
 
@@ -149,13 +144,17 @@ namespace View
         scroll_area->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         scroll_area->setWidgetResizable(true);
         std::cout << "MainWindow::reloadData results creato in MainWindow" << std::endl;
+        Results* results = new Results(vector, left_stacked_widget);
         scroll_area->setWidget(results);
         results->showResults(vector);
         std::cout << "MainWindow::reloadData Fine showResults" << std::endl;
         left_stacked_widget->addWidget(scroll_area);
         left_stacked_widget->setCurrentIndex(1);
-        right_stacked_widget->setCurrentIndex(0);
+        //right_stacked_widget->setCurrentIndex(0);
         std::cout << "MainWindow::reloadData reloadData avvenuto con successo" << std::endl;
+        connect(results, &Results::showSensor, this, &MainWindow::showSensor);
+        connect(results, &Results::editSensor, this, &MainWindow::editSensor);
+        connect(results, &Results::deleteSensor, this, &MainWindow::deleteSensor);
         has_unsaved_changes = true;
     }
 
@@ -178,6 +177,14 @@ namespace View
             right_stacked_widget->removeWidget(right_widget);
             delete right_widget;
             right_widget = right_stacked_widget->widget(1);
+        }
+
+        QWidget* left_widget = left_stacked_widget->widget(1);
+        while (left_widget) {
+            std::cout << "MainWindow::clearStack Pulizia stack sinistro" << std::endl;
+            left_stacked_widget->removeWidget(left_widget);
+            delete left_widget;
+            left_widget = left_stacked_widget->widget(1);
         }
     }
 
@@ -251,8 +258,6 @@ namespace View
         std::cout << "MainWindow::toggleToolbar rimossa" << std::endl;
     }
 
-    
-
     void MainWindow::searchById(unsigned int id) 
     {
         std::cout << "MainWindow::searchById" << std::endl;
@@ -261,13 +266,14 @@ namespace View
         scroll_area->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         scroll_area->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         scroll_area->setWidgetResizable(true);
+        Results* results = new Results(vector, left_stacked_widget);
         scroll_area->setWidget(results);
         std::cout << "MainWindow::searchById settato il widget in scroll_area" << std::endl;
         results->showResultsById(id);
         std::cout << "MainWindow::searchById fine showResultsById (Results)" << std::endl;
         left_stacked_widget->addWidget(scroll_area);
         left_stacked_widget->setCurrentIndex(1);
-        right_stacked_widget->setCurrentIndex(0);
+        //right_stacked_widget->setCurrentIndex(0);
         has_unsaved_changes = true;
     }
 
@@ -282,7 +288,7 @@ namespace View
     void MainWindow::createSensor() 
     {
         std::cout << "MainWindow::createSensor Inizio createSensor" << std::endl;
-        clearStack();
+        reloadData();
         QScrollArea* scroll_area = new QScrollArea();
         scroll_area->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         scroll_area->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
@@ -299,7 +305,7 @@ namespace View
     }
 
     void MainWindow::showSensor(Core::Sensor* sensor) {
-        clearStack();
+        reloadData();
         std::cout << "MainWindow::showSensor" << std::endl;
         Viewer* viewer_wiget = new Viewer(vector, *sensor);
         std::cout << "MainWindow::showSensor Viewer creato" << std::endl;
@@ -311,13 +317,13 @@ namespace View
         std::cout << "MainWindow::showSensor Settato widget in scroll_area" << std::endl;
         right_stacked_widget->addWidget(scroll_area);
         right_stacked_widget->setCurrentIndex(1);
-        connect(viewer_wiget, &Viewer::showViewer, this, &MainWindow::showSensor);
+        connect(viewer_wiget, &Viewer::reloadViewer, this, &MainWindow::showSensor);
         std::cout << "MainWindow::showSensor Showing sensor " + QString::number(sensor->getId()).toStdString() << std::endl;
     }
 
     void MainWindow::editSensor(Core::Sensor* sensor) {
         std::cout << "MainWindow::editSensor" << std::endl;
-        clearStack();
+        reloadData();
         QScrollArea* scroll_area = new QScrollArea();
         scroll_area->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         scroll_area->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);

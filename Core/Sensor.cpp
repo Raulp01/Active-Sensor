@@ -7,7 +7,9 @@ namespace Core
     : id(id), name(name), description(description), age(age), height(height), weight(weight), 
     training_type(training_type), training_time(training_time), time_changed(false) 
     {
+        std::cout << "Sensor::Sensor()" << std::endl;
         time_vector.push_back(getTrainingTime());
+        std::cout << "Sensor::Sensor() time_vector " << time_vector.size() << std::endl;
     }
 
     Sensor::~Sensor() {}

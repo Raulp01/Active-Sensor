@@ -8,7 +8,25 @@ namespace Core
     : Sensor(id, name, description, age, height, weight, training_type, training_time), avarage_speed(avarage_speed), 
     distance(distance) 
     {
-        setStandardSpeed();
+        std::cout << "Speedometer::Speedometer()" << std::endl;
+        // Se il sensore viene caricato dal file, inserisce i dati nel vettore
+        if(getAvarageSpeed() != 0 && getDistance() != 0)
+        {
+            // Resetta la distanza per iniziare una nuova simulazione
+            setDistance(0);
+            std::cout << "Speedometer::Speedometer() costruttore: speed e distance != 0: " << getAvarageSpeed() << " " << getDistance() << std::endl;
+            speed_vector.push_back(getAvarageSpeed());
+            distance_vector.push_back(getDistance());
+            std::cout << "Speedometer::Speedometer() speed_vector " << speed_vector.size() << std::endl;
+            std::cout << "Speedometer::Speedometer() distance_vector " << distance_vector.size() << std::endl;
+        }
+        // Se il sensore viene creato per la prima volta o viene caricato dal file, ma ha fatto una prima iterazione
+        // resetta i valori e richiama setStandardSpeed()
+        else
+        {
+            std::cout << "Speedometer::Speedometer() costruttore: speed e distance  = 0" << std::endl;
+            setStandardSpeed();
+        }
     }
     
     Speedometer::~Speedometer() {};
@@ -50,11 +68,16 @@ namespace Core
 
     void Speedometer::setStandardSpeed()
     {
+        setAvarageSpeed(0);
+        setDistance(0);
+        std::cout << "Speedometer::setStandardSpeed()";
         // Calcola la velocità la prima volta prendendo un numero casuale tra 1 e training_type + 2
-        setAvarageSpeed(getRandomNumber(1, avarage_speed + getTrainingType() + 2));
+        std::cout << "Speedometer: set to standard speed: " << getAvarageSpeed() << std::endl;
+        setAvarageSpeed(getRandomNumber(1, getTrainingType() + 2));
         std::cout << "Speedometer: set to standard speed: " << getAvarageSpeed() << std::endl;
         speed_vector.push_back(getAvarageSpeed());
         std::cout << "Speedometer: speed vector: " << speed_vector.size() << std::endl;
+        setDistance(0);
         distance_vector.push_back(getDistance());
         std::cout << "Speedometer: distance vector: " << distance_vector.size() << std::endl;
     }
@@ -71,6 +94,12 @@ namespace Core
 
         //Ricalcola la velocità con un numero semi-randomico
         float rand_speed = getRandomNumber(avarage_speed - getTrainingType(), avarage_speed + getTrainingType());
+        
+        if(rand_speed <= 0)
+        {
+            rand_speed = getTrainingType();
+        }
+
         setAvarageSpeed(rand_speed);
         std::cout << "Speedometer::simulate() avarage_speed: " << getAvarageSpeed() << std::endl;
         speed_vector.push_back(getAvarageSpeed());
@@ -79,19 +108,18 @@ namespace Core
 
     void Speedometer::reset()
     {
+        // Reset degli attributi della classe base
         std::cout << "Speedometer::reset()" << std::endl;
         Sensor::reset();
+
+        //Pulizia dei vettori
         speed_vector.clear();
         std::cout << "Speedometer::reset() speed_vector: " << speed_vector.size() << std::endl;
-        setAvarageSpeed(0);
-        std::cout << "Speedometer::reset() avarage_speed: " << getAvarageSpeed() << std::endl;
-        //speed_vector.push_back(getAvarageSpeed());
+
         distance_vector.clear();
         std::cout << "Speedometer::reset() distance_vector: " << distance_vector.size() << std::endl;
-        setDistance(0);
-        std::cout << "Speedometer::reset() distance: " << getDistance() << std::endl;
-        distance_vector.push_back(getDistance());
-        std::cout << "Speedometer::reset() distance_vector: " << distance_vector.size() << std::endl;
+
+        // Ricrea i valori per la prima iterazione della simulazione
         setStandardSpeed();
     }
 

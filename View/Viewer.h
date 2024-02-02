@@ -17,7 +17,7 @@ namespace View
         Viewer(std::vector<Core::Sensor*>& vector, Core::Sensor& sensor);
 
         signals:
-        void showViewer(Core::Sensor* view_sensor);
+        void reloadViewer(Core::Sensor* view_sensor);
 
         public slots:
         void simulateSensor();

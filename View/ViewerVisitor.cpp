@@ -48,7 +48,7 @@ namespace View
         QLabel* distance = new QLabel("Distance: " + QString::number(activity.getDistance(), 'f', 2));
         grid->addWidget(distance, 3, 1, 1, 1);
 
-        QLabel* speed = new QLabel("Avarage speed: " + QString::number(activity.getAvarageSpeed(), 'f', 2));
+        QLabel* speed = new QLabel("Avarage speed: " + QString::number(activity.getSpeed(), 'f', 2));
         grid->addWidget(speed, 3, 2, 1, 1);
     }
 
@@ -80,7 +80,7 @@ namespace View
         QLabel* distance = new QLabel("Distance: " + QString::number(speedometer.getDistance()));
         grid->addWidget(distance, 2, 1, 1, 1);
 
-        QLabel* speed = new QLabel("Avarage speed: " + QString::number(speedometer.getAvarageSpeed()));
+        QLabel* speed = new QLabel("Avarage speed: " + QString::number(speedometer.getSpeed()));
         grid->addWidget(speed, 2, 2, 1, 1);
     }
 };

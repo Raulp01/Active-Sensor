@@ -2,6 +2,8 @@
 
 namespace Core
 {
+    float Sensor::delta_time = 0.2;
+
     Sensor::Sensor(unsigned int id, std::string name, std::string description, unsigned int age, float height, float weight, 
     unsigned int training_type, float training_time) 
     : id(id), name(name), description(description), age(age), height(height), weight(weight), 
@@ -83,6 +85,11 @@ namespace Core
         return time_vector;
     }
 
+    float Sensor::getDeltaTime() const
+    {
+        return delta_time;
+    }
+
     void Sensor::setId(unsigned int new_id)
     {
         id = new_id;
@@ -146,8 +153,9 @@ namespace Core
         // Controllo per aumentare il tempo una volta nella gerarchia
         if(getTimeChanged() == false)
         {
+            // Per semplicità il tempo è calcolato in centesimi: 1h = 1, 1/2h = 0.5
             std::cout << "Sensor::simulate() time_changed: " << getTimeChanged() << std::endl;
-            setTrainingTime(getTrainingTime() + 0.20);
+            setTrainingTime(getTrainingTime() + delta_time);
             std::cout << "Sensor::simulate() training_time: " << getTrainingTime() << std::endl;
             time_vector.push_back(getTrainingTime());
             std::cout << "Sensor::simulate() time_vector: " << time_vector.size() << std::endl;

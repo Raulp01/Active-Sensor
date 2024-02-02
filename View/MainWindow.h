@@ -28,8 +28,6 @@ namespace View {
     
     public:
       explicit MainWindow(std::vector<Core::Sensor*>& vector, Core::Json::DataMapper::JsonFile& json_file, QWidget *parent = 0);
-      void reloadData();
-      Search* getSearch();
     
     private:
       void clearStack();
@@ -46,7 +44,8 @@ namespace View {
       void showSensor(Core::Sensor* sensor);
       void editSensor(Core::Sensor* sensor);
       void deleteSensor(Core::Sensor* sensor);
-      void reloadResults();
+      void reloadData(std::vector<Core::Sensor*>& reload_vector);
+      void showAllData();
       void close();
   };
 

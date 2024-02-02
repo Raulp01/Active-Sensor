@@ -51,7 +51,7 @@ namespace View
         form_layout->addRow("Age:", age_input);
 
         height_input = new QDoubleSpinBox();
-        height_input->setMinimum(0);
+        height_input->setMinimum(0.6);
         height_input->setMaximum(2.5);
         height_input->setSingleStep(1);
         if(sensor != nullptr)
@@ -61,9 +61,9 @@ namespace View
         form_layout->addRow("Height:", height_input);
 
         weight_input = new QDoubleSpinBox();
-        weight_input->setMinimum(0);
+        weight_input->setMinimum(5);
         weight_input->setMaximum(200);
-        height_input->setSingleStep(1);
+        height_input->setSingleStep(5);
         if(sensor != nullptr)
         {
             weight_input->setValue(sensor->getWeight());
@@ -71,15 +71,15 @@ namespace View
         form_layout->addRow("Weight:", weight_input);
 
         training_type_input = new QComboBox();
-        if(sensor != nullptr)
-        {
-            training_type_input->setPlaceholderText(QString::fromStdString(sensor->getTrainingTypeToString()));
-        }
         training_type_input->addItem(QIcon(QPixmap(":/Assets/Light.svg")), "Light");
         training_type_input->addItem(QIcon(QPixmap(":/Assets/Moderate.svg")), "Moderate");
         training_type_input->addItem(QIcon(QPixmap(":/Assets/High.svg")), "High");
         training_type_input->addItem(QIcon(QPixmap(":/Assets/Very High.png")), "Very High");
         training_type_input->addItem(QIcon(QPixmap(":/Assets/Maximum.jpg")), "Maximum");
+        if(sensor != nullptr)
+        {
+            training_type_input->setPlaceholderText(QString::fromStdString(sensor->getTrainingTypeToString()));
+        }
         form_layout->addRow("Training Type:", training_type_input);
         
         layout->addLayout(form_layout);
@@ -105,8 +105,8 @@ namespace View
         QPushButton* apply = new QPushButton("Apply");
         layout->addWidget(apply);
 
-        connect(apply, &QPushButton::pressed, this, &Editor::apply);
         connect(type, qOverload<int>(&QComboBox::currentIndexChanged), this, &Editor::changedIndex);
+        connect(apply, &QPushButton::pressed, this, &Editor::apply);
     }
 
     void Editor::changedIndex()
@@ -119,20 +119,22 @@ namespace View
         unsigned int age = age_input->value();
         float height = height_input->value();
         float weight = weight_input->value();
-        unsigned int training_type = training_type_input->currentIndex();
+        unsigned int training_type = training_type_input->currentIndex() + 1;
 
         // Sensore esistente: viene tolto dal vettore, ricreato e aggiunto al vettore
 
         if(sensor != nullptr)
         {
             auto it = vector.begin();
-            while(it!= vector.end())
+            while(it != vector.end())
             {
                 if(*it == sensor)
                 {
                     vector.erase(it);
                     delete sensor;
+                    break;
                 }
+                it++;
             }
         }
 
@@ -218,10 +220,10 @@ namespace View
             sensor->setTrainingType(training_type);
             std::cout << "Editor::apply training_type: " << sensor->getTrainingType() << std::endl;
             std::cout << "Editor::apply Dimensione attuale di vector (dopo modifica in Editor) " << vector.size() << std::endl;
+            sensor->reset();
         }
 
         emit save(vector);
         std::cout << "Editor::apply DOPO save in Editor" << std::endl;
-        this->close();
     }
 };

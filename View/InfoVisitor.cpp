@@ -52,7 +52,7 @@ namespace View
         QLabel* distance = new QLabel("Distance: " + QString::number(activity.getDistance()));
         layout->addWidget(distance);
 
-        QLabel* speed = new QLabel("Speed: " + QString::number(activity.getAvarageSpeed()));
+        QLabel* speed = new QLabel("Speed: " + QString::number(activity.getSpeed()));
         layout->addWidget(speed);
 
         QPixmap image(":/Assets/Activity.png");
@@ -97,7 +97,7 @@ namespace View
         QLabel* distance = new QLabel("Distance: " + QString::number(speedometer.getDistance()));
         layout->addWidget(distance);
 
-        QLabel* speed = new QLabel("Speed: " + QString::number(speedometer.getAvarageSpeed()));
+        QLabel* speed = new QLabel("Speed: " + QString::number(speedometer.getSpeed()));
         layout->addWidget(speed);
 
         QPixmap image(":/Assets/Speedometer.png");

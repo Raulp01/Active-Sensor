@@ -20,19 +20,18 @@ namespace View {
         public:
         Results(std::vector<Core::Sensor*>& vector, QWidget* parent = 0);
         void showResults(std::vector<Core::Sensor*>& results_vector);
-        void showResultsById(unsigned int id);
+        std::vector<Core::Sensor*> showResultsById(unsigned int id);
+        std::vector<Core::Sensor*> showResultsByFilter(std::string filter);
 
         signals:
         void editSensor(Core::Sensor* sensor);
         void showSensor(Core::Sensor* sensor);
         void deleteSensor(Core::Sensor* sensor);
-        void searchId(std::vector<Core::Sensor*>& results_vector);
 
         public slots:
         void emitShowSensor(Core::Sensor& sensor);
         void emitEditSensor(Core::Sensor& sensor);
         void emitDeleteSensor(Core::Sensor& sensor);
-        
     };
 };
 

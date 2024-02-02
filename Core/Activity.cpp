@@ -3,10 +3,10 @@
 namespace Core
 {
     Activity::Activity(unsigned int id, std::string name, std::string description, unsigned int age, float height, float weight, unsigned int training_type,
-    float training_time, unsigned int bpm, float calories, float avarage_speed, float distance) :
+    float training_time, unsigned int bpm, float calories, float speed, float distance) :
     Sensor(id, name, description, age, height, weight, training_type, training_time), 
     CaloriesCounter(id, name, description, age, height, weight, training_type, training_time, bpm, calories),
-    Speedometer(id, name, description, age, height, weight, training_type, training_time, avarage_speed, distance) {}
+    Speedometer(id, name, description, age, height, weight, training_type, training_time, speed, distance) {}
 
     Activity::~Activity() {}
 

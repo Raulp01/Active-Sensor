@@ -3,7 +3,7 @@
 namespace Core
 {
     // Costanti per il calcolo dei bpm
-    const unsigned int HeartSensor::heart_frequence_constant = 220;
+    const unsigned int HeartSensor::heart_frequence_constant = 208;
     const float HeartSensor::age_percentage_constant = 0.85;
     const unsigned int HeartSensor::rest_bpm_low = 60;
     const unsigned int HeartSensor::rest_bpm_high = 100;
@@ -48,12 +48,12 @@ namespace Core
     {
         // Calcola i bpm minimi prendendo un numero casuale tra quelli
         // di una persona a riposo (per una persona adulta è tra 60 e 100)
-        min_bpm = getRandomNumber(rest_bpm_low, rest_bpm_high);
+        unsigned int min_bpm = getRandomNumber(rest_bpm_low, rest_bpm_high);
         std::cout << "Min bpm: " << min_bpm << std::endl;
 
         // Calcola i bpm massimi sotto sforzo in base all'età (più è alta l'età meno i bpm massimi)
         // Si ottiene prendendo una costante teorica (220), togliendo l'età e calcolando l'85% di quel numero
-        max_bpm = (heart_frequence_constant - getAge()) * age_percentage_constant;
+        unsigned int max_bpm = (heart_frequence_constant - getAge()) * age_percentage_constant;
         std::cout << "Max bpm: " << max_bpm << std::endl;
 
         // Crea dei bpm medi e ci aggiunge un condizionamento dato dai bpm minimi per getTrainingType()/100

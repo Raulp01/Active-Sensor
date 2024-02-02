@@ -52,13 +52,11 @@ namespace View
             }
     }
 
-    void Results::showResultsById(unsigned int id)
+    std::vector<Core::Sensor*> Results::showResultsById(unsigned int id)
     {
         std::cout << "Results::showResultsById entrato in Results::receiveId" << std::endl;
 
         std::vector<Core::Sensor*> results_vector;
-
-        std::string id_input_string = std::to_string(id);
 
         if(!vector.empty())
         {
@@ -66,34 +64,37 @@ namespace View
             {
                 std::cout << "Results::showResultsById entrato ciclo for Results::showResultsById" << std::endl;
 
-                std::string sensor_id_string = std::to_string((**it).getId());
-
-                bool match = true;
-                unsigned int i = 0;
-
-                while(i != id_input_string.length() && match == true)
-                {
-                    std::cout << "Results::showResultsById id_input_string["<< i << "] = " << id_input_string[i] << std::endl;
-                    std::cout << "Results::showResultsById sensor_id_string[" << i << "] = " << sensor_id_string[i] << std::endl;
-                    if(id_input_string[i] != sensor_id_string[i])
-                    {
-                        match = false;
-                    }
-                    i++;
-                }
-                
-
-                if(match==true)
+                if(id == (*it)->getId())
                 {
                     results_vector.push_back(*it);
-                    std::cout << "Results::showResultsById elemento inserito correttamente in results_vector" << std::endl;
                 }
             }
         }
-        else {std::cout << "Results::showResultsById vector vuoto" << std::endl;}
+        else 
+        {
+            std::cout << "Results::showResultsById vector vuoto" << std::endl;
+        }
 
         std::cout << "Results::showResultsById invocazione di Results::showResults" << std::endl;
         
-        showResults(results_vector);
+        return results_vector;
+    }
+
+    std::vector<Core::Sensor*> Results::showResultsByFilter(std::string filter)
+    {
+        std::vector<Core::Sensor*> results_vector;
+
+        if(!vector.empty()) 
+        {
+            for(auto it = vector.begin(); it != vector.end(); it++)
+            {
+                if((*it)->getType() == filter)
+                {
+                    results_vector.push_back(*it);
+                }
+            }
+        }
+        // Invece che questo, devono passare un segnale con il vettore
+        return results_vector;
     }
 };

@@ -60,7 +60,7 @@ Sensor* Reader::readActivity(const QJsonObject& object) const {
         object.value("training_time").toDouble(),
         object.value("bpm").toInt(),
         object.value("calories").toDouble(),
-        object.value("avarage_speed").toDouble(),
+        object.value("speed").toDouble(),
         object.value("distance").toDouble()
     );
 }
@@ -104,7 +104,7 @@ Sensor* Reader::readSpeedometer(const QJsonObject& object) const {
         object.value("weight").toDouble(),
         object.value("training_type").toInt(),
         object.value("training_time").toDouble(),
-        object.value("avarage_speed").toDouble(),
+        object.value("speed").toDouble(),
         object.value("distance").toDouble()
     );
 }

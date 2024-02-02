@@ -53,7 +53,7 @@ void JsonVisitor::visitSpeedometer(const Speedometer& speedometer)
     speedometer_object.insert("weight", QJsonValue::fromVariant(speedometer.getWeight()));
     speedometer_object.insert("training_type", QJsonValue::fromVariant(speedometer.getTrainingType()));
     speedometer_object.insert("training_time", QJsonValue::fromVariant(speedometer.getTrainingTime()));
-    speedometer_object.insert("avarage_speed", QJsonValue::fromVariant(speedometer.getAvarageSpeed()));
+    speedometer_object.insert("speed", QJsonValue::fromVariant(speedometer.getSpeed()));
     speedometer_object.insert("distance", QJsonValue::fromVariant(speedometer.getDistance()));
     object = speedometer_object;
 }
@@ -72,7 +72,7 @@ void JsonVisitor::visitActivity(const Activity& activity)
     activity_object.insert("training_time", QJsonValue::fromVariant(activity.getTrainingTime()));
     activity_object.insert("bpm", QJsonValue::fromVariant(activity.getBpm()));
     activity_object.insert("calories", QJsonValue::fromVariant(activity.getCalories()));
-    activity_object.insert("avarage_speed", QJsonValue::fromVariant(activity.getAvarageSpeed()));
+    activity_object.insert("speed", QJsonValue::fromVariant(activity.getSpeed()));
     activity_object.insert("distance", QJsonValue::fromVariant(activity.getDistance()));
     object = activity_object;
 }

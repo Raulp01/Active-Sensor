@@ -137,7 +137,7 @@ namespace View
         series_bpm->attachAxis(bpm_x);
 
         QValueAxis* bpm_y = new QValueAxis();
-        bpm_y->setRange(0, 300);
+        bpm_y->setRange(0, 220);
         bpm_chart->addAxis(bpm_y, Qt::AlignLeft);
         series_bpm->attachAxis(bpm_y);
 

@@ -10,15 +10,13 @@ namespace Core
         private:
         unsigned int bpm;
         std::vector<unsigned int> bpm_vector;
-        unsigned int max_bpm;
-        unsigned int min_bpm;
         static const unsigned int heart_frequence_constant;
         static const float age_percentage_constant;
         static const unsigned int rest_bpm_low;
         static const unsigned int rest_bpm_high;
 
         public:
-        HeartSensor(unsigned int id, std::string name, std::string description, unsigned int age, float height, float weight, unsigned int training_type,
+        HeartSensor(unsigned int id, std::string name, std::string description, unsigned int age = 1, float height = 0.6, float weight = 5, unsigned int training_type = 1,
         float training_time = 0, unsigned int bpm = 0);
         virtual ~HeartSensor();
 

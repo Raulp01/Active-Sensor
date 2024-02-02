@@ -126,16 +126,18 @@ namespace View
         connect(togge_toolbar, &QAction::triggered, this, &MainWindow::toggleToolbar);
         connect(search, &Search::searchSensorId, this, &MainWindow::searchById);
         connect(search, &Search::filterSensor, this, &MainWindow::searchByFilter);
-        connect(search, &Search::showAll, this, &MainWindow::reloadResults);
+        connect(search, &Search::showAll, this, &MainWindow::showAllData);
         connect(create_item, &QAction::triggered, this, &MainWindow::createSensor);
+
+        reloadData(vector);
 
         std::cout << "MainWindow::MainWindow Collegati tutti i signal-slots" << std::endl;
 
-        // Status bar
         std::cout << "MainWindow::MainWindow Pronto per le operazioni" << std::endl;
     }
 
-    void MainWindow::reloadData() {
+    //Slot che aggiorna la lista di sensori con il vettore passato per parametro
+    void MainWindow::reloadData(std::vector<Core::Sensor*>& reload_vector) {
         std::cout << "MainWindow::reloadData" << std::endl;
         clearStack();
         std::cout << "MainWindow::reloadData preparazione risultati..." << std::endl;
@@ -144,34 +146,43 @@ namespace View
         scroll_area->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         scroll_area->setWidgetResizable(true);
         std::cout << "MainWindow::reloadData results creato in MainWindow" << std::endl;
-        Results* results = new Results(vector, left_stacked_widget);
-        scroll_area->setWidget(results);
-        results->showResults(vector);
+        if(reload_vector.empty())
+        {
+            QLabel* label = new QLabel("No sensors available at the moment");
+            scroll_area->setWidget(label);   
+            label->setAlignment(Qt::AlignCenter | Qt::AlignVCenter);
+        }
+        else
+        {
+            Results* results = new Results(reload_vector, left_stacked_widget);
+            scroll_area->setWidget(results);
+            results->showResults(reload_vector);
+
+            connect(results, &Results::showSensor, this, &MainWindow::showSensor);
+            connect(results, &Results::editSensor, this, &MainWindow::editSensor);
+            connect(results, &Results::deleteSensor, this, &MainWindow::deleteSensor);
+        }
         std::cout << "MainWindow::reloadData Fine showResults" << std::endl;
         left_stacked_widget->addWidget(scroll_area);
         left_stacked_widget->setCurrentIndex(1);
-        //right_stacked_widget->setCurrentIndex(0);
+        right_stacked_widget->setCurrentIndex(0);
         std::cout << "MainWindow::reloadData reloadData avvenuto con successo" << std::endl;
-        connect(results, &Results::showSensor, this, &MainWindow::showSensor);
-        connect(results, &Results::editSensor, this, &MainWindow::editSensor);
-        connect(results, &Results::deleteSensor, this, &MainWindow::deleteSensor);
+        
         has_unsaved_changes = true;
     }
 
-    void MainWindow::reloadResults()
+    //Prende i segnali che non passano parametri e che vogliono aggiornare la lista di sensori
+    void MainWindow::showAllData()
     {
-        std::cout << "reloadResults:" << std::endl;
-        reloadData();
+        reloadData(vector);
     }
 
-    Search* MainWindow::getSearch() {
-        return search;
-    }
-
+    //Rimuove il widget di destra e pulisce lo stack dell'interfaccia
     void MainWindow::clearStack() 
     {
         std::cout << "MainWindow::clearStack Pulizia clearStack destro" << std::endl;
-        QWidget* right_widget = right_stacked_widget->widget(1);
+        //right_stacked_widget->removeWidget(right_stacked_widget->currentWidget());
+        QWidget* right_widget = right_stacked_widget->widget(0);
         while (right_widget) {
             std::cout << "MainWindow::clearStackPulizia stack destro" << std::endl;
             right_stacked_widget->removeWidget(right_widget);
@@ -189,6 +200,7 @@ namespace View
     }
 
 
+    //Crea un nuovo file
     void MainWindow::newDataset() {
         QString path = QFileDialog::getSaveFileName(
             this,
@@ -202,13 +214,13 @@ namespace View
         dynamic_cast<Core::Json::Reader&>(const_cast<Core::Json::IReader&>(json_file.getConverter().getReader())).clear();
         json_file.setPath(path.toStdString());
         vector = json_file.load();
-        // deploy();
         create_item->setEnabled(true);
-        reloadData();
+        reloadData(vector);
         
         std::cout << "MainWindow::newDataset Nuovo Dataset. Dimensione vettore = " << vector.size() << std::endl;
     }
 
+    //Apre un file esistente
     void MainWindow::openDataset() {
         QString path = QFileDialog::getOpenFileName(
             this,
@@ -219,14 +231,13 @@ namespace View
         dynamic_cast<Core::Json::Reader&>(const_cast<Core::Json::IReader&>(json_file.getConverter().getReader())).clear();
         json_file.setPath(path.toStdString());
         vector = json_file.load();
-        // deploy();
-        //reload_item->setEnabled(true);   
         create_item->setEnabled(true);
         std::cout << "MainWindow::openDataset Data successfully loaded from " << path.toStdString() << "." << std::endl;
-        reloadData();
+        reloadData(vector);
     }
 
-     void MainWindow::saveDataset() {
+    //Salva nel file aperto o creato i sensori in vector
+    void MainWindow::saveDataset() {
         if(json_file.getPath() == "")
         {
             return;
@@ -236,6 +247,7 @@ namespace View
         std::cout << "MainWindow::saveDataset Dataset saved." << std::endl;
     }
 
+    //Salva in un nuovo file i sensori in vector
     void MainWindow::saveAsDataset() {
         QString path = QFileDialog::getSaveFileName(
             this,
@@ -258,37 +270,42 @@ namespace View
         std::cout << "MainWindow::toggleToolbar rimossa" << std::endl;
     }
 
+    /*
+        Viene costruito un nuovo results per invocare la funzione showResultsById e ritornare 
+        il vettore con solo gli elementi che iniziano per quell'id
+    */
     void MainWindow::searchById(unsigned int id) 
     {
         std::cout << "MainWindow::searchById" << std::endl;
         clearStack();
-        QScrollArea* scroll_area = new QScrollArea();
-        scroll_area->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-        scroll_area->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-        scroll_area->setWidgetResizable(true);
-        Results* results = new Results(vector, left_stacked_widget);
-        scroll_area->setWidget(results);
+        Results* results = new Results(vector);
         std::cout << "MainWindow::searchById settato il widget in scroll_area" << std::endl;
-        results->showResultsById(id);
+        std::vector<Core::Sensor*> id_vector = results->showResultsById(id);
         std::cout << "MainWindow::searchById fine showResultsById (Results)" << std::endl;
-        left_stacked_widget->addWidget(scroll_area);
-        left_stacked_widget->setCurrentIndex(1);
-        //right_stacked_widget->setCurrentIndex(0);
+        reloadData(id_vector);
         has_unsaved_changes = true;
     }
 
+    /*
+        Viene costruito un nuovo results per invocare la funzione showResultsByFilter e ritornare 
+        il vettore con solo gli elementi di tipo filter
+    */
     void MainWindow::searchByFilter(std::string filter)
     {
-        //results riceve segnale e viene aggiornato.
-        // setta results
-
+        std::cout << "MainWindow::searchByFilter" << std::endl;
         clearStack();
+        Results* results = new Results(vector);
+        std::cout << "MainWindow::searchByFilter settato il widget in scroll_area" << std::endl;
+        std::vector<Core::Sensor*> filter_vector = results->showResultsByFilter(filter);
+        std::cout << "MainWindow::searchById fine showResultsById (Results)" << std::endl;
+        reloadData(filter_vector);
+        has_unsaved_changes = true;
     }
 
     void MainWindow::createSensor() 
     {
         std::cout << "MainWindow::createSensor Inizio createSensor" << std::endl;
-        reloadData();
+        reloadData(vector);
         QScrollArea* scroll_area = new QScrollArea();
         scroll_area->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         scroll_area->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
@@ -301,11 +318,11 @@ namespace View
         right_stacked_widget->setCurrentIndex(1);
         has_unsaved_changes = true;
         std::cout << "MainWindow::createSensor Creating a new item." << std::endl;
-        connect(editor, &Editor::save, this, &MainWindow::reloadResults);
+        connect(editor, &Editor::save, this, &MainWindow::reloadData);
     }
 
     void MainWindow::showSensor(Core::Sensor* sensor) {
-        reloadData();
+        reloadData(vector);
         std::cout << "MainWindow::showSensor" << std::endl;
         Viewer* viewer_wiget = new Viewer(vector, *sensor);
         std::cout << "MainWindow::showSensor Viewer creato" << std::endl;
@@ -323,7 +340,7 @@ namespace View
 
     void MainWindow::editSensor(Core::Sensor* sensor) {
         std::cout << "MainWindow::editSensor" << std::endl;
-        reloadData();
+        reloadData(vector);
         QScrollArea* scroll_area = new QScrollArea();
         scroll_area->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         scroll_area->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
@@ -335,10 +352,11 @@ namespace View
         right_stacked_widget->setCurrentIndex(1);
         has_unsaved_changes = true;
         std::cout << "MainWindow::editSensor Editing sensor " << QString::fromStdString(sensor->getName()).toStdString() << "." << std::endl;
-        connect(editor, &Editor::save, this, &MainWindow::reloadResults);
+        connect(editor, &Editor::save, this, &MainWindow::reloadData);
     }
 
     void MainWindow::deleteSensor(Core::Sensor* sensor) {
+        clearStack();
         std::cout << "MainWindow::deleteSensor" << std::endl;
         auto it = vector.begin();
         while(it != vector.end() && *it != sensor)
@@ -359,7 +377,7 @@ namespace View
         }
         std::cout << "MainWindow::deleteSensor lista aggiornata dopo deleteSensor. Dim = " << vector.size() << std::endl;
         // Chiamata per aggiornare la lista
-        reloadData();
+        reloadData(vector);
         std::cout << "MainWindow::deleteSensro reloadData avvenuto" << std::endl;
         has_unsaved_changes = true;
     }

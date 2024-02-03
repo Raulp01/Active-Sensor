@@ -20,7 +20,7 @@ namespace Core
         unsigned int getCalories() const;
         std::string getType() const override;
         std::vector<unsigned int> getCaloriesVector() const;
-
+        
         void setCalories(unsigned int new_calories);
         void setStandardCalories();
 

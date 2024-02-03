@@ -36,38 +36,33 @@ namespace Core
 
     void CaloriesCounter::setStandardCalories()
     {
-        std::cout << "CaloriesCounter::setStandardCalories()" << std::endl;
         // Calcola calorie medie
         setCalories(getWeight() * getTrainingTime() + (getTrainingType()));
-        std::cout << " calories set to " << getCalories() << " in setStandardCalories()" << std::endl;
     }
 
     void CaloriesCounter::simulate() 
     {
-        std::cout << "CaloriesCounter::simulate()";
         // Simulazione del sottooggetto
         HeartSensor::simulate();
 
         // Incidenza dei bpm nella simulazione del calcolo delle calorie bruciate (25%)
         float calories_range = getBpm() * bpm_percentage;
-        std::cout << "CaloriesCounter::simulate() calories_range set to " << calories_range << std::endl;
+        /*
+            Prende un numero casuale tra le calorie precedenti e le nuove calorie
+            Questo per randomizzare l'aumento di calorie in delta-time
+        */ 
         float rand_calories = getRandomNumber(getCalories(), getCalories() + calories_range);
         setCalories(rand_calories);
-        std::cout << "CaloriesCounter::simulate() calories " << getCalories() << std::endl;
         calories_vector.push_back(getCalories());
-        std::cout << "CaloriesCounter::simulate() calories_vector " << calories_vector.size() << std::endl;
     }
 
+    // Reset del sottooggetto e pulizia dei dati di CaloriesCounter
     void CaloriesCounter::reset()
     {
-        std::cout << "CaloriesCounter::reset()";
         HeartSensor::reset();
         calories_vector.clear();
-        std::cout << "CaloriesCounter::reset() calories_vector " << calories_vector.size() << std::endl;
         setStandardCalories();
-        std::cout << "CaloriesCounter::reset() calories " << getCalories() << std::endl;
         calories_vector.push_back(getCalories());
-        std::cout << "CaloriesCounter::reset() calories_vector " << calories_vector.size() << std::endl;
     }
 
     void CaloriesCounter::accept(IVisitor& visitor)

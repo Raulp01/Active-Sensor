@@ -11,13 +11,13 @@ namespace Json {
 class JsonConverter 
 {
   private:
-    IReader& reader;
+  IReader& reader;
 
   public:
-    JsonConverter(IReader& reader);
-    const IReader& getReader() const;
-    QJsonObject fromObject(const Sensor& item) const;
-    Sensor* toObject(const QJsonObject& json) const;
+  JsonConverter(IReader& reader);
+  const IReader& getReader() const;
+  QJsonObject fromObject(const Sensor& item) const;
+  Sensor* toObject(const QJsonObject& json) const;
 };
 
 }

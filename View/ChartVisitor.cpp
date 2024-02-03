@@ -19,11 +19,13 @@ namespace View
         layout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
         widget->setLayout(layout);
 
-        QLabel* bpm_label = new QLabel("Heart Sensor Chart: x-time, y-bpm");
-        layout->addWidget(bpm_label);
-        createBpmChart(calories_counter);
+        // Crea i nuovi grafici per un tipo CaloriesCounter
 
-        QLabel* calories_label = new QLabel("Calories Chart: x-time, y-calories burned");
+        QLabel* bpm_label = new QLabel("Heart Sensor Chart: x-Time: h, y-Bpm");
+        layout->addWidget(bpm_label);
+        layout->addWidget(createBpmChart(calories_counter));
+        
+        QLabel* calories_label = new QLabel("Calories Chart: x-Time: h, y-Calories burned: kcal");
         layout->addWidget(calories_label);
         layout->addWidget(createCaloriesChart(calories_counter));
     }
@@ -35,18 +37,17 @@ namespace View
         layout->setAlignment(Qt::AlignTop | Qt::AlignCenter);
         widget->setLayout(layout);
 
-        QLabel* bpm_label = new QLabel("Heart Sensor Chart: x-time, y-bpm");
+        QLabel* bpm_label = new QLabel("Heart Sensor Chart: x-Time: h, y-Bpm");
         layout->addWidget(bpm_label);
         layout->addWidget(createBpmChart(activity));
 
-        QLabel* calories_label = new QLabel("Calories Chart: x-time, y-calories burned");
+        QLabel* calories_label = new QLabel("Calories Chart: x-Time: h, y-Calories burned: kcal");
         layout->addWidget(calories_label);
         layout->addWidget(createCaloriesChart(activity));
 
-        QLabel* speed_label = new QLabel("Speedometer Chart: x-distance, y-avarage speed");
+        QLabel* speed_label = new QLabel("Speedometer Chart: x-Time: h, y-Speed: km/h");
         layout->addWidget(speed_label);
         layout->addWidget(createSpeedChart(activity));
-
     }
 
     void ChartVisitor::visitHeartSensor(const Core::HeartSensor& heart_sensor)
@@ -56,7 +57,7 @@ namespace View
         layout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
         widget->setLayout(layout);
 
-        QLabel* bpm_label = new QLabel("Heart Sensor Chart: x-time, y-bpm");
+        QLabel* bpm_label = new QLabel("Heart Sensor Chart: x-Time: h, y-Bpm");
         layout->addWidget(bpm_label);
         layout->addWidget(createBpmChart(heart_sensor));
     }
@@ -68,7 +69,7 @@ namespace View
         layout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
         widget->setLayout(layout);
 
-        QLabel* speed_label = new QLabel("Speedometer Chart: x-distance, y-avarage speed");
+        QLabel* speed_label = new QLabel("Speedometer Chart: x-Time: h, y-Speed: km/h");
         layout->addWidget(speed_label);
         layout->addWidget(createSpeedChart(speedometer));
     }
@@ -80,16 +81,15 @@ namespace View
 
         if(calories_counter.getSensorVector().size() == calories_counter.getCaloriesVector().size())
         {
-            //Le dimensioni dei vettori vengono aumentate assieme in simulate(). 
-            //Prendo il vettore per l'asse delle x per realizzare il ciclo
+            /*
+                Le dimensioni dei vettori vengono aumentate assieme in simulate(). 
+                Prendo il vettore per l'asse delle x per realizzare il ciclo    
+            */
             for(unsigned int i = 0; i < calories_counter.getSensorVector().size(); i++)
             {
+                // Aggiunge un punto sul grafico per ogni elemento del vettore
                 series_calories->append(calories_counter.getSensorVector()[i], calories_counter.getCaloriesVector()[i]);
             }
-        }
-        else
-        {
-            std::cout << "Vector di dimensione diversa in ChartVisitor::createCaloriesChart" << std::endl;
         }
 
         calories_chart->legend()->hide();
@@ -123,10 +123,6 @@ namespace View
                 series_bpm->append(heart_sensor.getSensorVector()[i], heart_sensor.getBpmVector()[i]);
             }
         }
-        else
-        {
-            std::cout << "Vector di dimensione diversa in ChartVisitor::createBpmChart" << std::endl;
-        }
 
         bpm_chart->legend()->hide();
         bpm_chart->addSeries(series_bpm);
@@ -152,25 +148,21 @@ namespace View
         QChart* speed_chart = new QChart();
         QLineSeries* series_speed = new QLineSeries();
 
-        if(speedometer.getDistanceVector().size() == speedometer.getSpeedVector().size())
+        if(speedometer.getSensorVector().size() == speedometer.getSpeedVector().size())
         {
-            for(unsigned int i = 0; i < speedometer.getDistanceVector().size(); i++)
+            for(unsigned int i = 0; i < speedometer.getSensorVector().size(); i++)
             {
-                series_speed->append(speedometer.getDistanceVector()[i], speedometer.getSpeedVector()[i]);
+                series_speed->append(speedometer.getSensorVector()[i], speedometer.getSpeedVector()[i]);
             }
-        }
-        else
-        {
-            std::cout << "Vector di dimensione diversa in ChartVisitor::createSpeedChart" << std::endl;
         }
 
         speed_chart->legend()->hide();
         speed_chart->addSeries(series_speed);
 
-        QValueAxis* distance = new QValueAxis();
-        distance->setRange(0, 50);
-        speed_chart->addAxis(distance, Qt::AlignBottom);
-        series_speed->attachAxis(distance);
+        QValueAxis* speed_x = new QValueAxis();
+        speed_x->setRange(0, 12);
+        speed_chart->addAxis(speed_x, Qt::AlignBottom);
+        series_speed->attachAxis(speed_x);
 
         QValueAxis* speed = new QValueAxis();
         speed->setRange(0, 40);

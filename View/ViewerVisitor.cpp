@@ -10,7 +10,7 @@ namespace View
         return widget;
     }
 
-    void ViewerVisitor::visitCaloriesCounter(Core::CaloriesCounter& calories_counter)
+    void ViewerVisitor::visitCaloriesCounter(const Core::CaloriesCounter& calories_counter)
     {
         widget = new QWidget();
 
@@ -27,7 +27,7 @@ namespace View
         grid->addWidget(calories, 2, 2, 1, 1);
     }
     
-    void ViewerVisitor::visitActivity(Core::Activity& activity) 
+    void ViewerVisitor::visitActivity(const Core::Activity& activity) 
     {
         widget = new QWidget();
 
@@ -50,7 +50,7 @@ namespace View
         grid->addWidget(speed, 3, 2, 1, 1);
     }
 
-    void ViewerVisitor::visitHeartSensor(Core::HeartSensor& heart_sensor) 
+    void ViewerVisitor::visitHeartSensor(const Core::HeartSensor& heart_sensor) 
     {
         widget = new QWidget();
         QGridLayout* grid = new QGridLayout();
@@ -63,7 +63,7 @@ namespace View
         grid->addWidget(bpm, 2, 1, 1, 1);
     }
     
-    void ViewerVisitor::visitSpeedometer(Core::Speedometer& speedometer) 
+    void ViewerVisitor::visitSpeedometer(const Core::Speedometer& speedometer) 
     {
         widget = new QWidget();
 

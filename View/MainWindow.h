@@ -18,7 +18,6 @@ namespace View {
 
     private:
       bool has_unsaved_changes;
-      QAction* create_item;
       QToolBar* toolbar;
       std::vector<Core::Sensor*>& vector;
       Core::Json::DataMapper::JsonFile& json_file;
@@ -36,15 +35,13 @@ namespace View {
       void newDataset();
       void openDataset();
       void saveDataset();
-      void saveAsDataset();
-      //void toggleToolbar();
       void searchById(unsigned int id);
       void searchByFilter(std::string filter);
       void createSensor();
       void showSensor(Core::Sensor* sensor);
       void editSensor(Core::Sensor* sensor);
-      void deleteSensor(Core::Sensor* sensor);
-      void reloadData(std::vector<Core::Sensor*>& reload_vector);
+      void deleteSensor(const Core::Sensor* sensor);
+      void reloadData(const std::vector<Core::Sensor*>& reload_vector);
       void showAllData();
       void close();
   };

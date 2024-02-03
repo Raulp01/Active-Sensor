@@ -8,10 +8,8 @@
 
 namespace View
 {
-    Viewer::Viewer(std::vector<Core::Sensor*>& vector, Core::Sensor& sensor) : vector(vector), sensor(sensor)
+    Viewer::Viewer(Core::Sensor& sensor) : sensor(sensor)
     {
-        std::cout << "Viewer::Viewer Costruttore Viewer vector = " << vector.size() << std::endl;
-
         QVBoxLayout* v_layout = new QVBoxLayout(this);
 
         QGridLayout* layout = new QGridLayout();
@@ -52,30 +50,28 @@ namespace View
         line->setFrameShadow(QFrame::Sunken);
         v_layout->addWidget(line);
 
+        // Visitor per i dettagli del sensore non disponibili in Sensor
         ViewerVisitor visitor;
         sensor.accept(visitor);
         v_layout->addWidget(visitor.getWidget());
 
+        // Creazione del grafico
         ChartVisitor chart_visitor;
         sensor.accept(chart_visitor);
         v_layout->addWidget(chart_visitor.getWidget());
-
-        std::cout << "Viewer::Viewer dopo la creazione dei widget, prima del visitor" << std::endl;
-        std::cout << "Viewer::Viewer chiama show" << std::endl;
     }
 
+    // Reimposta sensor per la prossima simulazione, simula e ricostruisce il viewer
     void Viewer::simulateSensor()
     {
-        std::cout << "Viewer::simulateSensor" << std::endl;
         sensor.setTimeChanged(false);
         sensor.simulate();
         emit reloadViewer(&sensor);
-        std::cout << "Viewer::simulateSensor chiama show()" << std::endl;
     }
 
+    // Resetta i valori del sensore
     void Viewer::reset()
     {
-        std::cout << "Viewer::reset" << std::endl;
         sensor.reset();
         emit reloadViewer(&sensor);
     }

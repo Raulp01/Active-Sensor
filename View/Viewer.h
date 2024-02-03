@@ -10,11 +10,10 @@ namespace View
         Q_OBJECT
 
         private:
-        std::vector<Core::Sensor*>& vector;
         Core::Sensor& sensor;
 
         public:
-        Viewer(std::vector<Core::Sensor*>& vector, Core::Sensor& sensor);
+        Viewer(Core::Sensor& sensor);
 
         signals:
         void reloadViewer(Core::Sensor* view_sensor);

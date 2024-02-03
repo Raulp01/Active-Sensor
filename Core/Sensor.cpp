@@ -9,9 +9,8 @@ namespace Core
     : id(id), name(name), description(description), age(age), height(height), weight(weight), 
     training_type(training_type), training_time(training_time), time_changed(false) 
     {
-        std::cout << "Sensor::Sensor()" << std::endl;
+        // Inserisce i dati iniziali, raccolti dalla simulazione del sensore
         time_vector.push_back(getTrainingTime());
-        std::cout << "Sensor::Sensor() time_vector " << time_vector.size() << std::endl;
     }
 
     Sensor::~Sensor() {}
@@ -130,6 +129,14 @@ namespace Core
         training_time = new_training_time;
     }
 
+    /*
+        Questa funzione serve da controllo per verificare che in una classe derivata
+        di Sensor, non venga modificato il tempo alla costruzione dei sottooggetti.
+        Senza questa funzione, all'invocazione di simulate() nella sottoclasse Activity,
+        il tempo verrebbe modificato 3 volte (2 per CaloriesCounter (poiché chiama simulate()
+        in HeartSensor), 1 in Speedometer).
+        time_changed deve essere risettato a mano ad ogni invocazione di simulate o con reset() 
+    */
     void Sensor::setTimeChanged(bool change)
     {
         time_changed = change;
@@ -149,31 +156,26 @@ namespace Core
 
     void Sensor::simulate()
     {
-        std::cout << "Sensor::simulate()"<< std::endl;
         // Controllo per aumentare il tempo una volta nella gerarchia
         if(getTimeChanged() == false)
         {
             // Per semplicità il tempo è calcolato in centesimi: 1h = 1, 1/2h = 0.5
-            std::cout << "Sensor::simulate() time_changed: " << getTimeChanged() << std::endl;
             setTrainingTime(getTrainingTime() + delta_time);
-            std::cout << "Sensor::simulate() training_time: " << getTrainingTime() << std::endl;
+
             time_vector.push_back(getTrainingTime());
-            std::cout << "Sensor::simulate() time_vector: " << time_vector.size() << std::endl;
+
             setTimeChanged(true);
-            std::cout << "Sensor::simulate() time_changed: " << getTimeChanged() << std::endl;
         }
     }
 
     void Sensor::reset()
     {
-        std::cout << "Sensor::reset()" << std::endl;
+        // Ripristina
         setTimeChanged(false);
-        std::cout << "Sensor::reset() time_changed: " << getTimeChanged() << std::endl;
+        // Resetta il vettore dei dati training_time
         time_vector.clear();
-        std::cout << "Sensor::reset() time_vector: " << time_vector.size() << std::endl;
+        // Resetta il tempo
         setTrainingTime(0);
-        std::cout << "Sensor::reset() training_time: " << getTrainingTime() << std::endl;
         time_vector.push_back(getTrainingTime());
-        std::cout << "Sensor::reset() time_vector: " << time_vector.size() << std::endl;
     }
 };

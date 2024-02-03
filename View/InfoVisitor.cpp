@@ -8,7 +8,9 @@ namespace View
         return widget;
     }
 
-    void InfoVisitor::visitCaloriesCounter(Core::CaloriesCounter& calories_counter)
+    // Informazioni specifiche sul sensore 
+
+    void InfoVisitor::visitCaloriesCounter(const Core::CaloriesCounter& calories_counter)
     {
         widget = new QWidget();
 
@@ -32,7 +34,7 @@ namespace View
         layout->addWidget(calories);
     }
 
-    void InfoVisitor::visitActivity(Core::Activity& activity)
+    void InfoVisitor::visitActivity(const Core::Activity& activity)
     {
         widget = new QWidget();
 
@@ -62,7 +64,7 @@ namespace View
         layout->addWidget(speed);
     }
     
-    void InfoVisitor::visitHeartSensor(Core::HeartSensor& heart_sensor)
+    void InfoVisitor::visitHeartSensor(const Core::HeartSensor& heart_sensor)
     {
         widget = new QWidget();
 
@@ -83,7 +85,7 @@ namespace View
         layout->addWidget(bpm);
     }
     
-    void InfoVisitor::visitSpeedometer(Core::Speedometer& speedometer)
+    void InfoVisitor::visitSpeedometer(const Core::Speedometer& speedometer)
     {
         widget = new QWidget();
 

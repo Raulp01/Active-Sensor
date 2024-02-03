@@ -17,7 +17,6 @@ namespace Core
 
     void Activity::simulate() 
     {
-        std::cout << "Activity::simulate()" << std::endl;
         CaloriesCounter::simulate();
 
         Speedometer::simulate();
@@ -25,7 +24,6 @@ namespace Core
 
     void Activity::reset()
     {
-        std::cout << "Activity::reset()" << std::endl;
         Speedometer::reset();
         CaloriesCounter::reset();
     }

@@ -14,6 +14,7 @@ namespace View
 
         QVBoxLayout* icon_layout = new QVBoxLayout();
 
+        // Visitor per ricevere informazioni specifiche da sensor
         InfoVisitor visitor;
         sensor.accept(visitor);
         icon_layout->addWidget(visitor.getWidget());

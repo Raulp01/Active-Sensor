@@ -49,13 +49,11 @@ namespace View
 
     void Search::search()
     {
-        std::cout << "Search::search emissione segnale search()" << std::endl;
         emit searchSensorId(id_input->value());
     }
 
     void Search::filter()
     {
-        std::cout << "Search::filter emissione segnale filter" << std::endl;
         emit filterSensor(filter_input->currentText().toStdString());
     }
 }

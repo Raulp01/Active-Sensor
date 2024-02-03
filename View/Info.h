@@ -29,7 +29,7 @@ namespace View
         signals:
         void showSensor(Core::Sensor& sensor);
         void editSensor(Core::Sensor& sensor);
-        void deleteSensor(Core::Sensor& sensor);
+        void deleteSensor(const Core::Sensor& sensor);
 
         public slots:
         void emitShowSensor();

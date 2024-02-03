@@ -2,6 +2,7 @@
 <qresource>
     <file>Assets/Activity.png</file>
     <file>Assets/add.png</file>
+    <file>Assets/apply.png</file>
     <file>Assets/CaloriesCounter.png</file>
     <file>Assets/close.png</file>
     <file>Assets/HeartSensor.png</file>
@@ -12,7 +13,6 @@
     <file>Assets/new_item.png</file>
     <file>Assets/open_file.png</file>
     <file>Assets/save.png</file>
-    <file>Assets/save_as.png</file>
     <file>Assets/Speedometer.png</file>
     <file>Assets/Very High.png</file>
     <file>Assets/open_sensor.png</file>

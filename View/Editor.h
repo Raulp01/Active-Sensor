@@ -41,7 +41,7 @@ namespace View {
         void changedIndex();
 
         signals:
-        void save(std::vector<Core::Sensor*>& reload_vector);
+        void save(const std::vector<Core::Sensor*>& reload_vector);
     };
 
 }

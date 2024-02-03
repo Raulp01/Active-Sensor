@@ -17,7 +17,6 @@ namespace Core
         }
         else
         {
-            std::cout << "HeartSensor::HeartSensor() bpm " << bpm << std::endl;
             bpm_vector.push_back(bpm);
         }
     }

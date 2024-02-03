@@ -37,7 +37,7 @@ namespace View {
       void openDataset();
       void saveDataset();
       void saveAsDataset();
-      void toggleToolbar();
+      //void toggleToolbar();
       void searchById(unsigned int id);
       void searchByFilter(std::string filter);
       void createSensor();

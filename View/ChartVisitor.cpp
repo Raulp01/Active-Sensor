@@ -15,7 +15,7 @@ namespace View
     void ChartVisitor::visitCaloriesCounter(const Core::CaloriesCounter& calories_counter)
     {
         widget = new QWidget();
-        layout = new QVBoxLayout();
+        QVBoxLayout* layout = new QVBoxLayout();
         layout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
         widget->setLayout(layout);
 

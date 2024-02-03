@@ -29,12 +29,12 @@ namespace View
         );
         create->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_N));
         QAction* open = new QAction(
-            QIcon(QPixmap((":/Assets/open.png"))),
+            QIcon(QPixmap((":/Assets/open_file.png"))),
             "Open"
         );
         open->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_O));
         QAction* save = new QAction(
-            QIcon(QPixmap((":/assets/save.png"))),
+            QIcon(QPixmap((":/Assets/save.png"))),
             "Save"
         );
         save->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_S));
@@ -48,28 +48,6 @@ namespace View
             "Close"
         );
         close->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q));
-        QAction* togge_toolbar = new QAction(
-            "Toolbar"
-        );
-        create_item = new QAction(
-            QIcon(QPixmap((":/Asset/new_item.png"))),
-            "New Item"
-        );
-        create_item->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_N));
-        create_item->setEnabled(false);
-
-        // Sets menu bar
-        QMenu* file = menuBar()->addMenu("&File");
-        file->addAction(create);
-        file->addAction(open);
-        file->addAction(save);
-        file->addAction(save_as);
-        file->addSeparator();
-        file->addAction(close);
-        QMenu* item_menu = menuBar()->addMenu("&Item");
-        item_menu->addAction(create_item);
-        QMenu* view = menuBar()->addMenu("&View");
-        view->addAction(togge_toolbar);
 
         // Sets toolbar
         toolbar = addToolBar("Toolbar");
@@ -78,7 +56,6 @@ namespace View
         toolbar->addAction(save);
         toolbar->addAction(save_as);
         toolbar->addSeparator();
-        toolbar->addAction(create_item);
         toolbar->addSeparator();
         toolbar->addAction(close);
 
@@ -99,6 +76,13 @@ namespace View
         widget->setLayout(layout);
 
         std::cout << "MainWindow::MainWindow Layout widget a sinistra" << std::endl;
+
+        const QSize button_size = QSize(120, 40);
+
+        QPushButton* new_sensor = new QPushButton("New Sensor");
+        new_sensor->setIcon(QIcon(QPixmap(":/Assets/new_item.png")));
+        new_sensor->setMinimumSize(button_size);
+        layout->addWidget(new_sensor);
 
         search = new Search();
         layout->addWidget(search);
@@ -123,11 +107,11 @@ namespace View
         connect(save, &QAction::triggered, this, &MainWindow::saveDataset);
         connect(save_as, &QAction::triggered, this, &MainWindow::saveAsDataset);
         connect(close, &QAction::triggered, this, &MainWindow::close);
-        connect(togge_toolbar, &QAction::triggered, this, &MainWindow::toggleToolbar);
+        //connect(togge_toolbar, &QAction::triggered, this, &MainWindow::toggleToolbar);
         connect(search, &Search::searchSensorId, this, &MainWindow::searchById);
         connect(search, &Search::filterSensor, this, &MainWindow::searchByFilter);
         connect(search, &Search::showAll, this, &MainWindow::showAllData);
-        connect(create_item, &QAction::triggered, this, &MainWindow::createSensor);
+        connect(new_sensor, &QPushButton::pressed, this, &MainWindow::createSensor);
 
         reloadData(vector);
 
@@ -236,11 +220,14 @@ namespace View
         reloadData(vector);
     }
 
-    //Salva nel file aperto o creato i sensori in vector
+    /*
+        Salva nel file aperto o creato i sensori in vector
+        Se non è disponibile un file, apre saveAsDataset
+    */
     void MainWindow::saveDataset() {
         if(json_file.getPath() == "")
         {
-            return;
+           saveAsDataset();
         }
         json_file.store(vector);
         has_unsaved_changes = false;
@@ -262,12 +249,6 @@ namespace View
         json_file.setPath(path.toStdString()).store(vector);
         has_unsaved_changes = false;
         std::cout << "MainWindow::saveAsDataset saved as \"" << path.toStdString() << "\"." << std::endl;
-    }
-
-    void MainWindow::toggleToolbar() 
-    {
-        toolbar->setVisible(!toolbar->isVisible());
-        std::cout << "MainWindow::toggleToolbar rimossa" << std::endl;
     }
 
     /*

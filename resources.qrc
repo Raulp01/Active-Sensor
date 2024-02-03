@@ -1,0 +1,22 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+    <file>Assets/Activity.png</file>
+    <file>Assets/add.png</file>
+    <file>Assets/CaloriesCounter.png</file>
+    <file>Assets/close.png</file>
+    <file>Assets/HeartSensor.png</file>
+    <file>Assets/High.svg</file>
+    <file>Assets/Light.svg</file>
+    <file>Assets/Maximum.jpg</file>
+    <file>Assets/Moderate.svg</file>
+    <file>Assets/new_item.png</file>
+    <file>Assets/open_file.png</file>
+    <file>Assets/save.png</file>
+    <file>Assets/save_as.png</file>
+    <file>Assets/Speedometer.png</file>
+    <file>Assets/Very High.png</file>
+    <file>Assets/open_sensor.png</file>
+    <file>Assets/edit_sensor.png</file>
+    <file>Assets/delete_sensor.png</file>
+</qresource>
+</RCC>

@@ -59,7 +59,7 @@ Sensor* Reader::readActivity(const QJsonObject& object) const {
         object.value("training_type").toInt(),
         object.value("training_time").toDouble(),
         object.value("bpm").toInt(),
-        object.value("calories").toDouble(),
+        object.value("calories").toInt(),
         object.value("speed").toDouble(),
         object.value("distance").toDouble()
     );
@@ -90,7 +90,7 @@ Sensor* Reader::readCaloriesCounter(const QJsonObject& object) const {
         object.value("training_type").toInt(),
         object.value("training_time").toDouble(),
         object.value("bpm").toInt(),
-        object.value("calories").toDouble()
+        object.value("calories").toInt()
     );
 }
 

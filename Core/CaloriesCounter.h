@@ -9,19 +9,19 @@ namespace Core
     {
         private:
         float calories;
-        std::vector<float> calories_vector;
+        std::vector<unsigned int> calories_vector;
         static const float bpm_percentage;
 
         public:
         CaloriesCounter(unsigned int id, std::string name, std::string description, unsigned int age, float height, float weight, unsigned int training_type,
-        float training_time = 0, unsigned int bpm = 0, float calories = 0);
+        float training_time = 0, unsigned int bpm = 0, unsigned int calories = 0);
         virtual ~CaloriesCounter();
 
-        float getCalories() const;
+        unsigned int getCalories() const;
         std::string getType() const override;
-        std::vector<float> getCaloriesVector() const;
+        std::vector<unsigned int> getCaloriesVector() const;
 
-        void setCalories(float new_calories);
+        void setCalories(unsigned int new_calories);
         void setStandardCalories();
 
         void simulate() override;

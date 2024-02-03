@@ -13,10 +13,9 @@ namespace View
         std::cout << "Viewer::Viewer Costruttore Viewer vector = " << vector.size() << std::endl;
 
         QVBoxLayout* v_layout = new QVBoxLayout(this);
-        v_layout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
 
         QGridLayout* layout = new QGridLayout();
-        layout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
+        layout->setAlignment(Qt::AlignCenter | Qt::AlignLeft);
         v_layout->addLayout(layout);
 
         QPushButton* simulate_sensor = new QPushButton("Simulate");
@@ -47,6 +46,11 @@ namespace View
 
         QLabel* training_type = new QLabel("Training Type: " + QString::fromStdString(sensor.getTrainingTypeToString()));
         layout->addWidget(training_type, 6, 1, 1, 1);
+
+        QFrame* line = new QFrame();
+        line->setFrameShape(QFrame::HLine);
+        line->setFrameShadow(QFrame::Sunken);
+        v_layout->addWidget(line);
 
         ViewerVisitor visitor;
         sensor.accept(visitor);

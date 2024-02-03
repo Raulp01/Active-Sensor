@@ -29,3 +29,5 @@ Core/Json/DataMapper/JsonFile.cpp \
 Core/Json/Reader.cpp Core/Json/JsonVisitor.cpp Core/Json/JsonConverter.cpp \
 View/Editor.cpp View/Search.cpp View/ChartVisitor.cpp\
 main.cpp  
+
+RESOURCES += resources.qrc

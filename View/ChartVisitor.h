@@ -4,7 +4,6 @@
 #include <QWidget>
 #include "../IConstVisitor.h"
 #include "../Core/Activity.h"
-#include <QVBoxLayout>
 
 namespace View
 {
@@ -14,7 +13,6 @@ namespace View
 
         private:
         QWidget* widget;
-        QVBoxLayout* layout;
 
         public:
         QWidget* getWidget();

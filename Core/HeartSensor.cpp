@@ -46,13 +46,13 @@ namespace Core
 
     void HeartSensor::setStandardBpm()
     {
-        // Calcola i bpm minimi prendendo un numero casuale tra quelli
+        // Calcola i bpm minimi sotto sforzo prendendo un numero casuale tra quelli
         // di una persona a riposo (per una persona adulta è tra 60 e 100)
         unsigned int min_bpm = getRandomNumber(rest_bpm_low, rest_bpm_high);
         std::cout << "Min bpm: " << min_bpm << std::endl;
 
         // Calcola i bpm massimi sotto sforzo in base all'età (più è alta l'età meno i bpm massimi)
-        // Si ottiene prendendo una costante teorica (220), togliendo l'età e calcolando l'85% di quel numero
+        // Si ottiene prendendo una costante teorica (208), togliendo l'età e calcolando l'85% di quel numero
         unsigned int max_bpm = (heart_frequence_constant - getAge()) * age_percentage_constant;
         std::cout << "Max bpm: " << max_bpm << std::endl;
 

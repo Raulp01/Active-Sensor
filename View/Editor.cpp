@@ -87,10 +87,10 @@ namespace View
         QFormLayout* type_form = new QFormLayout();
         type_form->setLabelAlignment(Qt::AlignCenter | Qt::AlignTop);
         type = new QComboBox();
-        type->addItem("HeartSensor");
-        type->addItem("CaloriesCounter");
-        type->addItem("Speedometer");
-        type->addItem("Activity");
+        type->addItem(QIcon(QPixmap(":/Assets/HeartSensor.png")), "HeartSensor");
+        type->addItem(QIcon(QPixmap(":/Assets/CaloriesCounter.png")), "CaloriesCounter");
+        type->addItem(QIcon(QPixmap(":/Assets/Speedometer.png")), "Speedometer");
+        type->addItem(QIcon(QPixmap(":/Assets/Activity.png")), "Activity");
         if(sensor != nullptr)
         {
             type->setPlaceholderText(QString::fromStdString(sensor->getType()));
@@ -173,7 +173,7 @@ namespace View
         unsigned int age = age_input->value();
         float height = height_input->value();
         float weight = weight_input->value();
-        unsigned int training_type = training_type_input->currentIndex();
+        unsigned int training_type = training_type_input->currentIndex() + 1;
 
         //Sensore creato scegliendo il tipo di default sul QComboBox
 

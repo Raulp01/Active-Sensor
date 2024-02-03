@@ -13,8 +13,14 @@ namespace View
         widget = new QWidget();
 
         QVBoxLayout* layout = new QVBoxLayout();
-        layout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
         widget->setLayout(layout);
+
+        QPixmap image(":/Assets/CaloriesCounter.png");
+
+        artwork = new QLabel();
+        artwork->setPixmap(image.scaledToHeight(125));
+        artwork->setAlignment(Qt::AlignCenter);
+        layout->addWidget(artwork);
 
         QLabel* type = new QLabel("Type: " + QString::fromStdString(calories_counter.getType()));
         layout->addWidget(type);
@@ -24,12 +30,6 @@ namespace View
 
         QLabel* calories = new QLabel("Calories: " + QString::number(calories_counter.getCalories()));
         layout->addWidget(calories);
-
-        QPixmap image(":/Assets/CaloriesCounter.png");
-
-        artwork = new QLabel();
-        artwork->setPixmap(image.scaledToHeight(256));
-        layout->addWidget(artwork);
     }
 
     void InfoVisitor::visitActivity(Core::Activity& activity)
@@ -37,8 +37,14 @@ namespace View
         widget = new QWidget();
 
         QVBoxLayout* layout = new QVBoxLayout();
-        layout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
         widget->setLayout(layout);
+
+        QPixmap image(":/Assets/Activity.png");
+
+        artwork = new QLabel();
+        artwork->setPixmap(image.scaledToHeight(125));
+        artwork->setAlignment(Qt::AlignCenter);
+        layout->addWidget(artwork);
 
         QLabel* type = new QLabel("Type: " + QString::fromStdString(activity.getType()));
         layout->addWidget(type);
@@ -46,20 +52,14 @@ namespace View
         QLabel* bpm = new QLabel("BPM: " + QString::number(activity.getBpm()));
         layout->addWidget(bpm);
 
-        QLabel* calories = new QLabel("Calories: " + QString::number(activity.getCalories()));
+        QLabel* calories = new QLabel("Calories: " + QString::number(activity.getCalories(), 'f', 2));
         layout->addWidget(calories);
 
-        QLabel* distance = new QLabel("Distance: " + QString::number(activity.getDistance()));
+        QLabel* distance = new QLabel("Distance: " + QString::number(activity.getDistance(), 'f', 2));
         layout->addWidget(distance);
 
-        QLabel* speed = new QLabel("Speed: " + QString::number(activity.getSpeed()));
+        QLabel* speed = new QLabel("Speed: " + QString::number(activity.getSpeed(), 'f', 2));
         layout->addWidget(speed);
-
-        QPixmap image(":/Assets/Activity.png");
-
-        artwork = new QLabel();
-        artwork->setPixmap(image.scaledToHeight(256));
-        layout->addWidget(artwork);
     }
     
     void InfoVisitor::visitHeartSensor(Core::HeartSensor& heart_sensor)
@@ -67,20 +67,20 @@ namespace View
         widget = new QWidget();
 
         QVBoxLayout* layout = new QVBoxLayout();
-        layout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
         widget->setLayout(layout);
+
+        QPixmap image(":/Assets/HeartSensor.png");
+
+        artwork = new QLabel();
+        artwork->setPixmap(image.scaledToHeight(125));
+        artwork->setAlignment(Qt::AlignCenter);
+        layout->addWidget(artwork);
 
         QLabel* type = new QLabel("Type: " + QString::fromStdString(heart_sensor.getType()));
         layout->addWidget(type);
 
         QLabel* bpm = new QLabel("BPM: " + QString::number(heart_sensor.getBpm()));
         layout->addWidget(bpm);
-
-        QPixmap image(":/Assets/HeartSensor.png");
-
-        artwork = new QLabel();
-        artwork->setPixmap(image.scaledToHeight(256));
-        layout->addWidget(artwork);
     }
     
     void InfoVisitor::visitSpeedometer(Core::Speedometer& speedometer)
@@ -88,22 +88,22 @@ namespace View
         widget = new QWidget();
 
         QVBoxLayout* layout = new QVBoxLayout();
-        layout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
         widget->setLayout(layout);
-
-        QLabel* type = new QLabel("Type: " + QString::fromStdString(speedometer.getType()));
-        layout->addWidget(type);
-
-        QLabel* distance = new QLabel("Distance: " + QString::number(speedometer.getDistance()));
-        layout->addWidget(distance);
-
-        QLabel* speed = new QLabel("Speed: " + QString::number(speedometer.getSpeed()));
-        layout->addWidget(speed);
 
         QPixmap image(":/Assets/Speedometer.png");
 
         artwork = new QLabel();
-        artwork->setPixmap(image.scaledToHeight(256));
+        artwork->setPixmap(image.scaledToHeight(125));
+        artwork->setAlignment(Qt::AlignCenter);
         layout->addWidget(artwork);
+
+        QLabel* type = new QLabel("Type: " + QString::fromStdString(speedometer.getType()));
+        layout->addWidget(type);
+
+        QLabel* distance = new QLabel("Distance: " + QString::number(speedometer.getDistance(), 'f', 2));
+        layout->addWidget(distance);
+
+        QLabel* speed = new QLabel("Speed: " + QString::number(speedometer.getSpeed(), 'f', 2));
+        layout->addWidget(speed);
     }
 }

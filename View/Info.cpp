@@ -11,17 +11,15 @@ namespace View
         layout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
 
         QHBoxLayout* h_layout = new QHBoxLayout();
-        h_layout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
 
         QVBoxLayout* icon_layout = new QVBoxLayout();
-        icon_layout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
 
         InfoVisitor visitor;
         sensor.accept(visitor);
         icon_layout->addWidget(visitor.getWidget());
 
         QVBoxLayout* info_layout = new QVBoxLayout();
-        info_layout->setAlignment(Qt::AlignCenter | Qt::AlignTop);
+        info_layout->setAlignment(Qt::AlignVCenter);
 
         sensor_id = new QLabel("Id: " + QString::number(sensor.getId()));
         info_layout->addWidget(sensor_id);
@@ -29,7 +27,7 @@ namespace View
         sensor_name = new QLabel("Name: " + QString::fromStdString(sensor.getName()));
         info_layout->addWidget(sensor_name);
 
-        sensor_training_type = new QLabel("Training intensity: " + QString::number(sensor.getTrainingType()));
+        sensor_training_type = new QLabel("Training Type: " + QString::fromStdString(sensor.getTrainingTypeToString()));
         info_layout->addWidget(sensor_training_type);
 
         h_layout->addLayout(icon_layout);
@@ -41,12 +39,15 @@ namespace View
         layout->addLayout(button_layout);
 
         open = new QPushButton("Open");
+        open->setIcon(QIcon(QPixmap(":/Assets/open_sensor.png")));
         button_layout->addWidget(open);
 
         edit = new QPushButton("Edit");
+        edit->setIcon(QIcon(QPixmap(":/Assets/edit_sensor.png")));
         button_layout->addWidget(edit);
 
         remove = new QPushButton("Delete");
+        remove->setIcon(QIcon(QPixmap(":/Assets/delete_sensor.png")));
         button_layout->addWidget(remove);
 
         connect(open, &QPushButton::pressed, this, &Info::emitShowSensor);

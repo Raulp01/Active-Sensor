@@ -16,15 +16,14 @@ namespace View
 
         QGridLayout* grid = new QGridLayout();
         widget->setLayout(grid);
-        grid->setAlignment(Qt::AlignTop | Qt::AlignCenter);
 
-        QLabel* training_time = new QLabel("Training time: " + QString::number(calories_counter.getTrainingTime(), 'f', 1));
+        QLabel* training_time = new QLabel("Training time: " + QString::number(calories_counter.getTrainingTime(), 'f', 2));
         grid->addWidget(training_time, 1, 1, 1, 1);
 
         QLabel* bpm = new QLabel("BPM: " + QString::number(calories_counter.getBpm()));
         grid->addWidget(bpm, 2, 1, 1, 1);
 
-        QLabel* calories = new QLabel("Calories burned: " + QString::number(calories_counter.getCalories(), 'f', 2));
+        QLabel* calories = new QLabel("Calories burned: " + QString::number(calories_counter.getCalories()));
         grid->addWidget(calories, 2, 2, 1, 1);
     }
     
@@ -34,7 +33,6 @@ namespace View
 
         QGridLayout* grid = new QGridLayout();
         widget->setLayout(grid);
-        grid->setAlignment(Qt::AlignTop | Qt::AlignCenter);
 
         QLabel* training_time = new QLabel("Training time: " + QString::number(activity.getTrainingTime(), 'f', 2));
         grid->addWidget(training_time, 1, 1, 1, 1);
@@ -42,7 +40,7 @@ namespace View
         QLabel* bpm = new QLabel("BPM: " + QString::number(activity.getBpm()));
         grid->addWidget(bpm, 2, 1, 1, 1);
 
-        QLabel* calories = new QLabel("Calories burned: " + QString::number(activity.getCalories(), 'f', 2));
+        QLabel* calories = new QLabel("Calories burned: " + QString::number(activity.getCalories()));
         grid->addWidget(calories, 2, 2, 1, 1);
 
         QLabel* distance = new QLabel("Distance: " + QString::number(activity.getDistance(), 'f', 2));
@@ -57,7 +55,6 @@ namespace View
         widget = new QWidget();
         QGridLayout* grid = new QGridLayout();
         widget->setLayout(grid);
-        grid->setAlignment(Qt::AlignTop | Qt::AlignCenter);
 
         QLabel* training_time = new QLabel("Training time: " + QString::number(heart_sensor.getTrainingTime(), 'f', 2));
         grid->addWidget(training_time, 1, 1, 1, 1);
@@ -72,15 +69,14 @@ namespace View
 
         QGridLayout* grid = new QGridLayout();
         widget->setLayout(grid);
-        grid->setAlignment(Qt::AlignTop | Qt::AlignCenter);
 
         QLabel* training_time = new QLabel("Training time: " + QString::number(speedometer.getTrainingTime(), 'f', 2));
         grid->addWidget(training_time, 1, 1, 1, 1);
 
-        QLabel* distance = new QLabel("Distance: " + QString::number(speedometer.getDistance()));
+        QLabel* distance = new QLabel("Distance: " + QString::number(speedometer.getDistance(), 'f', 2));
         grid->addWidget(distance, 2, 1, 1, 1);
 
-        QLabel* speed = new QLabel("Avarage speed: " + QString::number(speedometer.getSpeed()));
+        QLabel* speed = new QLabel("Avarage speed: " + QString::number(speedometer.getSpeed(), 'f', 2));
         grid->addWidget(speed, 2, 2, 1, 1);
     }
 };

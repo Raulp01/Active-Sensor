@@ -13,7 +13,7 @@ namespace Core
         static const float bpm_percentage;
 
         public:
-        CaloriesCounter(unsigned int id, std::string name, std::string description, unsigned int age = 1, float height = 0.6, float weight = 5, unsigned int training_type = 1,
+        CaloriesCounter(unsigned int id, std::string name, std::string description, unsigned int age, float height, float weight, unsigned int training_type,
         float training_time = 0, unsigned int bpm = 0, float calories = 0);
         virtual ~CaloriesCounter();
 

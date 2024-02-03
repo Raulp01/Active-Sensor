@@ -25,8 +25,8 @@ namespace Core
         std::vector<float> time_vector;
 
         public:
-        Sensor(unsigned int id, std::string name, std::string description, unsigned int age = 1, float height = 0.6, float weight = 5, 
-        unsigned int training_type = 1, float training_time = 0);
+        Sensor(unsigned int id, std::string name, std::string description, unsigned int age, float height, float weight, 
+        unsigned int training_type, float training_time = 0);
         virtual ~Sensor() = 0;
 
         //getter 

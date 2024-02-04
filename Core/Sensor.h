@@ -19,7 +19,7 @@ namespace Core
         float weight;
         unsigned int training_type;
         float training_time;
-        static float delta_time;
+        static const float delta_time;
         bool time_changed;
         // vettore che raccoglie i dati della simulazione
         std::vector<float> time_vector;

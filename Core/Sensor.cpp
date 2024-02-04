@@ -2,7 +2,7 @@
 
 namespace Core
 {
-    float Sensor::delta_time = 0.2;
+    const float Sensor::delta_time = 0.2;
 
     Sensor::Sensor(unsigned int id, std::string name, std::string description, unsigned int age, float height, float weight, 
     unsigned int training_type, float training_time) 

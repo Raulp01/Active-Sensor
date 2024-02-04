@@ -64,6 +64,7 @@ namespace Core
         virtual void simulate();
 
         // Metodo che permette di calcolare un valore randomico in un range
+        protected:
         float getRandomNumber(float range_min, float range_max);
     };
 };

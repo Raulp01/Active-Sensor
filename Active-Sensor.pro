@@ -3,7 +3,7 @@
 ######################################################################
 
 TEMPLATE = app
-TARGET = A
+TARGET = Active-Sensor
 INCLUDEPATH += .
 QT += widgets
 QT += charts

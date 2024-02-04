@@ -2,11 +2,11 @@
 #include "../Core/Json/Reader.h"
 #include <QApplication>
 #include <QPushButton>
-#include <QMessageBox>
-#include <QToolBar>
 #include <QIcon>
 #include <QAction>
 #include <QMenuBar>
+#include <QMenu>
+#include <QMessageBox>
 #include <QStatusBar>
 #include <QTextEdit>
 #include <QSplitter>
@@ -15,6 +15,7 @@
 #include <QStackedWidget>
 #include <QScrollArea>
 #include <QVBoxLayout>
+#include <QToolBar>
 
 namespace View
 {
@@ -41,8 +42,21 @@ namespace View
             "Close"
         );
         close->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q));
+        QAction* toggle_toolbar = new QAction(
+            "Toolbar"
+        );
+        toggle_toolbar->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_T));
 
         // Sets toolbar
+        QMenu* file = menuBar()->addMenu("&File");
+        file->addAction(create);
+        file->addAction(open);
+        file->addAction(save);
+        file->addAction(close);
+
+        QMenu* menu_toolbar = menuBar()->addMenu("&Toolbar");
+        menu_toolbar->addAction(toggle_toolbar);
+
         toolbar = addToolBar("Toolbar");
         toolbar->addAction(create);
         toolbar->addAction(open);
@@ -82,6 +96,7 @@ namespace View
         splitter->setSizes(QList<int>() << 1000 << 3000);
 
         // Collegamento segnali
+        connect(toggle_toolbar, &QAction::triggered, this, &MainWindow::toggleToolbar);
         connect(create, &QAction::triggered, this, &MainWindow::newDataset);
         connect(open, &QAction::triggered, this, &MainWindow::openDataset);
         connect(save, &QAction::triggered, this, &MainWindow::saveDataset);
@@ -92,6 +107,10 @@ namespace View
         connect(new_sensor, &QPushButton::pressed, this, &MainWindow::createSensor);
 
         reloadData(vector);
+    }
+
+    void MainWindow::toggleToolbar() {
+        toolbar->setVisible(!toolbar->isVisible());
     }
 
     //Slot che aggiorna la lista di sensori con il vettore passato nel parametro

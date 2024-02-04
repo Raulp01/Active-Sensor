@@ -26,7 +26,6 @@ namespace Core
 
         void setSpeed(float new_avarage_speed);
         void setDistance(float new_distance);
-        void setStandardSpeed();
 
         float trainingIntensity();
 
@@ -35,6 +34,9 @@ namespace Core
 
         void accept(IVisitor& visitor) override;
         void accept(IConstVisitor& const_visitor) const override;
+
+        private:
+        void setStandardSpeed();
     };
 };
 

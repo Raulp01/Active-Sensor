@@ -25,13 +25,15 @@ namespace Core
         std::vector<unsigned int> getBpmVector() const;
 
         void setBpm(unsigned int new_bpm);
-        void setStandardBpm();
 
         void simulate() override;
         void reset() override;
 
         void accept(IVisitor& visitor) override;
         void accept(IConstVisitor& const_visitor) const override;
+
+        private:
+        void setStandardBpm();
     };
 };
 

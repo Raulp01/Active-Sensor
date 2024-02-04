@@ -22,13 +22,15 @@ namespace Core
         std::vector<unsigned int> getCaloriesVector() const;
         
         void setCalories(unsigned int new_calories);
-        void setStandardCalories();
 
         void simulate() override;
         void reset() override;
 
         void accept(IVisitor& visitor) override;
         void accept(IConstVisitor& const_visitor) const override;
+
+        private:
+        void setStandardCalories();
     };
 };
 

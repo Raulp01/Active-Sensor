@@ -3,7 +3,7 @@
 ######################################################################
 
 TEMPLATE = app
-TARGET = Progetto-PaO-2023-2024
+TARGET = A
 INCLUDEPATH += .
 QT += widgets
 QT += charts
